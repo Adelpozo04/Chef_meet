@@ -1,0 +1,7 @@
+p {
+    color: gray;
+}
+
+div.cards {
+    display: flex;
+}
