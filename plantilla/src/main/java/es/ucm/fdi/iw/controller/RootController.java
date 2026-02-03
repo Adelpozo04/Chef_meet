@@ -37,6 +37,13 @@ public class RootController {
         return "index";
     }
 
+    @GetMapping("/recipe")
+    public String recipe(Model model, HttpServletRequest request) {
+        boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
+        model.addAttribute("loginError", error);
+        return "recipe";
+    }
+
     @GetMapping("/authors")
     public String autores(Model model) {
         return "authors";
