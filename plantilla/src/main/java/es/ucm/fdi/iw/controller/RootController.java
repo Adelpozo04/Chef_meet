@@ -44,6 +44,34 @@ public class RootController {
         return "recipe";
     }
 
+    @GetMapping("/community")
+    public String community(Model model, HttpServletRequest request) {
+        boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
+        model.addAttribute("loginError", error);
+        return "community";
+    }
+
+    @GetMapping("/event")
+    public String event(Model model, HttpServletRequest request) {
+        boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
+        model.addAttribute("loginError", error);
+        return "event";
+    }
+
+    @GetMapping("/account")
+    public String account(Model model, HttpServletRequest request) {
+        boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
+        model.addAttribute("loginError", error);
+        return "account";
+    }
+
+    @GetMapping("/explorer")
+    public String explorer(Model model, HttpServletRequest request) {
+        boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
+        model.addAttribute("loginError", error);
+        return "explorer";
+    }
+
     @GetMapping("/authors")
     public String autores(Model model) {
         return "authors";
