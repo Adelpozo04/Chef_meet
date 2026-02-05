@@ -3,64 +3,66 @@
 
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
-    <title>IW: Autores</title>
+    <title>ChefMeet autores</title>
     <link rel="stylesheet" th:href="@{/css/profiles.css}" href="/css/profiles.css"
         type="text/css" />
 </head>
 
 <body class="d-flex flex-column h-100">
 
+    <header th:replace="~{fragments/nav.html :: nav}"></header>
+
+    <div>
+        <h1 class="header-authors"> Autores </h1>
+    </div>
+
     <div class="cards">
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="Imagen alumno 1">
+
+        <div class="card">
+            <img th:src="@{/img/profile-image.png}" src="/img/profile-image.png" class="card-img-profile" alt="Imagen alumno 1">
             <div class="card-body">
-                <h5 class="card-title"> Nombre alumno 1 </h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                <h5 class="card-title">Adrián Del Pozo Hernández</h5>
+                <p class="card-text">Estudiante de Desarrollo de Videojuegos</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">An item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
+                <li class="list-group-item">Rol principal</li>
             </ul>
-            <div class="card-body">
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+            <div class="card-body card-links">
+                <a href="https://github.com/Adelpozo04" class="card-link">Github</a>
+                <a href="#" class="card-link">Correo UCM</a>
             </div>
         </div>
 
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="Imagen alumno 2">
+        <div class="card">
+            <img th:src="@{/img/profile-image.png}" src="/img/profile-image.png" class="card-img-profile" alt="Imagen alumno 2">
             <div class="card-body">
-                <h5 class="card-title"> Nombre alumno 2 </h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                <h5 class="card-title">Cristina Muñoz Muñoz</h5>
+                <p class="card-text">Estudiante de Desarrollo de Videojuegos</p>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">An item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
             </ul>
-            <div class="card-body">
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+            <div class="card-body card-links">
+                <a href="https://github.com/xtina2434" class="card-link">Github</a>
+                <a href="#" class="card-link">Correo UCM</a>
             </div>
         </div>
 
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="Imagen alumno 3">
+        <div class="card">
+            <img th:src="@{/img/profile-image.png}" src="/img/profile-image.png" class="card-img-profile" alt="Imagen alumno 3">
             <div class="card-body">
-                <h5 class="card-title"> Nombre alumno 3 </h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                <h5 class="card-title">Óscar Pineda German</h5>
+                <p class="card-text">Estudiante de Ingeniería de Computadores</p>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">An item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
             </ul>
-            <div class="card-body">
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+            <div class="card-body card-links">
+                <a href="https://github.com/oscarFPG" class="card-link">Github</a>
+                <a href="mailto:opineda@ucm..es" class="card-link">Correo UCM</a>
             </div>
         </div>
+
     </div>
 
     

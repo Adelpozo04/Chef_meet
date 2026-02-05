@@ -13,15 +13,17 @@
             <div class="container-fluid">
                 <!-- nombre del sitio; es un enlace que lleva a la página ppal -->
                 <a class="navbar-brand" th:href="@{/}" href="/">
-                    <img th:src="@{/img/logo.png}" src="/img/logo.png" alt="logo IW" width="32" height="32" class="d-inline-block align-text-top"> IW 2024-25
+                    <img th:src="@{/img/logo.png}" src="/img/logo.png" alt="logo IW" width="32" height="32" class="d-inline-block align-text-top"> ChefMeet
                 </a>
                 <!-- menu hamburguesa si no cabe todo -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-            </button>
+                </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto">
+
                         <th:block th:if="${u}">
+
                             <li class="nav-item mx-3">
                                 <a class="nav-link" th:if="${u.hasRole('ADMIN')}" th:href="@{/admin/}">Administrar</a>
                             </li>
@@ -32,33 +34,47 @@
                                     <span th:text="${u.username}">Pepe</span>
                                 </a>
                             </li>
+
                             <li class="nav-item align-self-center me-4">
                                 <button type="button" class="btn btn-outline-primary btn-sm position-relative">
                                     ✉️ <span id="nav-unread" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">+99 <span class="visually-hidden">unread messages</span></span>
                                 </button>
                             </li>
+
                             <li class="nav-item align-self-center">
                                 <form th:action="@{/logout}" method="post">
                                     <button type="submit" class="btn btn-outline-secondary btn-sm">logout</button>
                                 </form>
                             </li>
+
                         </th:block>
+
                         <th:block th:unless="${u}">
+
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" th:href="@{/authors}" href="/authors">Conocenos</a>
+                            </li>
+
                             <li class="nav-item mx-2">
                                 <a class="nav-link" th:href="@{/login}" href="/login">Login</a>
                             </li>
+
                             <li class="nav-item mx-2">
                                 <a class="nav-link" th:href="@{/recipe}" href="/recipe">Receta</a>
                             </li>
+
                             <li class="nav-item mx-2">
                                 <a class="nav-link" th:href="@{/community}" href="/community">Comunidad</a>
                             </li>
+
                             <li class="nav-item mx-2">
                                 <a class="nav-link" th:href="@{/event}" href="/event">Eventos</a>
                             </li>
+
                             <li class="nav-item mx-2">
                                 <a class="nav-link" th:href="@{/explorer}" href="/explorer">Explorador</a>
                             </li>
+
                             <li class="nav-item mx-2">
                                 <a class="nav-link" th:href="@{/account}" href="/account">Mi Cuenta</a>
                             </li>
@@ -75,6 +91,7 @@
                                     <button type="submit" class="btn btn-outline-danger btn-sm">a</button>
                                 </form>
                             </li>
+
                             <li class="nav-item debug align-self-center" th:if="${application.debug}">
                                 <form class="d-flex" th:action="@{/login}" method="post">
                                     <input type="hidden" name="username" value="b">
@@ -82,6 +99,7 @@
                                     <button type="submit" class="btn btn-outline-danger btn-sm">b</button>
                                 </form>
                             </li>
+
                         </th:block>
                     </ul>
                 </div>

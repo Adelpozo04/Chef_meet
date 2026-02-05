@@ -1,7 +1,39 @@
-p {
-    color: gray;
+
+h1 {
+    margin: 20px 0 20px 0;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+/* Tarjeta de perfiles */
+.header-authors {
+    margin: 30px;
+}
+
+div.card {
+    width: 17%;
+    margin: 0 20px 0 20px;
 }
 
 div.cards {
     display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin: 40px 0 auto 0;
+}
+
+.card-img-profile {
+    width: 230px;
+    height: 230px;
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.card-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: auto;
 }
