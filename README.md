@@ -1,30 +1,40 @@
-# iw
+#Chef Meet
+¿Te apasiona la cocina pero no tienes con quién compartir tus creaciones? Chef Meet es la plataforma definitiva para encontrar la receta que deseas aprender, poder compartir las tuyas propias y encontrar eventos donde podrás asistir para conocer a otros entusiastas de la cocina y poder adquirir nuevos conocimientos además de pasar un buen rato cocinando. ¡No te quedes sin cocinar y disfruta con Chef Meet!
 
-Material para la asignatura de Ingeniería Web, edición 2022-23, de la Facultad de Informática UCM
+Podrás ser partícipe de comunidades tanto públicas como privadas donde podrás valorar las recetas de los otros integrantes del grupo y además contarás con un chat en tiempo real para poder comunicarte con el resto.
 
-## Contenido
+Y, por último, la creación de eventos gastronómicos, que pueden ser públicos o privados dentro de una comunidad, donde se debe informar de la fecha, hora, localización, temática, número máximo de participantes e incluso un precio.
 
-* en [/plantilla](https://github.com/manuel-freire/iw/tree/main/plantilla) está la plantilla recomendada para los proyectos de este año. Sobre un proyecto "desde cero", por ejemplo el visto en el tutorial, añade:
+##Vista de recetas
+![Receta](/imgReadMe/receta.png)
 
-    - Perfiles para mantener una BD H2 en memoria o en disco
-    - Seguridad con múltiples roles definidos, y persistiendo usuarios vía BD
-    - Controladores con métodos para
-        * crear usuarios programáticamente
-        * subir y bajar ficheros de forma segura
-    - Una clase auxiliar para configurar a dónde se suben los ficheros que se suben
-    - WebSockets con STOMP funcionando
-    - Demostraciones de AJAX en funcionamiento para consultar APIs externas y gestionar imágenes
+La vista de receta se podrá usar tanto para crear una receta como para verla o editarla.
 
-* en [/doc/]([https://github.com/manuel-freire/iw/tree/main/doc) tienes las transparencias, en Markdown. Puedes leerlas tal cual están (es texto, y además GitHub tiene un intérprete embebido), o convertirlas a PDF u otro formato usando, por ejemplo, [Pandoc](https://pandoc.org). Tengo un [script](https://github.com/manuel-freire/fdi-utils) en python llamado `markdown-to-beamer` que es el que uso para generar las transparencias que subo a Campus Virtual y uso en clase. Muchas transparencias no están **actualizadas la última edicion**; en general, las actualizo poco antes de las clases correspondientes.
+###Edición de receta
 
-* (**desactualizado**) en [/demo](https://github.com/manuel-freire/iw/tree/main/demo) está el proyecto de demostración explicado en el [tutorial](https://github.com/manuel-freire/iw/blob/main/doc/05-tutorial.md)
+####Introducción
+El usuario propietario podra crear o editar la receta, para ello deberá introducir un titulo arriba de esta. Tras esto tendrá un espacio para subir una imagen que se usara como representación de la receta en el formato tarjeta.
 
-## Historia
+####Descripción
+Aqui se deberan indicar puntos importantes de cada receta, siendo estos el tiempo de elaboración, el tiempo de cocción y
+el número de raciones. Estos datos serán obligatorios y aparecerán en la descripción de las recetas.
 
-Puedes consultar también plantillas de años pasados:
+####Ingredientes
+Una vez personalizado eso se añadiran los ingredientes. Para ello el usuario deberá pulsar un botón de Add cada vez que quiera introducir un nuevo ingrediente.
 
-   - En el [2020-21](https://github.com/manuel-freire/iw/tree/version-del-curso-2020-21), usábamos Eclipse STS en lugar de VS Code como entorno recomendado
-   - En el [2019-20](https://github.com/manuel-freire/iw/tree/version-del-curso-2019-20), usábamos HyperSQL en lugar de H2. Las clases de modelo eran más verbosas, porque las anotaciones de entidad estaban en los métodos (y no en los atributos), y no usábamos Lombok.
-   - En el [2018-19](https://github.com/manuel-freire/iw1819), los websockets no eran obligatorios, y no usaban todavía STOMP
-   - Cursos [2016-17 y 2017-18](https://github.com/manuel-freire/iw-1718)
-   - Curso [2015-16](https://github.com/manuel-freire/iw-1516), utilizando por primera vez Spring Boot
+El ingrediente deberá ser escrito y acompañado en otro espacio distinto de una cantidad a añadir. En caso de no escribir nada dicho espacio de ingrediente será eliminado automaticamente.
+
+En un futuro y como nice to have se creara una base de datos con varios ejemplos de ingredientes comunes. Esos podran ser elegidos desde un dropdown con barra de busqueda. Unido a estos habra otro dropdown con las unidades de medida tipicas para el ingrediente, debiendo se elegida una obligatoriamente en otro dropdown.
+
+*Nota: el botón de añadir debe salir desde el último ingrediente añadido, para que el usuario no deba subir arriba del todo para añadir otro*
+
+####Elaboración
+De forma similar que en apartado anterior el usuario podrá añadir distintos pasos donde describa mediante un texto la elaboración de la receta.
+
+De forma similar en cada uno de los pasos aparecerá un botón debajo indicando la posibilidad de subir una imagen o video como acompañamiento a la descripción.
+
+####Calorias
+Esta caracteristica es un nice to have, será una pequeña opción en la cual el usuario podra indicar las calorias de cada uno de los ingredientes (excepto si se pusieron con el dropdown, ya que aquí se pondra las calorias automaticamente) y al finalizar la página hara un calculo automatico de calorias por ración.
+
+####Subida de receta
+Para subir la receta será necesario pulsar un botón al final de esta. Dicho botón guardara automaticamente la receta en tu cuenta y creará un pop-up dando la opción de enviar la receta a alguna de las comunidades a las que perteneces.
