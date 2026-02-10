@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{fragments/head :: header}" />
+    <title>ChefMeet</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+    
+    <header th:replace="~{fragments/nav.html :: nav}"></header>
+
+    <main class="flex-shrink-0">
+        <div class="container">
+            <h1 class="mt-5 text-cn">Bienvenid@ a Chef Meet</h1>
+
+            <div class="mt-4 p-5 bg-light rounded">
+                <p class="lead">
+                    ¿Te apasiona la cocina pero no tienes con quién compartir tus creaciones?
+                    <strong> Chef Meet</strong> es la plataforma definitiva para encontrar la receta que deseas aprender, poder 
+                    compartir las tuyas propias y encontrar eventos donde podrás asistir para conocer a 
+                    otros entusiastas de la cocina y poder adquirir nuevos conocimientos además de pasar
+                    un buen rato cocinando.
+                    <br><br> <strong>¡No te quedes sin cocinar y disfruta con Chef Meet!</strong>  
+                </p> 
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 p-3">
+                        <h3>Comunidades y rangos</h3>
+                        <p> Podrás ser partícipe de comunidades tanto públicas como privadas donde podrás
+                            valorar las recetas de los otros integrantes del grupo y además contarás con un chat
+                            en tiempo real para poder comunicarte con el resto. Dentro del grupo existen distintos
+                            rangos que gestiona el creador de este como <i> jefe de cocina, cocinero y pinche</i>.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 p-3">
+                        <h3>Gamificación y Estrellas Michelin</h3>
+                        <p> Para fomentar el compromiso, competencia sana y un aprendizaje continuo dentro de
+                            un grupo, existe una clasificación interna basada en las valoraciones obtenidas con las 
+                            recetas y un catálogo de logros que se muestran en el perfil de los usuarios. Aparte, 
+                            cada usuario tendrá una valoración global (estrellas Michelin) visible por el resto 
+                            que indica la reputación del usuario basada en reseñas que otros dejan sobre él tras asistir 
+                            a un evento o probar su receta.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h2> Funcionalidades Principales</h2> 
+                <div class="border-start border-4 ps-4">
+                    <p><strong>Recetas:</strong> Basta con indicar un título, foto, ingredientes y cantidades utilizadas 
+                        y adicionalmente dar información sobre el índice calórico y para los que se atrevan un video con la elaboración del plato.</p>
+                        <p><strong>Eventos gastronómicos:</strong> Creación de eventos gastronómicos, que pueden ser públicos o privados dentro de una comunidad, 
+                            donde se debe informar de la fecha, hora, localización, temática, número máximo de participantes e incluso un precio.</p>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h2> Roles en la plataforma</h2> 
+                <div class="border-start border-4 ps-4">
+                    <p><strong>Administrador:</strong> Gestiona el alta de los usuarios y supervisa los reportes de comportamiento inapropiado. 
+                            Modera las comunidades públicas y tiene capacidad de banear usuarios o eliminar contenido ofensivo para garantizar una plataforma segura.</p>
+                    <p><strong>Usuario estándar:</strong> Debe estar registrado y dado de alta. Gestiona su perfil público con nickname, foto, una pequeña descripción, logros y valoración global. 
+                            Crea o se une a comunidades y eventos, y comparte y valora otras recetas y usuarios.</p>
+                    <p><strong>Usuario invitado:</strong> Su acceso es solo de lectura. Pueden navegar por la plataforma y visualizar recetas, grupos y eventos públicos sin poder interactuar con ellos.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <th:block th:replace="~{fragments/footer.html :: footer}" />
+</body>
+
+</html>
