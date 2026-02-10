@@ -1,0 +1,32 @@
+#community-name {
+    background-color: #03aa65;
+    display: block;
+    text-align: center;
+}
+
+#community-desc {
+    background-color: #03aa65;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+#community-data {
+    display: flex;
+    height: 100%;
+}
+
+#community-content {
+    background-color: gray;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    align-content: center;
+}
+
+#community-users {
+    background-color: #fd7a7a;
+    display: inline;
+    width: 20%;
+    text-align: center;
+    align-content: center;
+}

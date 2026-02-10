@@ -17,7 +17,7 @@
         </div>
         <div class="container">
             <h1 class="mt-5">Usuarios</h1>
-            <table>
+            <table id="table-users">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -53,6 +53,9 @@
                     </tr>
                 </tbody>
             </table>
+
+            <button type='button' class="btn btn-danger" id='create-button'>Crear</button>
+
         </div>
 
         <div class="container">
@@ -115,6 +118,37 @@
         }
         document.getElementById('refresh').addEventListener('click', refreshMessages);
         refreshMessages();
+
+        const otroUsuario = 
+        `
+        <tr>
+            <td>1</td>
+            <td>a</td>
+            <td>null null</td>
+            <td>
+                <ul>
+                    <li>ADMIN,USER</li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li>[]</li>
+                </ul>
+            </td>
+            <td>
+                <form action="/admin/toggle/1" method="post"><input type="hidden" name="_csrf" value="LkcvEKhAlax1ZP5DjyB5eMvsB6ZU0gHWHy4JvDZby7HmpRHpGCEYdZB4pJtYBZp0uA1NTv-OKp435jX7LU063QU-_9CCkCGM"/>
+                    <button type="submit"
+                        class="toggle btn btn-danger">Deshabilitar</button>
+                    
+                </form>
+            </td>
+        </tr>
+        `
+
+        document.getElementById('create-button').addEventListener('click', () => {
+            console.log('Esto deberia crear una nueva entrada en la tabla')
+        });
+
     </script>
 </body>
 

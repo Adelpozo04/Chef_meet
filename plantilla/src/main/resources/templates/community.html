@@ -3,28 +3,53 @@
 
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
-    <title>IW: Comunidad</title>
+    <title>Comunidad</title>
+    <link rel="stylesheet" th:href="@{/css/community.css}" href="/css/community.css"
+        type="text/css"/>
 </head>
 
 <body class="d-flex flex-column h-100">
+    
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0">
-        <h1>Vista de Comunidad</h1>
+    <div id="community-info">
+        <h1 id="community-name">Nombre de comunidad</h1>
+        <p id="community-desc">
+            Descripcion de la comunidad: para que grupo de personas esta dirigido, sus intereses, qué tipo de recetas
+            quieren compartir, qué tipos de eventos quieren organizar, etc...
+        </p>
+    </div>
 
-        <div class="d-flex flex-row h-100">
-            <h3>Recetas en carpetas--</h3>
-            <h3>Miembros--</h3>
-            <h3>Ranking</h3>
+    <div id="community-data">
+        <main id="community-content">
+            Contenido
+        </main>
 
+        <div id="community-users">
+            <p>Usuarios</p>
         </div>
+    </div>
 
-        <div>
-            <h3>Datos</h3>
-
-        </div>
-        
-    </main>
+    <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item">
+                <a href="#" class="nav-link px-2 text-body-secondary">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link px-2 text-body-secondary">Features</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link px-2 text-body-secondary">Pricing</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link px-2 text-body-secondary">FAQs</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link px-2 text-body-secondary">About</a>
+            </li>
+        </ul> 
+        <p class="text-center text-body-secondary">© 2025 Company, Inc</p>
+    </footer> 
     
 </body>
 
