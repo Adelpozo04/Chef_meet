@@ -65,13 +65,6 @@ public class RootController {
         return "account";
     }
 
-    @GetMapping("/explorer")
-    public String explorer(Model model, HttpServletRequest request) {
-        boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
-        model.addAttribute("loginError", error);
-        return "explorer";
-    }
-
     @GetMapping("/authors")
     public String autores(Model model) {
         return "authors";
