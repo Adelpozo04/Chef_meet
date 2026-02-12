@@ -19,8 +19,22 @@
 
 .recipe_main_image{
 
-    max-height: 500px;
-    max-width: 500px;
+    height: 500px;
+    width: 500px;
     object-fit: contain;
     border-radius: 5%;
+}
+
+.recipe_ingredients_list{
+    list-style-type: circle;
+}
+
+.editable {
+    position: relative;
+    color: black;
+}
+
+.editable:empty::before{
+    content: attr(data-placeholder);
+    color: gray;
 }
