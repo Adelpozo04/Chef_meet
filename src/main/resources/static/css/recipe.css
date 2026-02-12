@@ -1,0 +1,26 @@
+.recipe_title{
+    font-size: 75px;
+    color: black;
+    text-transform: capitalize;
+}
+
+.recipe_wrapper{
+    margin-top: 15px;
+    padding: 5px 10px 5px 10px;
+
+}
+
+.recipe_empty_image{
+
+    height: 200px;
+    width: 200px;
+    background-color: rgb(180, 180, 180);
+}
+
+.recipe_main_image{
+
+    max-height: 500px;
+    max-width: 500px;
+    object-fit: contain;
+    border-radius: 5%;
+}

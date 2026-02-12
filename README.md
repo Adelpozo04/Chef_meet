@@ -38,3 +38,14 @@ Esta caracteristica es un nice to have, será una pequeña opción en la cual el
 
 ####Subida de receta
 Para subir la receta será necesario pulsar un botón al final de esta. Dicho botón guardara automaticamente la receta en tu cuenta y creará un pop-up dando la opción de enviar la receta a alguna de las comunidades a las que perteneces.
+
+###Ver receta
+El layout es igual tan solo quitando todos los botones y opciones de personalización
+
+##Vista comunidad
+La vista de comunidad empieza con un titulo con un fondo de una imagen personalizada como fondo. Dicho texto se esconde cada vez que el usuario haga scroll hacia abajo y aparece cuando hace scroll hacia arriba.
+
+###Pestaña recetas
+![Receta](/imgReadMe/comunidad.png)
+
+Cuando se elige la pestaña de comunidad aparecen primero las carpetas que han usado los miembros de la comunidad para dividir sus recetas. Estos elementos son interactuables y aparecen con una 

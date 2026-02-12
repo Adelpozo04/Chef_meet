@@ -4,13 +4,43 @@
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
     <title>IW: Receta</title>
+    <link rel="stylesheet" th:href="@{/css/recipe.css}" href="/css/recipe.css"
+        type="text/css" />
 </head>
 
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0">
-        <h1>Vista de Receta</h1>
+    <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
+        
+        <div class="d-flex flex-column align-items-center">
+
+            <h1 class="recipe_title" contenteditable="true">Titulo de la receta</h1>
+
+            <form method="post" enctype="multipart/form-data">
+
+                <!-- Input oculto -->
+                <input type="file" name="imageRecipe" id="imageRecipe" accept="image/*" class="d-none">
+
+                <!-- Marco visual Bootstrap -->
+                <label class="d-flex flex-column align-items-center justify-content-center recipe_empty_image" 
+                id="imageRecipeController"
+                for="imageRecipe" 
+                style="cursor:pointer;">
+
+                    <span>Pulsa para subir imagen</span>
+
+                </label>
+
+                <!-- Imagen de vista previa -->
+                <div>
+                    <img class="recipe_main_image d-none" id="imageRecipePreview" name="imageRecipePreview" >
+                </div>
+
+            </form>
+            
+        </div>
+
 
         <div>
             <h3>Ingredientes</h3>
@@ -28,6 +58,7 @@
         </div>
     </main>
     
+    <script th:src="@{/js/recipe.js}"></script>
 </body>
 
 </html>
