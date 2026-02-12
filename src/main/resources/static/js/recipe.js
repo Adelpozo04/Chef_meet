@@ -66,13 +66,63 @@ document.addEventListener("DOMContentLoaded", function (){
                 newElement.blur();
             }
         });
-        
 
         list.appendChild(newElement);
         
         newElement.focus();
 
+        //Hacemos que si el usuario hace click fuera del elemeto y dicho elemento no tiene nada puesto se elimine automaticamente
+        newElement.addEventListener("blur", function () {
+
+            if (newElement.textContent.trim() === "") {
+                newElement.remove();
+            }
+
+        });
+
     })
 
+})
+
+document.addEventListener("DOMContentLoaded", function (){
+
+    const button = document.getElementById("addStep");
+    const list = document.getElementById("stepsList");
+
+    button.addEventListener("click", function() {
+
+        //Creamos un elemento de la lista
+        const newElement = document.createElement("li");
+
+        //Hacemos que dicho elemento pueda ser editable con un texto
+        newElement.contentEditable = true;
+
+        newElement.dataset.placeholder = "Escribe siguiente paso...";
+
+        newElement.classList.add("editable");
+
+        list.appendChild(newElement);
+        
+        newElement.focus();
+
+        //Hacemos que si el usuario hace click fuera del elemeto y dicho elemento no tiene nada puesto se elimine automaticamente
+        newElement.addEventListener("blur", function () {
+
+            if (newElement.textContent.trim() === "") {
+                newElement.remove();
+            }
+
+        });
+
+    })
+
+})
+
+document.addEventListener("DOMContentLoaded", function (){
+    const elements = document.querySelectorAll(".recipe_title.editable");
+
+    elements.forEach(function(element){
+        element.dataset.placeholder = "Escribe un titulo..."
+    })
 })
 
