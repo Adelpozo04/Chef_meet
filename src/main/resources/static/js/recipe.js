@@ -42,48 +42,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+//Anyadir para los ingredientes
 document.addEventListener("DOMContentLoaded", function (){
 
     const button = document.getElementById("addIngredient");
     const list = document.getElementById("ingredientsList");
 
+    let counter = 0;
+
     button.addEventListener("click", function() {
 
         //Creamos un elemento de la lista
-        const newElement = document.createElement("li");
+        const newIndex = document.createElement("li");
 
-        //Hacemos que dicho elemento pueda ser editable con un texto
-        newElement.contentEditable = true;
+        //Creamos un elemento de la lista
+        const newElement = document.createElement("select");
 
-        newElement.dataset.placeholder = "Escribe un ingrediente...";
+        newElement.multiple = true;
 
-        newElement.classList.add("editable");
+        list.appendChild(newIndex);
 
-        //Impedimos al usuario escribir en varias lineas con Enter
-        newElement.addEventListener("keydown", function(e) {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                newElement.blur();
-            }
-        });
+        newIndex.append(newElement);
 
-        list.appendChild(newElement);
-        
-        newElement.focus();
+        //creamos los ingredientes del dropdown
+        for(let i = 0; i < 3; i++){
+            const option = document.createElement("option")
+            
+            option.value = "Ingrediente: " + counter;
+            option.text = "Ingrediente: " + counter;
 
-        //Hacemos que si el usuario hace click fuera del elemeto y dicho elemento no tiene nada puesto se elimine automaticamente
-        newElement.addEventListener("blur", function () {
+            newElement.append(option);
 
-            if (newElement.textContent.trim() === "") {
-                newElement.remove();
-            }
+            counter++;
+        }
 
+        newElement.addEventListener("change", function() {
+            //Si quiero el texto y no el value hay que usar select.options[select.selectedIndex].text;
+            newIndex.textContent = newElement.value;
+            newElement.remove();
         });
 
     })
 
 })
 
+//Anyadir para los pasos
 document.addEventListener("DOMContentLoaded", function (){
 
     const button = document.getElementById("addStep");
