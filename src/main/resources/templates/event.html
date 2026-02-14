@@ -6,6 +6,8 @@
     <title>IW: Evento</title>
 
     <link rel="stylesheet" th:href="@{/css/event.css}" href="css/event.css"/>
+
+    <script th:src="@{/js/event.js}"></script>
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -13,17 +15,36 @@
 
     <main class="flex-shrink-0">
         <div class="container py-5">
+
+            <!-- Titulo -->
             <h1>Explora eventos</h1>
 
+            <!--Barra de busqueda de bootstrap-->
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6">
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Buscar eventos..." aria-label="Search"/>
+                        <button class="btn btn-busqueda" type="submit">Buscar</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Filtros -->
             <div class="explorer_wrapper">
                 <div class="category_list">
                     <a href="#" class="category_item ct_item_active" category="all">Todos</a>
                     <a href="#" class="category_item" category="own">Mis eventos</a>
                 </div>
+                <!-- Fotos lista de eventos -->
                 <section class="events_list">
                     <div class="event_item" category="own">
                         <img th:src="@{/img/events/ev_espana.jpg}" src="/img/events/ev_espana.jpg" alt="ev_espana">
                         <a href="#">Evento paella</a>
+
+                        <button th:if="${session.u != null && session.u.hasRole('ADMIN')}"
+                        class="btn btn-danger btn-sm mt-2 btn-delete-event">
+                            <i class="fa-solid fa-trash"></i> Eliminar
+                        </button>
                     </div>
                     <div class="event_item" category="">
                         <img th:src="@{/img/events/ev_italia.jpg}" src="/img/events/ev_italia.jpg" alt="ev_italia">
