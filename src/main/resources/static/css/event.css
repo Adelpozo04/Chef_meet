@@ -1,62 +1,66 @@
+/* Reset basico para asegurar consistencia entre navegadores */
+
 *{
-    margin: 0;  /* quitar margenes*/
-    padding: 0; /* quitar rellenos-*/
-    box-sizing: border-box; /*mismas dimensiones*/
+    margin: 0;              /* quitar margenes */
+    padding: 0;             /* quitar rellenos */
+    box-sizing: border-box; /* mismas dimensiones */
 }
 
+/* Cabecera y titulo principal */
 main .container > h1 {
-
     color: #494B4D;
     font-weight: 400;
     text-align: center;
     margin-bottom: 32px;
 }
 
+/* Contenedor de filtros (Flexbox centrado) */
 .category_list{
     display: flex;
     justify-content: center;
 }
 
+/* Botones de categorias (filtros) */
 .category_list .category_item{
     display: block;
     padding: 10px 25px;
     margin-right: 15px;
     background: #40b6f1;
-
     border-radius: 50px;
-
     text-align: center;
     text-decoration: none;
     color:black;
 }
 
+/* Estado hover */
 .category_list .category_item:hover{
    transform: translateY(-2px);
    background: #397fca;
    color: white;
 }
 
+/* Estado activo*/
 .category_list .ct_item_active{
     background: #2e69a8;
 }
 
+/* Grid de eventos mediante Flexbox */
 .events_list{
     display: flex;
     flex-wrap: wrap;
     margin-top: 20px;
 }
 
+/* Card individual de cada evento */
 .events_list .event_item{
     width: 30%;
     margin-left: 3%;
     margin-bottom: 20px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
-    align-self: flex-start;
 
-    /* Transicion al mostrar y ocultar evento*/
+    /* Animacion transicion al mostrar y ocultar evento */
     transition: opacity 0.4s ease, transform 0.4s ease;
     transform: scale(1);
     opacity: 1;
@@ -66,17 +70,18 @@ main .container > h1 {
     width: 100%;
 }
 
+/* Pie de la card */
 .events_list .event_item a{
     display: block;
     width: 100%;
     padding: 8px 8px;
     background: #1e354e;
-
     text-align: center;
     text-decoration: none;
     color:white;
 }
 
+/* Boton de navegador de busqueda */
 .btn-busqueda {
     background-color: white;
     color: #40b6f1;
@@ -90,6 +95,7 @@ main .container > h1 {
     border-color:#40b6f1;
 }
 
+/* Boton de papelera */
 .btn-delete-event{
     width: 80%;
     border-radius: 10px;

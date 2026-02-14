@@ -1,5 +1,4 @@
-// FUNCIONALIDAD: Filtrar eventos
-// Asegurar que el script se ejecute cuando se haya cargado el HTML
+// FUNCIONALIDAD: Filtrado dinamico de eventos 
 document.addEventListener('DOMContentLoaded', ()=>{
 
     const categories = document.querySelectorAll('.category_item');
@@ -8,24 +7,20 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     categories.forEach(category => {
         category.addEventListener('click', (e) => {
-            e.preventDefault(); // Evita que la pagina salte al hacer click en el enlace
+            e.preventDefault(); // Evita recarga de pagina
 
-            // Gestionar estado activo de los botones
-            // Recorrer los botones para poner de color oscuro solo al seleccionado
+            // Actualizar estilo visual de los botones dependiendo del filtro seleccionado
             categories.forEach(item => item.classList.remove('ct_item_active'));
             category.classList.add('ct_item_active');
 
-            // Filtrado de eventos
             const selectedCategory = category.getAttribute('category');
 
-            // Cambio dinamico del texto del buscador
-            if (selectedCategory === 'all') {
-                searchInput.placeholder = "Buscar eventos...";
-            }
-            else if (selectedCategory === 'own') {
-                searchInput.placeholder = "Buscar mis eventos...";
-            }
+            // Cambio dinamico del texto del buscador segun el filtro
+            searchInput.placeholder = selectedCategory === 'all'
+                ? "Buscar eventos..."
+                : "Buscar mis eventos...";
 
+            // Logica de filtrado de eventos
             events.forEach(event => {
                 const eventCategory = event.getAttribute('category');
 
@@ -47,7 +42,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
                     event.style.opacity = '0';
                     event.style.transform = 'scale(0.7)'
 
-                    // Esperar a que termine la animacion antes de ocultar del todo
+                    // Esperar a que termine la transicion antes de ocultar del todo
                     setTimeout(() => {
                         if(event.style.opacity === '0') {
                             event.style.display = 'none';
@@ -63,24 +58,26 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 // FUNCIONALIDAD: Borrar eventos (solo Admin)
 document.addEventListener('DOMContentLoaded', ()=> {
-    // Buscar todos los eventos de borrar que Thymeleaf haya renderizado
     const deleteButtons = document.querySelectorAll('.btn-delete-event');
 
     deleteButtons.forEach(button => {
         button.addEventListener('click', function() {
+            // Confirmacion de seguridad
             const confirmation = confirm("¿Estás seguro de que quieres eliminar este evento?. Acción irreversible.");
 
             if(confirmation) {
-                const eventItem = this.closest('.event_item');
+                const eventItem = this.closest('.event_item'); // Selecciona el contenedor padre del evento
 
+                // Animacion transicion
                 eventItem.style.opacity = '0';
                 eventItem.style.transform = 'scale(0.3)';
 
+                // Eliminacion definitiva del elemento del DOM tras la animacion
                 setTimeout(() => {
                     eventItem.remove();
                 }, 400);
 
-                /* En un futuro se debera llamar al servidor para borrarlo de la base de datos*/
+                /* TODO: En un futuro se debera llamar al servidor para borrarlo de la base de datos*/
             }
         });
     });

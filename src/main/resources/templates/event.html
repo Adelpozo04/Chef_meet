@@ -40,7 +40,7 @@
                     <div class="event_item" category="own">
                         <img th:src="@{/img/events/ev_espana.jpg}" src="/img/events/ev_espana.jpg" alt="ev_espana">
                         <a href="#">Evento paella</a>
-
+                        <!-- Boton papelera (solo visible para Admin) -->
                         <button th:if="${session.u != null && session.u.hasRole('ADMIN')}"
                         class="btn btn-danger btn-sm mt-2 btn-delete-event">
                             <i class="fa-solid fa-trash"></i> Eliminar
@@ -59,6 +59,7 @@
         </div>  
     </main>
     
+    <th:block th:replace="~{fragments/footer.html :: footer}" />
 </body>
 
 </html>
