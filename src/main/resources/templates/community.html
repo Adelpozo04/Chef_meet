@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html class="h-100" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en">
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
-    <title>Comunidad</title>
     <link rel="stylesheet" th:href="@{/css/community.css}" href="/css/community.css"
         type="text/css"/>
+    <title>Mis comunidades</title>
 </head>
-
-<body class="d-flex flex-column h-100">
+<body>
     
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <!--Barra de busqueda de bootstrap-->
+    <!-- Barra de busqueda de bootstrap -->
     <div class="row justify-content-center mb-4" id="search-community-bar">
         <div class="col-md-6">
             <form class="d-flex" role="search">
@@ -22,24 +20,73 @@
         </div>
     </div>
 
-    <div id="community-info">
-        <h1 id="community-name">Nombre de comunidad</h1>
-        <p id="community-desc">
-            Descripcion de la comunidad: para que grupo de personas esta dirigido, sus intereses, qué tipo de recetas
-            quieren compartir, qué tipos de eventos quieren organizar, etc...
-        </p>
-    </div>
+    <!-- Lista de comunidades del usuario -->
+    <div class="card-grid">
 
-    <div id="community-data">
-        <main id="community-content">
-            Contenido
-        </main>
+        <a class="card" href="#">
+            <div class="card__background" style="background-image: url(https://www.laespanolaaceites.com/wp-content/uploads/2019/06/platos-de-cocina-internacional.jpg)"></div>
+            <div class="card__content">
+                <p class="card__category">España</p>
+                <h3 class="card__heading">Comida internacional</h3>
+            </div>
+        </a>
 
-        <div id="community-users">
-            <p>Usuarios</p>
-        </div>
-    </div>
-    
+        <a class="card" href="#">
+            <div class="card__background" style="background-image: url(https://chinchinwinetrading.com/wp-content/uploads/2021/11/vinos-maridar-queso-curado.jpg)"></div>
+            <div class="card__content">
+                <p class="card__category">Francia</p>
+                <h3 class="card__heading">Vinos y queso</h3>
+            </div>
+        </a>
+
+        <a class="card" href="#">
+            <div class="card__background" style="background-image: url(https://offloadmedia.feverup.com/madridsecreto.co/wp-content/uploads/2022/02/02043605/Ruta-sushi3-1024x720.jpg)"></div>
+            <div class="card__content">
+                <p class="card__category">Japón</p>
+                <h3 class="card__heading">Sushi</h3>
+            </div>
+
+        <a class="card" href="#">
+            <div class="card__background" style="background-image: url(https://i.blogs.es/7e71f4/platos_espana/650_1200.jpg)"></div>
+            <div class="card__content">
+                <p class="card__category">España</p>
+                <h3 class="card__heading">Recetas de toda la vida</h3>
+            </div>
+        </a>
+
+        <a class="card" href="#">
+            <div class="card__background" style="background-image: url(https://www.isleofwightmeat.co.uk/wp-content/uploads/2020/04/shutterstock_1444927070-scaled.jpg)"></div>
+            <div class="card__content">
+                <p class="card__category">Estados Unidos</p>
+                <h3 class="card__heading">Best barbecues</h3>
+            </div>
+        </a>
+
+        <a class="card" href="#">
+            <div class="card__background" style="background-image: url(https://assets.tmecosys.com/image/upload/t_web_rdp_recipe_584x480/img/recipe/ras/Assets/D036C31A-9CE0-4903-BF89-FC97B374DABF/Derivates/51d0a4e9-c4f5-4714-9cf5-26afeb270129.jpg)"></div>
+            <div class="card__content">
+                <p class="card__category">Líbano</p>
+                <h3 class="card__heading">Falafel Lovers</h3>
+            </div>
+        </a>
+
+        <a class="card" href="#">
+            <div class="card__background" style="background-image: url(https://cdn1.matadornetwork.com/blogs/1/2016/04/Tacos-al-pastor-traditional-Mexican-food-1200x853.jpg)"></div>
+            <div class="card__content">
+                <p class="card__category">México</p>
+                <h3 class="card__heading">Los mejores tacos</h3>
+            </div>
+        </a>
+
+        <a class="card" href="#">
+            <div class="card__background" style="background-image: url(https://fornopiombo.com/cdn/shop/articles/How-to-Make-Neapolitan-Pizza-At-Home.jpg?v=1654552141)"></div>
+            <div class="card__content">
+                <p class="card__category">Italia</p>
+                <h3 class="card__heading">Best pasta and pizzas</h3>
+            </div>
+        </a>
+
+    <div>
+
 </body>
-
 </html>
