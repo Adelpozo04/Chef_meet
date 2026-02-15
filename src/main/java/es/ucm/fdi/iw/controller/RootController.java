@@ -44,6 +44,13 @@ public class RootController {
         return "recipe";
     }
 
+    @GetMapping("/communities")
+    public String communities(Model model, HttpServletRequest request) {
+        boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
+        model.addAttribute("loginError", error);
+        return "communities";
+    }
+
     @GetMapping("/community")
     public String community(Model model, HttpServletRequest request) {
         boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
