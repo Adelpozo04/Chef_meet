@@ -7,7 +7,7 @@
 .recipe_wrapper{
     margin-top: 15px;
     padding: 15px 30px 15px 30px;
-
+    background-color: rgb(241, 191, 154);
 }
 
 .recipe_empty_image{
@@ -15,6 +15,16 @@
     height: 200px;
     width: 200px;
     background-color: rgb(180, 180, 180);
+    transition: background-color 0.3s; /*Transicion del color del texto al pasar el raton por encima*/
+    transition: height 0.3s;
+    transition: width 0.3s;
+}
+
+.recipe_empty_image:hover{
+
+    height: 215px;
+    width: 215px;
+    background-color: rgb(137, 137, 137);
 }
 
 .recipe_main_image{
@@ -27,6 +37,18 @@
 
 .recipe_ingredients_list{
     list-style-type: disc;
+}
+
+.recipe_button{
+    font-size: medium;
+    font-weight: 600; /*Establece el grosor de la fuente*/
+    letter-spacing: -0.05em; /*Espacio entre letras*/
+    transition: background-color 0.3s; /*Transicion del color del texto al pasar el raton por encima*/
+    background-color: rgb(139, 240, 238);
+}
+
+.recipe_button:hover{
+    background-color: rgb(131, 180, 232);
 }
 
 .editable {
