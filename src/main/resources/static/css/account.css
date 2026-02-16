@@ -1,0 +1,67 @@
+*{
+    margin: 0;              /* quitar margenes */
+    padding: 0;             /* quitar rellenos */
+    box-sizing: border-box; /* mismas dimensiones */
+}
+
+/* Cabecera y titulo principal */
+main .container > h1 {
+    color: #494B4D;
+    font-weight: 400;
+    text-align: left;
+    margin-bottom: 32px;
+}
+
+.profile_wrapper{
+    display: flex;
+}
+
+/* Contenedor de opciones */
+.options_list{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 18%;
+}
+
+/* Contenedor cada vista */
+.option_view{
+    width: 82%;
+    padding-left: 40px;
+}
+
+/* Botones de opciones */
+.options_list .option_item{
+    display: block;
+    width: 90%;
+    padding: 10px 25px;
+    margin-bottom: 20px;
+    background: #40b6f1;
+    border-radius: 50px;
+    text-align: center;
+    text-decoration: none;
+    color:black;
+}
+
+/* Estado hover */
+.options_list .option_item:hover{
+   transform: translateY(-2px);
+   background: #397fca;
+   color: white;
+}
+
+/* Estado activo*/
+.options_list .ct_item_active{
+    background: #2e69a8;
+}
+
+/* Clase de Bootstrap para ocultar elementos por defecto */
+.d-none{
+    display: none I !important;
+}
+
+/* Titulos dentro de las vistas de opciones */
+.view_content h2 {
+    color: #494B4D;
+    margin-bottom: 20px;
+}

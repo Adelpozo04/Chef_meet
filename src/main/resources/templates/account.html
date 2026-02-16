@@ -4,36 +4,54 @@
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
     <title>IW: Cuenta</title>
+
+    <link rel="stylesheet" th:href="@{/css/account.css}" href="css/account.css"/>
+
+    <script th:src="@{/js/account.js}"></script>
 </head>
 
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
     <main class="flex-shrink-0">
-        <h1>Vista de Cuenta</h1>
 
-        <div>
-            <h3>Información personal</h3>
+        <div class="container py-5">
 
-        </div>
+            <!-- Titulo -->
+            <h1>Mi perfil</h1>
 
-        <div>
-            <h3>Mis recetas</h3>
-
-        </div>
-
-        <div>
-            <h3>Mis Comunidades</h3>
-            
-        </div>
-
-        <div>
-            <h3>Calendario eventos</h3>
-            
+            <div class="profile_wrapper">
+                <div class="options_list">
+                    <a href="#" class="option_item ct_item_active" option="data">Datos personales</a>
+                    <a href="#" class="option_item" option="recipes">Mis recetas</a>
+                    <a href="#" class="option_item" option="communities">Mis comunidades</a>
+                    <a href="#" class="option_item" option="events">Mis eventos</a>
+                    <a href="#" class="option_item" option="configuration">Configuración</a>
+                    <a href="#" class="option_item" option="log_out">Log out</a>
+                </div>
+                <div class="option_view">
+                    <div id="data" class="view_content">
+                        <th:block th:replace="~{fragments/profile_data :: data}" />
+                    </div>
+                    <div id="recipes" class="view_content d-none">
+                       <th:block th:replace="~{fragments/profile_recipes :: recipes}" />
+                    </div>
+                   <div id="communities" class="view_content d-none">
+                        <th:block th:replace="~{fragments/profile_communities :: communities}" />
+                    </div>
+                    <div id="events" class="view_content d-none">
+                        <th:block th:replace="~{fragments/profile_events :: events}" />
+                    </div>
+                    <div id="configuration" class="view_content d-none">
+                        <h2>Configuración</h2>
+                    </div>
+                </div>
+            </div>
         </div>
         
+
     </main>
-    
+    <th:block th:replace="~{fragments/footer.html :: footer}" />
 </body>
 
 </html>
