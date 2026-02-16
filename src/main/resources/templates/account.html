@@ -31,20 +31,16 @@
                 </div>
                 <div class="option_view">
                     <div id="data" class="view_content">
-                        <h2>Datos personales</h2>
-                      <!--- <p>Nombre: <span th:text="${u.firstName + ' ' + u.lastName}">Nombre Usuario</span></span></p>--> 
+                        <th:block th:replace="~{fragments/profile_data :: data}" />
                     </div>
                     <div id="recipes" class="view_content d-none">
-                        <h2>Mis recetas</h2>
-                        <p> Aquí aparecerán todas tus recetas subidas</p>
+                       <th:block th:replace="~{fragments/profile_recipes :: recipes}" />
                     </div>
                    <div id="communities" class="view_content d-none">
-                        <h2>Mis comunidades</h2>
-                        <p> Aquí aparecerán las comunidades a las que perteneces</p>
+                        <th:block th:replace="~{fragments/profile_communities :: communities}" />
                     </div>
                     <div id="events" class="view_content d-none">
-                        <h2>Mis eventos</h2>
-                        <p> Aquí aparecerá un calendario con los eventos a los que te has apuntado</p>
+                        <th:block th:replace="~{fragments/profile_events :: events}" />
                     </div>
                     <div id="configuration" class="view_content d-none">
                         <h2>Configuración</h2>
