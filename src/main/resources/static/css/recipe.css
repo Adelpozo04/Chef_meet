@@ -10,6 +10,10 @@
     background-color: rgb(241, 191, 154);
 }
 
+.recipe_empty_image_input{
+    display: none;
+}
+
 .recipe_empty_image{
 
     height: 200px;
