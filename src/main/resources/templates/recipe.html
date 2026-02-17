@@ -19,9 +19,7 @@
             <h1 class="recipe_title editable" contenteditable="true"></h1>
 
             <form method="post" enctype="multipart/form-data">
-
-           
-                
+     
                 <!-- Marco visual Bootstrap -->
                 <label class="d-flex flex-column align-items-center justify-content-center recipe_empty_image" 
                 style="cursor:pointer;">
@@ -39,6 +37,28 @@
                 </div>
 
             </form>
+
+            <template id="imageUploadTemplate">
+                <form method="post" enctype="multipart/form-data">
+        
+                    <!-- Marco visual Bootstrap -->
+                    <label class="d-flex flex-column align-items-center justify-content-center recipe_empty_image" 
+                    style="cursor:pointer;">
+
+                        <!-- Input oculto -->
+                        <input type="file" name="imageRecipe" accept="image/*" class="recipe_empty_image_input">
+
+                        <span>Pulsa para subir imagen</span>
+
+                    </label>
+
+                    <!-- Imagen de vista previa -->
+                    <div>
+                        <img class="recipe_main_image d-none" name="imageRecipePreview" >
+                    </div>
+
+                </form>
+            </template>
             
             
         </div>
