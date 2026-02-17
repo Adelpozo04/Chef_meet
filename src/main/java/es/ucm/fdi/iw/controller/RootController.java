@@ -51,13 +51,6 @@ public class RootController {
         return "communities";
     }
 
-    @GetMapping("/community")
-    public String community(Model model, HttpServletRequest request) {
-        boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
-        model.addAttribute("loginError", error);
-        return "community";
-    }
-
     @GetMapping("/event")
     public String event(Model model, HttpServletRequest request) {
         boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
