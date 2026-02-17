@@ -60,11 +60,14 @@ public class SecurityConfig {
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/css/**", "/js/**", "/img/**", "/", "/error").permitAll()
 						.requestMatchers("/api/**").permitAll() // <-- public api access
-						.requestMatchers("/authors/**", "/recipe/**", "/community/**", "/event/**", "/account/**").permitAll()
 						.requestMatchers("/admin/**").hasRole("ADMIN") // <-- administration
 						.requestMatchers("/user/**").hasRole("USER") // <-- logged-in users
+						.requestMatchers("/authors/**").permitAll()
+						.requestMatchers("/recipe/**").permitAll()
 						.requestMatchers("/communities/**").permitAll()
-						
+						.requestMatchers("/event/**").permitAll()
+						.requestMatchers("/account/**").permitAll()
+
 						.anyRequest().authenticated())
 				.formLogin(formLogin -> formLogin
 						.loginPage("/login")

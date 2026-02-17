@@ -1,5 +1,3 @@
-
-
 //Metodo para mostrar una imagen de preview antes de enviar el formulario
 document.addEventListener("change", function (event){
 
@@ -16,12 +14,14 @@ document.addEventListener("change", function (event){
     //Si no hay archivo no se hace nada
     if(!file) return;
 
-    //Si el archivo no es una imagen no se hace nada y se avisa del error al usuario
-    if(!file.type.startsWith("image/")){
-        alert("Selecciona una imagen valida");
-        input.value = "";
-        return;
-    }
+            //Si el archivo no es una imagen no se hace nada y se avisa del error al usuario
+            if(!file.type.startsWith("image/")){
+                alert("Selecciona una imagen valida"); // mejor nos quejamos debajo de la imagen
+                input.value = "";
+                return;
+            } else {
+                // si habia mensaje feo, lo quitamos aqui
+            }
 
     //Nos creamos un lector de archivos
     const reader = new FileReader();
@@ -43,7 +43,7 @@ document.addEventListener("change", function (event){
 
 
 //Anyadir para los ingredientes
-document.addEventListener("DOMContentLoaded", function (){
+document.addEventListener("load", function (){
 
     const button = document.getElementById("addIngredient");
     const list = document.getElementById("ingredientsList");
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function (){
 })
 
 //Anyadir para los pasos
-document.addEventListener("DOMContentLoaded", function (){
+document.addEventListener("load", function (){
 
     const button = document.getElementById("addStep");
     const list = document.getElementById("stepsList");
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function (){
 
 })
 
-document.addEventListener("DOMContentLoaded", function (){
+document.addEventListener("load", function (){
     const elements = document.querySelectorAll(".recipe_title.editable");
 
     elements.forEach(function(element){

@@ -23,7 +23,30 @@
                     <ul class="navbar-nav ms-auto">
 
                         <th:block th:if="${u}">
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" th:href="@{/authors}" href="/authors">Conocenos</a>
+                            </li>
 
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" th:href="@{/login}" href="/login">Login</a>
+                            </li>
+
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" th:href="@{/recipe}" href="/recipe">Receta</a>
+                            </li>
+
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" th:href="@{/communities}" href="/communities">Mis comunidades</a>
+                            </li>
+
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" th:href="@{/event}" href="/event">Mis eventos</a>
+                            </li>
+
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" th:href="@{/account}" href="/account">Mi Cuenta</a>
+                            </li>
+                            
                             <li class="nav-item mx-3">
                                 <a class="nav-link" th:if="${u.hasRole('ADMIN')}" th:href="@{/admin/}">Administrar</a>
                             </li>
@@ -60,20 +83,13 @@
                             </li>
 
                             <li class="nav-item mx-2">
-                                <a class="nav-link" th:href="@{/recipe}" href="/recipe">Receta</a>
+                                <a class="nav-link" th:href="@{/communities}" href="/communities">Ver comunidades</a>
                             </li>
 
                             <li class="nav-item mx-2">
-                                <a class="nav-link" th:href="@{/communities}" href="/communities">Mis comunidades</a>
+                                <a class="nav-link" th:href="@{/event}" href="/event">Ver eventos</a>
                             </li>
 
-                            <li class="nav-item mx-2">
-                                <a class="nav-link" th:href="@{/event}" href="/event">Mis eventos</a>
-                            </li>
-
-                            <li class="nav-item mx-2">
-                                <a class="nav-link" th:href="@{/account}" href="/account">Mi Cuenta</a>
-                            </li>
                             <!--/*
                                 Esto es un comentario "thymeleaf" - no se verá en el HTML
                                 El bloque de "debug" sólo está activado si application.properties tiene debug a "true"
@@ -84,7 +100,7 @@
                                 <form class="d-flex" th:action="@{/login}" method="post">
                                     <input type="hidden" name="username" value="a">
                                     <input type="hidden" name="password" value="aa">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">a</button>
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">User a</button>
                                 </form>
                             </li>
 
@@ -92,7 +108,7 @@
                                 <form class="d-flex" th:action="@{/login}" method="post">
                                     <input type="hidden" name="username" value="b">
                                     <input type="hidden" name="password" value="aa">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">b</button>
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">User b</button>
                                 </form>
                             </li>
 

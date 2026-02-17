@@ -8,14 +8,35 @@
         type="text/css" />
 </head>
 
+
+<!--
+    La vista de administrador debe poder:
+
+    - Ver:
+        - Usuarios
+        - Comunidades
+        - Eventos
+    
+    Filtrar por:
+        - Nombre de usuario
+        - ID usuario
+        - Nombre comunidad
+        - ID comunidad
+        - Nombre evento
+        - ID evento
+
+-->
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
     <main class="flex-shrink-0">
+
         <div class="container">
             <h1 class="mt-5">Administración</h1>
         </div>
+
         <div class="container">
+
             <h1 class="mt-5">Usuarios</h1>
             <table>
                 <thead>
@@ -27,6 +48,7 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr th:each="user : ${users}">
                         <td th:text="${user.id}">1</td>
