@@ -56,7 +56,13 @@ Para subir la receta será necesario pulsar un botón al final de esta. Dicho bo
 ### Ver receta
 El _layout_ es igual tan solo quitando todos los botones y opciones de personalización
 
-## Vista comunidad
+## Vista de comunidades
+En esta vista se diferencia entre la pestaña donde se pueden explorar todas las comunidades y la pestaña dentro de una comunidad concreta.
+
+### Pestaña comunidades
+![Comunidad](/imgReadMe/comunidades.png)
+
+### Pestaña de una comunidad
 La vista de comunidad empieza con un titulo con un fondo de una imagen personalizada como fondo. Dicho texto se esconde cada vez que el usuario haga scroll hacia abajo y aparece cuando hace scroll hacia arriba.
 
 ### Pestaña recetas
