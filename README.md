@@ -26,35 +26,35 @@ La vista de receta se podrá usar tanto para crear una receta como para verla o 
 ### Edición de receta
 
 - <strong>Introducción:</strong>
-El usuario propietario podra crear o editar la receta, para ello deberá introducir un titulo arriba de esta. Tras esto tendrá un espacio para subir una imagen que se usara como representación de la receta en el formato tarjeta.
+El usuario propietario podrá crear o editar la receta, para ello deberá introducir un titulo arriba de esta. Tras esto, tendrá un espacio para subir una imagen que se usará como representación de la receta en el formato tarjeta.
 
 - <strong>Descripción:</strong>
 Aqui se deberan indicar puntos importantes de cada receta, siendo estos el tiempo de elaboración, el tiempo de cocción y
 el número de raciones. Estos datos serán obligatorios y aparecerán en la descripción de las recetas.
 
 - <strong>Ingredientes:</strong>
-    - Una vez personalizado eso se añadiran los ingredientes. Para ello el usuario deberá pulsar un botón de Add cada vez que quiera introducir un nuevo ingrediente.
+    - Para añadir los ingrendientes, el usuario deberá pulsar un botón de _add_ cada vez que quiera introducir uno nuevo.
 
     - El ingrediente deberá ser escrito y acompañado en otro espacio distinto de una cantidad a añadir. En caso de no escribir nada dicho espacio de ingrediente será eliminado automaticamente.
 
-    - En un futuro y como nice to have se creara una base de datos con varios ejemplos de ingredientes comunes. Esos podran ser elegidos desde un dropdown con barra de busqueda. Unido a estos habra otro dropdown con las unidades de medida tipicas para el ingrediente, debiendo se elegida una obligatoriamente en otro dropdown.
+    - En un futuro y como un _nice to have_, se integrará una base de datos con ingredientes comunes. Esos podrán seleccionarse mediante un _dropdown_ con barra de búsqueda. Vinculado a este, habrá otro _dropdown_ con las unidades de medida típicas del ingrediente, siendo obligatorio seleccionar una.
 
 > [!NOTE]
 > El botón de añadir debe salir desde el último ingrediente añadido, para que el usuario no deba subir arriba del todo para añadir otro*
 
 - <strong>Elaboración:</strong>
-De forma similar que en apartado anterior el usuario podrá añadir distintos pasos donde describa mediante un texto la elaboración de la receta.
+De forma similar que en el apartado anterior: el usuario podrá añadir distintos pasos donde describa mediante un texto la elaboración de la receta.
 
-De forma similar en cada uno de los pasos aparecerá un botón debajo indicando la posibilidad de subir una imagen o video como acompañamiento a la descripción.
+De forma similar, en cada uno de los pasos aparecerá un botón debajo indicando la posibilidad de subir una imagen o video como acompañamiento a la descripción.
 
-- <strong>Calorias:</strong>
-Esta caracteristica es un nice to have, será una pequeña opción en la cual el usuario podra indicar las calorias de cada uno de los ingredientes (excepto si se pusieron con el dropdown, ya que aquí se pondra las calorias automaticamente) y al finalizar la página hara un calculo automatico de calorias por ración.
+- <strong>Calorías:</strong>
+Esta característica es un _nice to have_, será una pequeña opción en la cual el usuario podrá indicar las calorías de cada uno de los ingredientes (excepto si se agregaron con el _dropdown_, ya que aquí se pondrá las calorías automáticamente) y al finalizar la página hará un cálculo automático de calorías por ración.
 
 - <strong>Subida de receta:</strong>
-Para subir la receta será necesario pulsar un botón al final de esta. Dicho botón guardara automaticamente la receta en tu cuenta y creará un pop-up dando la opción de enviar la receta a alguna de las comunidades a las que perteneces.
+Para subir la receta será necesario pulsar un botón al final de esta. Dicho botón guardará automáticamente la receta en tu cuenta y creará un _pop-up_ dando la opción de enviar la receta a alguna de las comunidades a las que perteneces.
 
 ### Ver receta
-El layout es igual tan solo quitando todos los botones y opciones de personalización
+El _layout_ es igual tan solo quitando todos los botones y opciones de personalización
 
 ## Vista comunidad
 La vista de comunidad empieza con un titulo con un fondo de una imagen personalizada como fondo. Dicho texto se esconde cada vez que el usuario haga scroll hacia abajo y aparece cuando hace scroll hacia arriba.
