@@ -57,15 +57,22 @@ Para subir la receta será necesario pulsar un botón al final de esta. Dicho bo
 El _layout_ es igual tan solo quitando todos los botones y opciones de personalización
 
 ## Vista de comunidades
-En esta vista se diferencia entre la pestaña donde se pueden explorar todas las comunidades y la pestaña dentro de una comunidad concreta.
+En esta vista se diferencia entre la vista donde se pueden explorar todas las comunidades y la vista dentro de una comunidad concreta.
 
-### Pestaña comunidades
+### Vista comunidades
 ![Comunidad](/imgReadMe/comunidades.png)
 
-### Pestaña de una comunidad
-La vista de comunidad empieza con un titulo con un fondo de una imagen personalizada como fondo. Dicho texto se esconde cada vez que el usuario haga scroll hacia abajo y aparece cuando hace scroll hacia arriba.
+Esta vista cuenta con una barra de búsqueda para buscar por el nombre una comunidad. Se puede filtrar para que se muestren todas las comunidades o sólo aquellas a las que pertenece el usuario.
 
-### Pestaña recetas
+Las comunidades están representadas con tarjetas (aún por definir el diseño) que incluyen información cómo el nombre, tipo de cocina y una imgagen.
+
+### Vista de una comunidad
+Cuando el usuario pulsa la tarjeta de una comunidad entra en esta vista.
+Contiene un título con un fondo de una imagen personalizada como fondo. Dicho texto se esconde cada vez que el usuario haga scroll hacia abajo y aparece cuando hace scroll hacia arriba.
+
+Dentro de esta vista existen tres pestañas con funcionalidades distintas: recetas, miembros y eventos.
+#### Pestaña recetas
 ![Receta](/imgReadMe/comunidad.png)
 
-Cuando se elige la pestaña de comunidad aparecen primero las carpetas que han usado los miembros de la comunidad para dividir sus recetas. Estos elementos son interactuables y aparecen con una 
+Es la pestaña por defecto que se muestra al entrar a una comunidad.
+Las recetas están divididas en carpetas organizadas por los miembros de la comunidad. Las recetas están representadas con tarjetas con las que se puede interactuar para verlas al detalle y valorarlas.
