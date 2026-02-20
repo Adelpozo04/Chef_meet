@@ -1,9 +1,22 @@
 # Chef Meet
 ¿Te apasiona la cocina pero no tienes con quién compartir tus creaciones? Chef Meet es la plataforma definitiva para encontrar la receta que deseas aprender, poder compartir las tuyas propias y encontrar eventos donde podrás asistir para conocer a otros entusiastas de la cocina y poder adquirir nuevos conocimientos además de pasar un buen rato cocinando. ¡No te quedes sin cocinar y disfruta con Chef Meet!
 
-Podrás ser partícipe de comunidades tanto públicas como privadas donde podrás valorar las recetas de los otros integrantes del grupo y además contarás con un chat en tiempo real para poder comunicarte con el resto.
+Podrás ser partícipe de comunidades tanto públicas como privadas donde podrás valorar las recetas de los otros integrantes del grupo y además contarás con un chat en tiempo real para poder comunicarte con el resto. Aparte, cada usuario tendrá una valoración global (estrellas Michelin) visible por el resto que indica la reputación del usuario basada en reseñas que otros dejan sobre él tras asistir a un evento o probar su receta.
 
 Y, por último, la creación de eventos gastronómicos, que pueden ser públicos o privados dentro de una comunidad, donde se debe informar de la fecha, hora, localización, temática, número máximo de participantes e incluso un precio.
+
+### Roles
+En la plataforma existen los siguientes roles:
+
+- <strong>Administrador:</strong>
+Gestiona el alta de los usuarios y supervisa los reportes de comportamiento inapropiado. Modera las comunidades públicas y tiene capacidad de banear usuarios o eliminar contenido ofensivo para garantizar una plataforma segura. 
+
+- <strong>Usuario estándar:</strong>
+Debe estar registrado y dado de alta. Gestiona su perfil público con nickname, foto, una pequeña descripción, logros y valoración global. Crea o se une a comunidades y eventos, y comparte y valora otras recetas y usuarios.
+
+- <strong>Usuario inivitado:</strong>
+Su acceso es solo de lectura. Pueden navegar por la plataforma y visualizar recetas, grupos y eventos públicos sin poder interactuar con ellos.
+
 
 ## Vista de recetas
 ![Receta](/imgReadMe/receta.png)
