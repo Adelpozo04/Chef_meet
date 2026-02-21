@@ -76,8 +76,15 @@ Dentro de esta vista existen tres pestañas con funcionalidades distintas: recet
 
 Es la pestaña por defecto que se muestra al entrar a una comunidad.
 Las recetas están divididas en carpetas organizadas por los miembros de la comunidad. Las recetas están representadas con tarjetas con las que se puede interactuar para verlas al detalle y valorarlas.
+Se pueden ordenar por orden alfabético, y potencialmente por valoración.
 
 Cuando un usuario se une a una comunidad, elige que recetas de su perfil compartir con esa comunidad. Al salirse, estas dejan de estar asociadas a la comunidad.
 #### Miembros
 ![Miembros](/imgReadMe/miembros.png)
 La pestaña de miembros cuenta con un _chat_ grupal en tiempo real donde los miembros de la comunidad comparten mensajes. Además, a la izquierda se muestran todos los miembros indicando aquellos que están _online_.
+
+#### Eventos
+![Eventos](/imgReadMe/eventos.png)
+Por último en la pestaña de eventos, se muestran las tarjetas (diseño aún por definir) de los próximos eventos y los eventos ya pasados organizados por la comunidad. Hay un botón cuya funcionalidad es crear un nuevo evento, que llevará a la ventana de eventos.
+
+Cuando se hace un evento asociado a una comunidad este se puede crear de forma pública para gente que pertenezca o no a esta, o privados únicamente para los participantes de esa comunidad.
