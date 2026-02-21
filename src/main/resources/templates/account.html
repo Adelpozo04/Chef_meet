@@ -26,7 +26,8 @@
                     <a href="#" class="option_item" option="recipes">Mis recetas</a>
                     <a href="#" class="option_item" option="communities">Mis comunidades</a>
                     <a href="#" class="option_item" option="events">Mis eventos</a>
-                    <a href="#" class="option_item" option="configuration">Configuración</a>
+                    <a href="#" class="option_item" option="customize">Personalización</a>
+                    <a href="#" class="option_item" option="report">Reportar</a>
                     <a href="#" class="option_item" option="log_out">Log out</a>
                 </div>
                 <div class="option_view">
@@ -42,8 +43,11 @@
                     <div id="events" class="view_content d-none">
                         <th:block th:replace="~{fragments/profile_events :: events}" />
                     </div>
-                    <div id="configuration" class="view_content d-none">
-                        <h2>Configuración</h2>
+                    <div id="customize" class="view_content d-none">
+                        <h2>Personalización</h2>
+                    </div>
+                    <div id="report" class="view_content d-none">
+                        <th:block th:replace="~{fragments/profile_report :: report}" />
                     </div>
                 </div>
             </div>

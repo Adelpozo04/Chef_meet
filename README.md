@@ -109,3 +109,18 @@ Tras pulsar el botón de reservar, se abre una pasarela de pago cifrada donde el
 
 ## Vista de perfil
 ![Perfil](/imgReadMe/perfil.png)
+La vista de perfil está estructurada mediante un selector lateral. Dependiendo de la opción que elija el usuario, el contenido en el área principal cambia. 
+
+- <strong>Datos personales:</strong> Contiene información del usuario como el nombre, la foto del perfil, una breve presentación y las Estrellas Michelin.
+
+- <strong>Mis recetas:</strong> Contiene todas las recetas que el usuario haya compartido en la plataforma, con posibilidad de organizarlas como considere.
+
+- <strong>Mis comunidades:</strong> Contiene las comunidades a las que pertenece el usuario para poder acceder a ellas más rápidamente.
+
+- <strong>Mis eventos:</strong> Contiene las entradas de los eventos a los que se ha apuntado el usuario.
+
+- <strong>Personalización:</strong>
+
+- <strong>Reportar:</strong> Permite enviar quejas y reportes directamente al administrador.
+
+- <strong>Log out:</strong> Para cerrar sesión.
