@@ -232,3 +232,31 @@ table.datatable-table:focus {
 	outline: solid 1px black;
     outline-offset: -1px;
 }
+
+/* Barra de busqueda */
+#search-community-bar{
+    margin: 20px 0 0 0;
+}
+
+.btn-busqueda {
+    background-color: white;
+    color: #40b6f1;
+    border: 2px solid #40b6f1;
+
+}
+
+.btn-busqueda:hover{
+    background-color: #40b6f1;
+    color: white;
+    border-color:#40b6f1;
+}
+
+.admin-filters {
+	display: flex;
+    justify-content: center;
+	margin: 10px 0 0 0;
+}
+
+.admin-filters > button {
+	margin: 0 4px 0 4px;
+}

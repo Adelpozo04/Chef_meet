@@ -35,6 +35,24 @@
             <h1 class="mt-5">Administración</h1>
         </div>
 
+        <!-- Barra de busqueda de bootstrap -->
+        <div class="row justify-content-center mb-4" id="search-community-bar">
+
+            <div class="col-md-6">
+                <form class="d-flex" role="search">
+                    <input id="search-bar-input" class="form-control me-2" type="search" placeholder="Buscar usuario..." aria-label="Search"/>
+                    <button class="btn btn-busqueda" type="submit">Buscar</button>
+                </form>
+            </div>
+
+            <div class="admin-filters">
+                <button type="button" id='filter-id'>Filtrar por ID</button>
+                <button type="button" id='filter-name'>Filtrar por nombre</button>
+                <button type="button" id='filter-email'>Filtrar por correo</button>
+            </div>
+
+        </div>
+
         <div class="container">
 
             <h1 class="mt-5">Usuarios</h1>
@@ -51,7 +69,7 @@
 
                 <tbody>
                     <tr th:each="user : ${users}">
-                        <td th:text="${user.id}">1</td>
+                        <td  th:text="${user.id}">1</td>
                         <td th:text="${user.username}">paco</td>
                         <td th:text="${user.firstName + ' ' + user.lastName}">Nombre</td>
                         <td>
@@ -139,5 +157,7 @@
         refreshMessages();
     </script>
 </body>
+
+<script th:src="@{/js/admin.js}"></script>
 
 </html>
