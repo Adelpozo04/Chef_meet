@@ -80,11 +80,11 @@ Las recetas están divididas en carpetas organizadas por los miembros de la comu
 Se pueden ordenar por orden alfabético, y potencialmente por valoración.
 
 Cuando un usuario se une a una comunidad, elige que recetas de su perfil compartir con esa comunidad. Al salirse, estas dejan de estar asociadas a la comunidad.
-#### Miembros
+#### Pestaña miembros
 ![Miembros](/imgReadMe/miembros.png)
 La pestaña de miembros cuenta con un _chat_ grupal en tiempo real donde los miembros de la comunidad comparten mensajes. Además, a la izquierda se muestran todos los miembros indicando aquellos que están _online_.
 
-#### Eventos
+#### Pestaña eventos
 ![Eventos](/imgReadMe/eventos.png)
 Por último en la pestaña de eventos, se muestran las tarjetas (diseño aún por definir) de los próximos eventos y los eventos ya pasados organizados por la comunidad. Hay un botón cuya funcionalidad es crear un nuevo evento, que llevará a la ventana de eventos.
 
@@ -97,7 +97,7 @@ La vista de eventos, igual que la de comunidades, cuenta con una barra de búsqu
 
 Potencialmente, se quiere agregar un mapa interactivo de España que se pueda ampliar y que muestre las localizaciones de los eventos de manera que sea más visual y fácil para el usuario encontrar eventos cercanos.
 
-Los eventos están representados con tarjetas (diseño aún por definir).
+Los eventos están representados con tarjetas (diseño aún por definir)
 que incluyen información cómo el nombre, temática, fecha, localización, precio, número máximo de participantes y una imagen.
 También está el botón para crear un evento, donde aparecerá una pestaña con la información a rellenar, que es la misma que aparece en las tarjetas.
 
@@ -106,3 +106,6 @@ También está el botón para crear un evento, donde aparecerá una pestaña con
 Cuando el usuario interactúe con una de estas tarjetas, se le lleva a otra ventana donde aparece la información del evento más detallada y donde el usuario puede reservar una plaza y, si se debe, realizar el pago para asistir.
 
 Tras pulsar el botón de reservar, se abre una pasarela de pago cifrada donde el usuario introduce sus datos bancarios de forma protegida. Una vez validado el pago, se muestra un mensaje de éxito y el evento se incluye a "Mis eventos".
+
+## Vista de perfil
+![Perfil](/imgReadMe/perfil.png)
