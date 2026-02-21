@@ -51,7 +51,7 @@ De forma similar, en cada uno de los pasos aparecerá un botón debajo indicando
 Esta característica es un _nice to have_, será una pequeña opción en la cual el usuario podrá indicar las calorías de cada uno de los ingredientes (excepto si se agregaron con el _dropdown_, ya que aquí se pondrá las calorías automáticamente) y al finalizar la página hará un cálculo automático de calorías por ración.
 
 - <strong>Subida de receta:</strong>
-Para subir la receta será necesario pulsar un botón al final de esta. Dicho botón guardará automáticamente la receta en tu cuenta y creará un _pop-up_ dando la opción de enviar la receta a alguna de las comunidades a las que perteneces.
+Para subir la receta será necesario pulsar un botón al final de esta. Dicho botón guardará automáticamente la receta en tu perfil y creará un _pop-up_ dando la opción de enviar la receta a alguna de las comunidades a las que perteneces.
 
 ### Ver receta
 El _layout_ es igual tan solo quitando todos los botones y opciones de personalización
@@ -64,7 +64,7 @@ En esta vista se diferencia entre la vista donde se pueden explorar todas las co
 
 Esta vista cuenta con una barra de búsqueda para buscar por el nombre una comunidad. Se puede filtrar para que se muestren todas las comunidades o sólo aquellas a las que pertenece el usuario.
 
-Las comunidades están representadas con tarjetas (aún por definir el diseño) que incluyen información cómo el nombre, tipo de cocina y una imgagen.
+Las comunidades están representadas con tarjetas (diseño aún por definir) que incluyen información cómo el nombre, tipo de cocina y una imagen.
 
 ### Vista de una comunidad
 Cuando el usuario pulsa la tarjeta de una comunidad entra en esta vista.
@@ -76,3 +76,8 @@ Dentro de esta vista existen tres pestañas con funcionalidades distintas: recet
 
 Es la pestaña por defecto que se muestra al entrar a una comunidad.
 Las recetas están divididas en carpetas organizadas por los miembros de la comunidad. Las recetas están representadas con tarjetas con las que se puede interactuar para verlas al detalle y valorarlas.
+
+Cuando un usuario se une a una comunidad, elige que recetas de su perfil compartir con esa comunidad. Al salirse, estas dejan de estar asociadas a la comunidad.
+#### Miembros
+![Miembros](/imgReadMe/miembros.png)
+La pestaña de miembros cuenta con un _chat_ grupal en tiempo real donde los miembros de la comunidad comparten mensajes. Además, a la izquierda se muestran todos los miembros indicando aquellos que están _online_.
