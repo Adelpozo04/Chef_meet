@@ -10,8 +10,7 @@
 
 
 <!--
-    La vista de administrador debe poder:
-
+    La vista de administrador debe permitir:
     - Ver:
         - Usuarios
         - Comunidades
@@ -38,17 +37,23 @@
         <!-- Barra de busqueda de bootstrap -->
         <div class="row justify-content-center mb-4" id="search-community-bar">
 
-            <div class="col-md-6">
-                <form class="d-flex" role="search">
-                    <input id="search-bar-input" class="form-control me-2" type="search" placeholder="Buscar usuario..." aria-label="Search"/>
-                    <button class="btn btn-busqueda" type="submit">Buscar</button>
+            <div id="search-inputs">
+                <form class="d-flex" role="search" id="search-form">
+                    <button class="btn btn-busqueda" type="submit" id="search-button">
+                        Buscar
+                    </button>
                 </form>
             </div>
 
             <div class="admin-filters">
-                <button type="button" id='filter-id'>Filtrar por ID</button>
-                <button type="button" id='filter-name'>Filtrar por nombre</button>
-                <button type="button" id='filter-email'>Filtrar por correo</button>
+                <label for="filters">Filtrar por: </label>
+
+                <select name="filters" id="admin-filters-value">
+                    <option value="users">Usuario</option>
+                    <option value="recipes">Receta</option>
+                    <option value="communities">Comunidad</option>
+                    <option value="events">Evento</option>
+                </select>
             </div>
 
         </div>

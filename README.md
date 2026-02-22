@@ -124,3 +124,16 @@ La vista de perfil está estructurada mediante un selector lateral. Dependiendo 
 - <strong>Reportar:</strong> Permite enviar quejas y reportes directamente al administrador.
 
 - <strong>Log out:</strong> Para cerrar sesión.
+
+## Vista de administrador
+![Vista administrador](/imgReadMe/admin.png)
+La vista de adminstrador solo deberá proporcionar a los usuarios <strong>administradores</strong> una vista sencilla y rápida para gestionar a todos los usuarios, recetas, comunidades y eventos de la aplicación <strong> de cualquier forma</strong>.
+Es decir, el administrador debe poder consultar, modificar, eliminar, reportar a cualquier usuario, receta, comunidad y evento.
+
+Para gestionar todos estos tipo de datos el administrador podrá desplegar un _dropdown_ mediante el botón _filtros_ para seleccionar qué tipo de datos desea buscar. Cada selección de este _dropdown_ modificará todas las barras de búsqueda para filtrar los datos.
+En base a los filtros seleccionados, deberán poder verse todos los datos que satisfagan esos filtros y que ofrezcan controladores para manipular estos datos.
+
+- <strong>Usuarios:</strong> Permitirá al administrador buscar a usuarios mediante su identificador único, nombre de usuario o correo electrónico.
+- <strong>Recetas:</strong> Permitirá al administrador buscar recetas mediante su identificador único, nombre de receta o ingredientes. Para este último deberían poder seleccionarse varios ingredientes, de tal forma que la búsqueda permita filtrar por recetas que contengan el ingrediente 1, ingrediente 2... Y así, sucesivamente.
+- <strong>Comunidades:</strong> Permitirá al administrador buscar comunidades según su identificador único, nombre de comunidad, nombre de usuario o identificador del creador, tamaño mínimo y máximo de usuarios asociados a esta y país de esta comunidad.
+- <strong>Eventos:</strong> Permitirá al administrador buscar eventos por su identificador único, nombre de evento, país en el que tiene lugar y su fecha de comienzo.

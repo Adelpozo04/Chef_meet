@@ -238,6 +238,11 @@ table.datatable-table:focus {
     margin: 20px 0 0 0;
 }
 
+#search-inputs {
+	flex: 0 auto;
+	width: 70%;
+}
+
 .btn-busqueda {
     background-color: white;
     color: #40b6f1;
