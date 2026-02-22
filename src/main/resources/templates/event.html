@@ -43,8 +43,10 @@
                 <!-- Fotos lista de eventos -->
                 <section class="events_list">
                     <div class="event_item" category="own">
-                        <img th:src="@{/img/events/ev_espana.jpg}" src="/img/events/ev_espana.jpg" alt="ev_espana">
-                        <a href="#">Evento paella</a>
+                        <a th:href="@{/reserve}" class="event_card_link">
+                            <img th:src="@{/img/events/ev_espana.jpg}" src="/img/events/ev_espana.jpg" alt="ev_espana">
+                            <span class="event_title">Evento paella</span>
+                        </a>
 
                         <!-- Boton papelera (solo visible para Admin) -->
                         <button th:if="${session.u != null && session.u.hasRole('ADMIN')}"
@@ -54,9 +56,10 @@
                     </div>
 
                     <div class="event_item" category="">
-                        <img th:src="@{/img/events/ev_italia.jpg}" src="/img/events/ev_italia.jpg" alt="ev_italia">
-                        <a href="#">Evento pizza</a>
-
+                        <a th:href="@{/reserve}" class="event_card_link">
+                            <img th:src="@{/img/events/ev_italia.jpg}" src="/img/events/ev_italia.jpg" alt="ev_italia">
+                            <span class="event_title">Evento pizza</span>
+                        </a>
                         <!-- Boton papelera (solo visible para Admin) -->
                         <button th:if="${session.u != null && session.u.hasRole('ADMIN')}"
                         class="btn btn-danger btn-sm mt-2 btn-delete-event">
@@ -65,9 +68,10 @@
                     </div>
 
                     <div class="event_item" category="">
-                        <img th:src="@{/img/events/ev_japon.jpg}" src="/img/events/ev_japon.jpg" alt="ev_japon">
-                        <a href="#">Evento sushi</a>
-
+                        <a th:href="@{/reserve}" class="event_card_link">
+                            <img th:src="@{/img/events/ev_japon.jpg}" src="/img/events/ev_japon.jpg" alt="ev_japon">
+                            <span class="event_title">Evento sushi</span>
+                        </a>
                         <!-- Boton papelera (solo visible para Admin) -->
                         <button th:if="${session.u != null && session.u.hasRole('ADMIN')}"
                         class="btn btn-danger btn-sm mt-2 btn-delete-event">

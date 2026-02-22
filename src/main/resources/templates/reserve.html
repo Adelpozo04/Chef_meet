@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{fragments/head :: header}" />
+    <title>IW: Reserva de Evento</title>
+    <link rel="stylesheet" th:href="@{/css/reserve.css}" href="css/reserve.css"/>
+    <script th:src="@{/js/reserve.js}"></script>
+</head>
+
+<body class="d-flex flex-column h-100">
+    <header th:replace="~{fragments/nav.html :: nav}"></header>
+
+    <main class="flex-shrink-0">
+        <div class="container container-reserva">
+            <a href="javascript:history.back()" class="btn-volver"> Volver a eventos</a>
+            <div class="row">
+                <div class="col-md-4">
+                    <img th:src="@{/img/events/ev_espana.jpg}" class="img-evento mb-4" alt="Evento">
+
+                    <div class="box-rounded text-center">
+                        <p class="mb-1">Precio: 5,00€</p>
+                        <p>Disponibles: 14/20</p>
+                        <button class="btn btn-reservar">Reservar</button>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="box-rounded h-100">
+                        <h2 class="fw-bold">Evento España</h2>
+                        <span class="badge bg-secondary mb-3">Temática</span>
+
+                        <div class="mt-4">
+                            <p><i class="fa-regular fa-calendar"></i>Fecha: 2 de marzo</p>
+                            <p><i class="fa-regular fa-clock"></i>Hora: 18:00</p>
+                            <p><i class="fa-solid fa-location-dot"></i>Lugar: Facultad de Informática UCM, Madrid</p>
+                        </div>
+                        <hr>
+                        <h4>Descripción del evento</h4>
+                        <p>Aquí irá la información detallada del evento.</p>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </main>
+    <th:block th:replace="~{fragments/footer.html :: footer}" />
+</body>
+</html>

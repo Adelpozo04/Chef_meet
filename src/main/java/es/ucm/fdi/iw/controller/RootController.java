@@ -69,4 +69,9 @@ public class RootController {
     public String autores(Model model) {
         return "authors";
     }
+
+    @GetMapping("/reserve")
+    public String reserve(Model model) {
+        return "reserve";
+    }
 }

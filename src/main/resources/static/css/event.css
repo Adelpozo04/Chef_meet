@@ -30,6 +30,7 @@ main .container > h1 {
     text-align: center;
     text-decoration: none;
     color:black;
+    transition: all 0.3s ease;
 }
 
 /* Estado hover */
@@ -61,17 +62,33 @@ main .container > h1 {
     align-items: center;
 
     /* Animacion transicion al mostrar y ocultar evento */
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s;
     transform: scale(1);
     opacity: 1;
+    border-radius: 10px;
 }
 
+/* Efecto hover*/
+.event_item:hover {
+    transform: translateY(-10px);
+}
+
+/* Enlace que hace clicable toda la tarjeta*/
+.event_card_link{
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
 .events_list .event_item img{
     width: 100%;
+    border-radius: 10px 10px 0 0;
 }
 
 /* Pie de la card */
-.events_list .event_item a{
+.event_title {
     display: block;
     width: 100%;
     padding: 8px 8px;
@@ -79,6 +96,7 @@ main .container > h1 {
     text-align: center;
     text-decoration: none;
     color:white;
+    border-radius: 0 0  10px 10px;
 }
 
 /* Boton de navegador de busqueda */
@@ -86,7 +104,6 @@ main .container > h1 {
     background-color: white;
     color: #40b6f1;
     border: 2px solid #40b6f1;
-
 }
 
 .btn-busqueda:hover{
