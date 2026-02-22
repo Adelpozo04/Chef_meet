@@ -114,13 +114,28 @@ main .container > h1 {
 
 /* Boton de papelera */
 .btn-delete-event{
-    width: 80%;
-    border-radius: 10px;
-    padding: 5px;
-    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 25px;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    text-decoration: none;
+    color: #ff2b2b;
+}
+
+.btn-delete-event svg{
+    width: 28px;
+    height: 28px;
+    color: white;
 }
 
 .btn-delete-event:hover{
    background-color: red;
-   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-color:red;
+   transform: scale(1.1);
 }
+
+

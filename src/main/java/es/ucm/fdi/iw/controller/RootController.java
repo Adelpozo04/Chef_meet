@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -71,7 +72,30 @@ public class RootController {
     }
 
     @GetMapping("/reserve")
-    public String reserve(Model model) {
+    public String reserve(@RequestParam(name="nameString", required=false, defaultValue = "Evento") String nameString, Model model) {
+        String image;
+
+        // logica sencilla para asignar la imagen segun el nombre del evento recibido
+        switch (nameString.toLowerCase()) {
+            case "paella":
+                image = "/img/events/ev_espana.jpg";
+                nameString = "Evento Paella";
+                break;
+            case "pizza":
+                image = "/img/events/ev_italia.jpg";
+                nameString = "Evento Pizza";
+                break;
+            case "sushi":
+                image = "/img/events/ev_japon.jpg";
+                nameString = "Evento Sushi";
+                break;
+            default:
+                image = "/img/events/ev_espana.jpg";
+                nameString = "Evento";
+                break;
+        }
+        model.addAttribute("title", nameString);
+        model.addAttribute("rootImage", image);
         return "reserve";
     }
 }

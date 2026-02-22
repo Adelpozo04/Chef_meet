@@ -13,21 +13,30 @@
 
     <main class="flex-shrink-0">
         <div class="container container-reserva">
-            <a href="javascript:history.back()" class="btn-volver"> Volver a eventos</a>
+            <!-- Boton para volver -->
+            <a href="javascript:history.back()" class="btn-volver"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                </svg>
+            </a>
             <div class="row">
                 <div class="col-md-4">
-                    <img th:src="@{/img/events/ev_espana.jpg}" class="img-evento mb-4" alt="Evento">
+                    <!-- Imagen del evento -->
+                    <img th:src="@{${rootImage}}" class="img-evento mb-4" alt="Imagen del evento">
 
+                    <!-- Información del evento -->
                     <div class="box-rounded text-center">
                         <p class="mb-1">Precio: 5,00€</p>
                         <p>Disponibles: 14/20</p>
+                        <!-- Boton para reservar -->
                         <button class="btn btn-reservar">Reservar</button>
                     </div>
                 </div>
 
+                <!-- Descripción del evento -->
                 <div class="col-md-8">
                     <div class="box-rounded h-100">
-                        <h2 class="fw-bold">Evento España</h2>
+                        <h2 class="fw-bold" th:text="${title}"></h2>
                         <span class="badge bg-secondary mb-3">Temática</span>
 
                         <div class="mt-4">
