@@ -43,7 +43,7 @@ document.addEventListener("change", function (event){
 
 
 //Anyadir para los ingredientes
-document.addEventListener("load", function (){
+document.addEventListener("DOMContentLoaded", function (){
 
     const button = document.getElementById("addIngredient");
     const list = document.getElementById("ingredientsList");
@@ -136,7 +136,7 @@ document.addEventListener("load", function (){
 })
 
 //Anyadir para los pasos
-document.addEventListener("load", function (){
+document.addEventListener("DOMContentLoaded", function (){
 
     const button = document.getElementById("addStep");
     const list = document.getElementById("stepsList");
@@ -201,7 +201,7 @@ document.addEventListener("load", function (){
 
 })
 
-document.addEventListener("load", function (){
+document.addEventListener("DOMContentLoaded", function (){
     const elements = document.querySelectorAll(".recipe_title.editable");
 
     elements.forEach(function(element){
