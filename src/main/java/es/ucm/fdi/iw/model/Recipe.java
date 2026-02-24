@@ -1,4 +1,4 @@
-package main.java.es.ucm.fdi.iw.model;
+package es.ucm.fdi.iw.model;
 
 import es.ucm.fdi.iw.model.Topic;
 import es.ucm.fdi.iw.model.Transferable;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Recipe implements Transferable<Recipe.Transfer> {
 
-    //Son las variables simples de la receta.
+    // Son las variables simples de la receta.
     @Column(nullable = false)
     private String title;
 
@@ -26,9 +26,9 @@ public class Recipe implements Transferable<Recipe.Transfer> {
 
     private float calories;
 
-    //Conexiones entre las distintas tablas de la base de datos.
-    //@ManyToMany(mappedBy = "recipes")
-    //private List<Ingredient> ingredients = new ArrayList<>();
+    // Conexiones entre las distintas tablas de la base de datos.
+    // @ManyToMany(mappedBy = "recipes")
+    // private List<Ingredient> ingredients = new ArrayList<>();
     @ManyToOne
     private User author;
 
@@ -40,7 +40,6 @@ public class Recipe implements Transferable<Recipe.Transfer> {
         private float calories;
     }
 
-
     @Override
     public Transfer toTransfer() {
         return new Transfer(title, steps, calories);
@@ -50,5 +49,5 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     public String toString() {
         return toTransfer().toString();
     }
-    
+
 }
