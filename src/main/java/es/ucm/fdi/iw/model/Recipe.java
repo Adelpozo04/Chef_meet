@@ -22,6 +22,12 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     private String title;
 
     @Column(nullable = false)
+    private String time;
+
+    @Column(nullable = false)
+    private String difficulty;
+
+    @Column(nullable = false)
     private String[] steps;
 
     private float calories;
@@ -36,6 +42,8 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     @AllArgsConstructor
     public static class Transfer {
         private String title;
+        private String time;
+        private String difficulty;
         private String[] steps;
         private float calories;
     }
@@ -43,7 +51,7 @@ public class Recipe implements Transferable<Recipe.Transfer> {
 
     @Override
     public Transfer toTransfer() {
-        return new Transfer(title, steps, calories);
+        return new Transfer(title, time, difficulty, steps, calories);
     }
 
     @Override

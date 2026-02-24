@@ -201,11 +201,28 @@ document.addEventListener("DOMContentLoaded", function (){
 
 })
 
+//Colocacion de texto por defecto en los apartados editables
 document.addEventListener("DOMContentLoaded", function (){
-    const elements = document.querySelectorAll(".recipe_title.editable");
 
-    elements.forEach(function(element){
+    //Texto de titulo
+    const elementsTitle = document.querySelectorAll(".recipe_title.editable");
+
+    elementsTitle.forEach(function(element){
         element.dataset.placeholder = "Escribe un titulo..."
+    })
+
+    //Texto de tiempo
+    const elementsTime = document.querySelectorAll(".recipe_time.editable");
+
+    elementsTime.forEach(function(element){
+        element.dataset.placeholder = "Escribe cuando tarda..."
+    })
+
+    //Texto de tiempo
+    const elementsDifficulty = document.querySelectorAll(".recipe_difficulty.editable");
+
+    elementsDifficulty.forEach(function(element){
+        element.dataset.placeholder = "Escribe la dificultad..."
     })
 })
 

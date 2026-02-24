@@ -13,11 +13,13 @@
 
     <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
         
+        <!--Apartado principal principal de la receta-->
         <div class="d-flex flex-column align-items-center">
 
             <!-- Titulo -->
             <h1 class="recipe_title editable" contenteditable="true"></h1>
 
+            <!--Imagen principal de la receta-->
             <form method="post" enctype="multipart/form-data">
      
                 <!-- Marco visual Bootstrap -->
@@ -63,7 +65,26 @@
             
         </div>
 
+        <div>
+            <h3>Datos Generales</h3>
 
+            <div class="d-flex flex-row ml-3">
+                <p>Tiempo de preparación:  </p>
+
+                <!-- Tiempo de preparacion -->
+                <strong class="recipe_time editable" contenteditable="true"></strong>
+            </div>
+
+            <div class="d-flex flex-row">
+                <p>Nivel de dificultad:  </p>
+
+                <!-- Nivel de dificultad -->
+                <strong class="recipe_difficulty editable" contenteditable="true"></strong>
+            </div>
+
+        </div>
+
+        <!--Ingredientes de la receta-->
         <div>
             <h3>Ingredientes</h3>
             <ul class="recipe_ingredients_list" id="ingredientsList">
@@ -76,6 +97,7 @@
 
         </div>
 
+        <!--Pasos para elaborar la receta-->
         <div>
             <h3>Elaboración</h3>
             <ol id="stepsList">
@@ -88,6 +110,7 @@
 
         </div>
 
+        <!--Calculo de calorias de la receta-->
         <div>
             <h3>Calorías</h3>
             

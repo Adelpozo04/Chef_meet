@@ -4,6 +4,20 @@
     text-transform: capitalize;
 }
 
+.recipe_time{
+    font-size: 15px;
+    color: black;
+    text-transform: capitalize;
+    margin-left: 1rem;
+}
+
+.recipe_difficulty{
+    font-size: 15px;
+    color: black;
+    text-transform: capitalize;
+    margin-left: 1rem;
+}
+
 .recipe_wrapper{
     margin-top: 15px;
     padding: 15px 30px 15px 30px;
