@@ -27,6 +27,7 @@ import java.util.List;
         + "FROM Topic t JOIN t.members u "
         + "WHERE u.id = :id")
 })
+
 @Table(name = "IWUser")
 public class User implements Transferable<User.Transfer> {
 
@@ -47,8 +48,6 @@ public class User implements Transferable<User.Transfer> {
 
   private String firstName;
   private String lastName;
-
-  private String colorFavorito;
 
   private boolean enabled;
   private String roles; // split by ',' to separate roles
