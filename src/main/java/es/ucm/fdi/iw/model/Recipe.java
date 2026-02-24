@@ -1,4 +1,4 @@
-package es.ucm.fdi.iw.model;
+package main.java.es.ucm.fdi.iw.model;
 
 import es.ucm.fdi.iw.model.Topic;
 import es.ucm.fdi.iw.model.Transferable;
