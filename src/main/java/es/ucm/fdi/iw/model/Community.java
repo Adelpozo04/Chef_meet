@@ -14,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
@@ -24,6 +26,9 @@ import lombok.Data;
  */
 @Entity
 @Data
+@NamedQueries({
+        @NamedQuery(name = "Community.SelectAllWithMax", query = "SELECT c FROM Community m" + "LIMIT 10")
+})
 public class Community {
 
     private static Logger log = LogManager.getLogger(Message.class);
