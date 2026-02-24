@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Entity
+@Data
+@NoArgsConstructor
 public class Recipe implements Transferable<Recipe.Transfer> {
 
     // Son las variables simples de la receta.
@@ -33,8 +36,9 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     private float calories;
 
     // Conexiones entre las distintas tablas de la base de datos.
-    // @ManyToMany(mappedBy = "recipes")
-    // private List<Ingredient> ingredients = new ArrayList<>();
+    @ManyToMany
+    private List<Ingredient> ingredients = new ArrayList<>();
+
     @ManyToOne
     private User author;
 
@@ -46,11 +50,19 @@ public class Recipe implements Transferable<Recipe.Transfer> {
         private String difficulty;
         private String[] steps;
         private float calories;
+        private String ingredients;
     }
 
     @Override
     public Transfer toTransfer() {
-        return new Transfer(title, time, difficulty, steps, calories);
+
+        StringBuilder ingr = new StringBuilder();
+
+        for (Ingredient i : ingredients) {
+            ingr.append(i.getName()).append(", ");
+        } 
+
+        return new Transfer(title, time, difficulty, steps, calories, ingr.toString());
     }
 
     @Override

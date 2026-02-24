@@ -1,3 +1,4 @@
+/*
 package es.ucm.fdi.iw.model;
 
 import java.util.ArrayList;
@@ -19,11 +20,14 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
-
+*/
+ 
 /**
  * Communities that users can join to create cooking recipes, interact with
  * other members, assist to community events
  */
+
+/* 
 @Entity
 @Data
 @NamedQueries({
@@ -48,10 +52,11 @@ public class Community {
     private String description;
 
     @ManyToMany
-    @JoinColumn(name = "community_user")
+    //@JoinColumn(name = "community_user")
     private List<User> members = new ArrayList<>();
 
     // @OneToMany
     // private List<Event> events = new ArrayList<>();
 
 }
+*/
