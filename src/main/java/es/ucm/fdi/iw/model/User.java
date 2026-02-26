@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -58,8 +57,13 @@ public class User implements Transferable<User.Transfer> {
   @OneToMany
   @JoinColumn(name = "recipient_id")
   private List<Message> received = new ArrayList<>();
+  
   @ManyToMany(mappedBy = "members")
   private List<Topic> groups = new ArrayList<>();
+
+  @OneToMany
+  @JoinColumn(name = "author_id")
+  private List<Recipe> recipes = new ArrayList<>();
 
   /**
    * Checks whether this user has a given role.
@@ -80,6 +84,7 @@ public class User implements Transferable<User.Transfer> {
     private int totalReceived;
     private int totalSent;
     private String groups;
+    private String recipes;
   }
 
   @Override
@@ -88,7 +93,15 @@ public class User implements Transferable<User.Transfer> {
     for (Topic g : groups) {
       gs.append(g.getName()).append(", ");
     } 
-    return new Transfer(id, username, received.size(), sent.size(), gs.toString());
+
+    StringBuilder recips = new StringBuilder();
+
+    for (Recipe r : recipes) {
+        recips.append(r.getTitle()).append(", ");
+    } 
+
+
+    return new Transfer(id, username, received.size(), sent.size(), gs.toString(), recips.toString());
   }
 
   @Override

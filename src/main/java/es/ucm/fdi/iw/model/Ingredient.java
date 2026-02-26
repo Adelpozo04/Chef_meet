@@ -1,11 +1,8 @@
 
-package main.java.es.ucm.fdi.iw.model;
+package es.ucm.fdi.iw.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import es.ucm.fdi.iw.model.Transferable;
-import es.ucm.fdi.iw.model.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,21 +11,20 @@ import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 @Entity
 @Data
 @NoArgsConstructor
 public class Ingredient implements Transferable<Ingredient.Transfer>  {
     
     // Son las variables simples de la receta.
-    @Column(nullable = false)
-    private String name;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
+    @SequenceGenerator(name = "gen", sequenceName = "gen")
+    private long id;
 
     @Column(nullable = false)
-    private long id;
+    private String name;
 
     @Column(nullable = false)
     private String[] allergens;

@@ -1,8 +1,4 @@
-package main.java.es.ucm.fdi.iw.model;
-
-import es.ucm.fdi.iw.model.Topic;
-import es.ucm.fdi.iw.model.Transferable;
-import es.ucm.fdi.iw.model.User;
+package es.ucm.fdi.iw.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +8,6 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -21,6 +16,11 @@ import java.util.List;
 public class Recipe implements Transferable<Recipe.Transfer> {
 
     // Son las variables simples de la receta.
+    @Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
+	@SequenceGenerator(name = "gen", sequenceName = "gen")
+	private long id;
+
     @Column(nullable = false)
     private String title;
 
@@ -51,6 +51,7 @@ public class Recipe implements Transferable<Recipe.Transfer> {
         private String[] steps;
         private float calories;
         private String ingredients;
+        long id;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class Recipe implements Transferable<Recipe.Transfer> {
             ingr.append(i.getName()).append(", ");
         } 
 
-        return new Transfer(title, time, difficulty, steps, calories, ingr.toString());
+        return new Transfer(title, time, difficulty, steps, calories, ingr.toString(), id);
     }
 
     @Override
