@@ -5,7 +5,7 @@
     <th:block th:replace="~{fragments/head :: header}" />
     <title>IW: Evento</title>
 
-    <link rel="stylesheet" th:href="@{/css/event.css}" href="css/event.css"/>
+    <link rel="stylesheet" th:href="@{/css/custom.css}" href="css/custom.css"/>
 
     <script th:src="@{/js/event.js}"></script>
 </head>
@@ -23,7 +23,7 @@
                 <div class="col-md-6">
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" placeholder="Buscar eventos..." aria-label="Search"/>
-                        <button class="btn btn-busqueda" type="submit">Buscar</button>
+                        <button class="btn btn_search" type="submit">Buscar</button>
                     </form>
                 </div>
             </div>
@@ -41,16 +41,16 @@
                 </th:block>
 
                 <!-- Fotos lista de eventos -->
-                <section class="events_list">
-                    <div class="event_item" category="own">
-                        <a th:href="@{/reserve(nameString='paella')}" class="event_card_link">
+                <section class="cards_list">
+                    <div class="card_item" category="own">
+                        <a th:href="@{/reserve(nameString='paella')}" class="card_link">
                             <img th:src="@{/img/events/ev_espana.jpg}" src="/img/events/ev_espana.jpg" alt="ev_espana">
-                            <span class="event_title">Evento paella</span>
+                            <span class="card_footer">Evento paella</span>
                         </a>
 
                         <!-- Boton papelera (solo visible para Admin) -->
                         <button th:if="${session.u != null && session.u.hasRole('ADMIN')}"
-                        class="btn btn-danger btn-sm mt-2 btn-delete-event">
+                        class="btn btn-danger btn-sm mt-2 btn_delete">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                 <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                             </svg>
@@ -59,28 +59,28 @@
 
                     </div>
 
-                    <div class="event_item" category="">
-                        <a th:href="@{/reserve(nameString='pizza')}" class="event_card_link">
+                    <div class="card_item" category="">
+                        <a th:href="@{/reserve(nameString='pizza')}" class="card_link">
                             <img th:src="@{/img/events/ev_italia.jpg}" src="/img/events/ev_italia.jpg" alt="ev_italia">
-                            <span class="event_title">Evento pizza</span>
+                            <span class="card_footer">Evento pizza</span>
                         </a>
                         <!-- Boton papelera (solo visible para Admin) -->
                         <button th:if="${session.u != null && session.u.hasRole('ADMIN')}"
-                        class="btn btn-danger btn-sm mt-2 btn-delete-event">
+                        class="btn btn-danger btn-sm mt-2 btn_delete">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                 <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                             </svg>
                         </button>
                     </div>
 
-                    <div class="event_item" category="">
-                        <a th:href="@{/reserve(nameString='sushi')}" class="event_card_link">
+                    <div class="card_item" category="">
+                        <a th:href="@{/reserve(nameString='sushi')}" class="card_link">
                             <img th:src="@{/img/events/ev_japon.jpg}" src="/img/events/ev_japon.jpg" alt="ev_japon">
-                            <span class="event_title">Evento sushi</span>
+                            <span class="card_footer">Evento sushi</span>
                         </a>
                         <!-- Boton papelera (solo visible para Admin) -->
                         <button th:if="${session.u != null && session.u.hasRole('ADMIN')}"
-                        class="btn btn-danger btn-sm mt-2 btn-delete-event">
+                        class="btn btn-danger btn-sm mt-2 btn_delete">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                 <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
                             </svg>

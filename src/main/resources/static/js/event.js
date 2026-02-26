@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', ()=>{
 
     const categories = document.querySelectorAll('.category_item');
-    const events = document.querySelectorAll('.event_item');
+    const events = document.querySelectorAll('.card_item');
     const searchInput = document.querySelector('input[type="search"]');
 
     categories.forEach(category => {
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 // FUNCIONALIDAD: Borrar eventos (solo Admin)
 document.addEventListener('DOMContentLoaded', ()=> {
-    const deleteButtons = document.querySelectorAll('.btn-delete-event');
+    const deleteButtons = document.querySelectorAll('.btn_delete');
 
     deleteButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
             const confirmation = confirm("¿Estás seguro de que quieres eliminar este evento?. Acción irreversible.");
 
             if(confirmation) {
-                const eventItem = this.closest('.event_item'); // Selecciona el contenedor padre del evento
+                const eventItem = this.closest('.card_item'); // Selecciona el contenedor padre del evento
 
                 // Animacion transicion
                 eventItem.style.opacity = '0';
