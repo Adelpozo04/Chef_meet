@@ -4,7 +4,7 @@
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
     <title>IW: Receta</title>
-    <link rel="stylesheet" th:href="@{/css/recipe.css}" href="/css/recipe.css"
+    <link rel="stylesheet" th:href="@{/css/custom.css}" href="/css/custom.css"
         type="text/css" />
 </head>
 
@@ -17,17 +17,17 @@
         <div class="d-flex flex-column align-items-center">
 
             <!-- Titulo -->
-            <h1 class="recipe_title editable" contenteditable="true"></h1>
+            <h1 class="title_xxl editable" contenteditable="true"></h1>
 
             <!--Imagen principal de la receta-->
             <form method="post" enctype="multipart/form-data">
      
                 <!-- Marco visual Bootstrap -->
-                <label class="d-flex flex-column align-items-center justify-content-center recipe_empty_image" 
+                <label class="d-flex flex-column align-items-center justify-content-center empty_image" 
                 style="cursor:pointer;">
 
                      <!-- Input oculto -->
-                    <input type="file" name="imageRecipe" accept="image/*" class="recipe_empty_image_input">
+                    <input type="file" name="imageRecipe" accept="image/*" class="empty_image_input">
 
                     <span>Pulsa para subir imagen</span>
 
@@ -35,7 +35,7 @@
 
                 <!-- Imagen de vista previa -->
                 <div>
-                    <img class="recipe_main_image d-none" name="imageRecipePreview" >
+                    <img class="main_image d-none" name="imageRecipePreview" >
                 </div>
 
             </form>
@@ -44,11 +44,11 @@
                 <form method="post" enctype="multipart/form-data">
         
                     <!-- Marco visual Bootstrap -->
-                    <label class="d-flex flex-column align-items-center justify-content-center recipe_empty_image" 
+                    <label class="d-flex flex-column align-items-center justify-content-center empty_image" 
                     style="cursor:pointer;">
 
                         <!-- Input oculto -->
-                        <input type="file" name="imageRecipe" accept="image/*" class="recipe_empty_image_input">
+                        <input type="file" name="imageRecipe" accept="image/*" class="empty_image_input">
 
                         <span>Pulsa para subir imagen</span>
 
@@ -56,7 +56,7 @@
 
                     <!-- Imagen de vista previa -->
                     <div>
-                        <img class="recipe_main_image d-none" name="imageRecipePreview" >
+                        <img class="main_image d-none" name="imageRecipePreview" >
                     </div>
 
                 </form>
@@ -72,14 +72,14 @@
                 <p>Tiempo de preparación:  </p>
 
                 <!-- Tiempo de preparacion -->
-                <strong class="recipe_time editable" contenteditable="true"></strong>
+                <strong class="title_m editable" id="time" contenteditable="true"></strong>
             </div>
 
             <div class="d-flex flex-row">
                 <p>Nivel de dificultad:  </p>
 
                 <!-- Nivel de dificultad -->
-                <strong class="recipe_difficulty editable" contenteditable="true"></strong>
+                <strong class="title_m editable" id="difficulty" contenteditable="true"></strong>
             </div>
 
         </div>
@@ -87,14 +87,15 @@
         <!--Ingredientes de la receta-->
         <div>
             <h3>Ingredientes</h3>
-            <ul class="recipe_ingredients_list" id="ingredientsList">
-
+            <ul class="list_disc" id="ingredientsList">
 
             </ul>
-            <button class="recipe_button" id="addIngredient">
+
+            <button class="category_item" id="addIngredient">
                 Añadir Ingrediente
             </button>
 
+            
         </div>
 
         <!--Pasos para elaborar la receta-->
@@ -104,7 +105,7 @@
 
 
             </ol>
-            <button class="recipe_button" id="addStep">
+            <button class="category_item" id="addStep">
                 Añadir Paso
             </button>
 

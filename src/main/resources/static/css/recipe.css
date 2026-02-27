@@ -1,17 +1,10 @@
-.recipe_title{
+.title_xxl{
     font-size: 75px;
     color: black;
     text-transform: capitalize;
 }
 
-.recipe_time{
-    font-size: 15px;
-    color: black;
-    text-transform: capitalize;
-    margin-left: 1rem;
-}
-
-.recipe_difficulty{
+.title_m{
     font-size: 15px;
     color: black;
     text-transform: capitalize;
@@ -24,11 +17,11 @@
     background-color: rgb(241, 191, 154);
 }
 
-.recipe_empty_image_input{
+.empty_image_input{
     display: none;
 }
 
-.recipe_empty_image{
+.empty_image{
 
     height: 200px;
     width: 200px;
@@ -38,14 +31,14 @@
     transition: width 0.3s;
 }
 
-.recipe_empty_image:hover{
+.empty_image:hover{
 
     height: 215px;
     width: 215px;
     background-color: rgb(137, 137, 137);
 }
 
-.recipe_main_image{
+.main_image{
 
     max-height: 500px;
     max-width: 500px;
@@ -53,20 +46,8 @@
     border-radius: 5%;
 }
 
-.recipe_ingredients_list{
+.list_disc{
     list-style-type: disc;
-}
-
-.recipe_button{
-    font-size: medium;
-    font-weight: 600; /*Establece el grosor de la fuente*/
-    letter-spacing: -0.05em; /*Espacio entre letras*/
-    transition: background-color 0.3s; /*Transicion del color del texto al pasar el raton por encima*/
-    background-color: rgb(139, 240, 238);
-}
-
-.recipe_button:hover{
-    background-color: rgb(131, 180, 232);
 }
 
 .editable {

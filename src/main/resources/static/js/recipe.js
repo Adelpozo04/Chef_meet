@@ -1,11 +1,11 @@
 //Metodo para mostrar una imagen de preview antes de enviar el formulario
 document.addEventListener("change", function (event){
 
-    if(!event.target.classList.contains("recipe_empty_image_input")){
+    if(!event.target.classList.contains("empty_image_input")){
         return;
     }
 
-    const preview = event.target.parentElement.parentElement.querySelector(".recipe_main_image");
+    const preview = event.target.parentElement.parentElement.querySelector(".main_image");
     const controller = event.target.parentElement;
 
     //Nos guardamos el archivo subido
@@ -151,12 +151,14 @@ document.addEventListener("DOMContentLoaded", function (){
 
         const form = clone.querySelector("form");
 
-        form.querySelector(".recipe_empty_image").classList.add("d-none");
+        form.querySelector(".empty_image").classList.add("d-none");
 
         //Creamos un elemento de la lista
         const newElement = document.createElement("li");
 
         const buttonImage = document.createElement("button");
+
+        buttonImage.classList.add("category_item");
 
         buttonImage.textContent = "Añadir imagen";
 
@@ -194,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function (){
         //Permitimos al usuario la opcion de subir una imagen.
         buttonImage.addEventListener("click", function() {
 
-            form.querySelector(".recipe_empty_image").classList.remove("d-none");
+            form.querySelector(".empty_image").classList.remove("d-none");
         })
 
     })
@@ -205,24 +207,25 @@ document.addEventListener("DOMContentLoaded", function (){
 document.addEventListener("DOMContentLoaded", function (){
 
     //Texto de titulo
-    const elementsTitle = document.querySelectorAll(".recipe_title.editable");
+    const elementsTitle = document.querySelectorAll(".title_xxl.editable");
 
     elementsTitle.forEach(function(element){
         element.dataset.placeholder = "Escribe un titulo..."
     })
 
     //Texto de tiempo
-    const elementsTime = document.querySelectorAll(".recipe_time.editable");
+    const elementsTime = document.querySelectorAll(".title_m.editable");
 
     elementsTime.forEach(function(element){
-        element.dataset.placeholder = "Escribe cuando tarda..."
+        if(element.id === "difficulty"){
+            element.dataset.placeholder = "Escribe nivel de dificultad...";
+        }
+        else if(element.id === "time"){
+            element.dataset.placeholder = "Escribe tiempo de preparacion...";
+        }
+
     })
 
-    //Texto de tiempo
-    const elementsDifficulty = document.querySelectorAll(".recipe_difficulty.editable");
 
-    elementsDifficulty.forEach(function(element){
-        element.dataset.placeholder = "Escribe la dificultad..."
-    })
 })
 
