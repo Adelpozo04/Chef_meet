@@ -64,7 +64,8 @@ public class SecurityConfig {
 						.requestMatchers("/user/**").hasRole("USER") // <-- logged-in users
 						.requestMatchers("/authors/**").permitAll()
 						.requestMatchers("/recipe/**").permitAll()
-						.requestMatchers("/communities/**").permitAll()
+						.requestMatchers("/communities").permitAll()
+						.requestMatchers("/communities/create").authenticated()
 						.requestMatchers("/event/**").permitAll()
 						.requestMatchers("/account/**").permitAll()
 

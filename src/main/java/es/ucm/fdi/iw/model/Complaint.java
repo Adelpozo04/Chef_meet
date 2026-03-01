@@ -1,32 +1,31 @@
 package es.ucm.fdi.iw.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.Map;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
- 
+
 /**
- * Communities that users can join to create cooking recipes, interact with
- * other members, assist to community events
+ * Complaints made by users to the administrators about others users, recipes, communities, events, etc...
  */
 @Entity
 @Data
 @NoArgsConstructor
-public class Community {
+public class Complaint {
 
-    private static Logger log = LogManager.getLogger(Message.class);
+    private static Map<Integer, String> typeMap = Map.of(
+        0, "USER",
+        1, "RECIPE",
+        2, "COMMUNITY",
+        3, "EVENT"
+    );
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
@@ -39,13 +38,9 @@ public class Community {
     @Column(name = "title", length = 50, nullable = false)
     private String title;
 
-    @Column(name = "description", length = 200)
-    private String description;
+    @Column(name = "type")
+    private int type;
 
-    @ManyToMany
-    private List<User> members = new ArrayList<>();
-
-    // @OneToMany
-    // private List<Event> events = new ArrayList<>();
-
+    @Column(name = "reference_id")
+    private long referenceId;   // ID del objeto al que se refiere -> Si type="USER" y ID=5 : la queja se refiere al usuario con ID 5
 }
