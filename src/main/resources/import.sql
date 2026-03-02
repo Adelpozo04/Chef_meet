@@ -35,3 +35,13 @@ VALUES (next value for gen, 2, 1, 'Este usuario está insultando en el chat de s
 -- Queja sobre una receta
 INSERT INTO message(id, sender_id, recipient_id, text, date_sent, complain_type)
 VALUES (next value for gen, 1, 1, 'Esta receta contiene fotos inapropiadas.', '2026-02-28 19:00:00', 'RECIPE', 5);
+
+-- Ejemplos para comunidades
+INSERT INTO community(id, owner_id, title, description) VALUES 
+(1275, 2, 'Amantes de la comida valenciana', 'Comunidad dedicada a los amantes de la comida valenciana'),
+(1276, 2, 'Sushi lovers', 'Solo admitimos a amantes del sushi');
+
+-- Ejemplos para miembros de comunidades(NO FUNCIONA)
+INSERT INTO community_members(community_id, member_id) VALUES
+(1275, 2),
+(1276, 2);

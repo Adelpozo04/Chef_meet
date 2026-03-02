@@ -26,15 +26,6 @@ public class CommunityController {
     @Autowired
     private EntityManager entityManager;
 
-    @GetMapping("/create")
-    public String formularioCrear(Model model) {
-
-        model.addAttribute("community", new Community());
-        log.info("Creating new community!");
-
-        return "communities/create";
-    }
-
     @Transactional
     @PostMapping("/create")
     public String createCommunity(

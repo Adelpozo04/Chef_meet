@@ -35,7 +35,7 @@ public class Complaint {
     @ManyToOne
     private User owner;
 
-    @Column(name = "title", length = 50, nullable = false)
+    @Column(name = "title", length = 300, nullable = false)
     private String title;
 
     @Column(name = "type")
