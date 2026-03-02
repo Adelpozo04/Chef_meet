@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <th:block th:replace="~{fragments/head :: header}" />
+    <link rel="stylesheet" th:href="@{/css/communities.css}" href="/css/communities.css"
+        type="text/css"/>
+    <title>Vista crear comunidad</title>
+</head>
+<body>
+
+    <header th:replace="~{fragments/nav.html :: nav}"></header>
+
+    <div class="container mt-5">
+        <h2>Crear nueva comunidad</h2>
+        <form th:action="@{/communities/create}" method="post">
+            <div class="mb-3">
+                <label for="title" class="form-label">Título de la comunidad</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Descripción</label>
+                <textarea class="form-control" id="description" name="description" rows="2" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Crear comunidad</button>
+        </form>
+    </div>
+
+</body>
+</html>

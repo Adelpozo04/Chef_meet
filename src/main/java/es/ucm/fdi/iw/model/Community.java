@@ -1,4 +1,3 @@
-/*
 package es.ucm.fdi.iw.model;
 
 import java.util.ArrayList;
@@ -6,33 +5,25 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
-*/
+import lombok.NoArgsConstructor;
+
  
 /**
  * Communities that users can join to create cooking recipes, interact with
  * other members, assist to community events
  */
-
-/* 
 @Entity
 @Data
-@NamedQueries({
-        @NamedQuery(name = "Community.SelectAllWithMax", query = "SELECT c FROM Community m" + "LIMIT 10")
-})
+@NoArgsConstructor
 public class Community {
 
     private static Logger log = LogManager.getLogger(Message.class);
@@ -52,11 +43,9 @@ public class Community {
     private String description;
 
     @ManyToMany
-    //@JoinColumn(name = "community_user")
     private List<User> members = new ArrayList<>();
 
     // @OneToMany
     // private List<Event> events = new ArrayList<>();
 
 }
-*/

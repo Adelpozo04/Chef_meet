@@ -65,6 +65,16 @@ public class User implements Transferable<User.Transfer> {
   @JoinColumn(name = "author_id")
   private List<Recipe> recipes = new ArrayList<>();
 
+  /*   
+  // Eventos que ha creado el usuario
+  @OneToMany (mappedBy = "organizer")
+  private List<Event> organizedEvents = new ArrayList<>();
+
+  // Reservas de eventos a los que va a asistir el usuario
+  @OneToMany(mappedBy = "attendee")
+  private List<Reserve> myReserves = new ArrayList<>();
+  */
+
   /**
    * Checks whether this user has a given role.
    * 
