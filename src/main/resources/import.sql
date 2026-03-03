@@ -6,9 +6,6 @@ INSERT INTO IWUser (id, enabled, roles, username, password)
 VALUES (2, TRUE, 'USER', 'b',
     '{bcrypt}$2a$10$2BpNTbrsarbHjNsUWgzfNubJqBRf.0Vz9924nRSHBqlbPKerkgX.W');
 
--- start id numbering from a value that is larger than any assigned above
-ALTER SEQUENCE "PUBLIC"."GEN" RESTART WITH 1024;
-
 -- Ejemplos para Eventos
 INSERT INTO event(id, title, description, theme, date, location, price, capacity, is_private, organizer_id)
 VALUES (next value for gen, 'Evento paella', 'Aprende a cocinar la auténtica paella valenciana paso a paso.', 'España', '2026-03-02 18:00:00', 'FDI UCM Madrid', 5.0, 20, false, 1);
@@ -45,3 +42,7 @@ INSERT INTO community(id, owner_id, title, description) VALUES
 INSERT INTO community_members(community_id, member_id) VALUES
 (1275, 2),
 (1276, 2);
+
+
+-- start id numbering from a value that is larger than any assigned above
+ALTER SEQUENCE "PUBLIC"."GEN" RESTART WITH 2000;
