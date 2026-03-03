@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import es.ucm.fdi.iw.model.Community;
@@ -15,13 +14,11 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
-
 @Controller
 @RequestMapping("/communities")
 public class CommunityController {
 
-    private static final Logger log = LogManager.getLogger(UserController.class);
+    private static final Logger log = LogManager.getLogger(CommunityController.class);
 
     @Autowired
     private EntityManager entityManager;
@@ -29,12 +26,15 @@ public class CommunityController {
     @Transactional
     @PostMapping("/create")
     public String createCommunity(
-        @ModelAttribute Community community, 
-        @ModelAttribute User edited, 
-        Model model, 
-        HttpSession session) {
+            @ModelAttribute Community community,
+            @ModelAttribute User edited,
+            Model model,
+            HttpSession session) {
 
+        // Usuario logueado que ejecuta esta query es el creador de la comunidad
         User owner = (User) session.getAttribute("u");
+        owner = entityManager.find(User.class, owner.getId());
+        owner.getOwnedCommunities().add(community);
 
         // Set community owner and add it as member
         community.setOwner(owner);
