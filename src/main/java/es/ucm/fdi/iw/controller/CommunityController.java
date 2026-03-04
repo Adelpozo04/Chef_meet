@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import es.ucm.fdi.iw.model.Community;
@@ -22,6 +23,13 @@ public class CommunityController {
 
     @Autowired
     private EntityManager entityManager;
+
+
+    @GetMapping("/create")
+    public String createCommunity(Model model) {
+        model.addAttribute("community", new Community());
+        return "communities/create";
+    }
 
     @Transactional
     @PostMapping("/create")
