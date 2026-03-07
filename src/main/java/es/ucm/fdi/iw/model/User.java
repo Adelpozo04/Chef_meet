@@ -26,7 +26,6 @@ import java.util.List;
 				+ "FROM Topic t JOIN t.members u "
 				+ "WHERE u.id = :id")
 })
-
 @Table(name = "IWUser")
 public class User implements Transferable<User.Transfer> {
 
@@ -42,6 +41,7 @@ public class User implements Transferable<User.Transfer> {
 
 	@Column(nullable = false, unique = true)
 	private String username;
+
 	@Column(nullable = false)
 	private String password;
 
@@ -51,9 +51,11 @@ public class User implements Transferable<User.Transfer> {
 	private boolean enabled;
 	private String roles; // split by ',' to separate roles
 
-	@OneToMany
-	@JoinColumn(name = "owner_id")
+	@OneToMany(mappedBy = "owner")
 	private List<Community> ownedCommunities = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "members")
+	private List<Community> joinedCommunities = new ArrayList<>();
 
 	@OneToMany
 	@JoinColumn(name = "sender_id")

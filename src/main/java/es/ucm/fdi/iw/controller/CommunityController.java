@@ -39,10 +39,11 @@ public class CommunityController {
             Model model,
             HttpSession session) {
 
-        // Usuario logueado que ejecuta esta query es el creador de la comunidad
+        // Usuario logueado que ejecuta esta query -> creador de la comunidad
         User owner = (User) session.getAttribute("u");
         owner = entityManager.find(User.class, owner.getId());
-        owner.getOwnedCommunities().add(community);
+        if(community.getMembers().isEmpty())
+            owner.getOwnedCommunities().add(community);
 
         // Set community owner and add it as member
         community.setOwner(owner);
