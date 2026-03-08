@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,4 +50,6 @@ public class Community {
     // @OneToMany
     // private List<Event> events = new ArrayList<>();
 
+    @OneToMany(mappedBy = "community")
+    private List<Event> events = new ArrayList<>();
 }

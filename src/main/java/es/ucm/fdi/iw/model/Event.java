@@ -45,8 +45,8 @@ public class Event implements Transferable<Event.Transfer> {
     @ManyToOne(targetEntity = User.class) // Usuario que organiza el evento
     private User organizer;
     
-    // @ManyToOne
-    // private Community community;
+    @ManyToOne
+    private Community community;
 
     // Un evento tiene muchas reservas asociadas
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
@@ -65,6 +65,7 @@ public class Event implements Transferable<Event.Transfer> {
         private double price;
         private int capacity;
         private String organizer;
+        private String community;
         /*public Transfer(Event e) {
             this.id = e.getId();
         }*/
@@ -76,7 +77,8 @@ public class Event implements Transferable<Event.Transfer> {
             id, title, description, theme,
             date == null ? null : DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(date),
             location, price, capacity,
-            organizer != null ? organizer.getUsername() : "Anónimo"
+            organizer != null ? organizer.getUsername() : "Anónimo",
+            community != null ? community.getTitle() : "Público"
         );
     }
 
