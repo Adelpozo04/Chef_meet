@@ -66,7 +66,8 @@ public class SecurityConfig {
 						.requestMatchers("/recipe/**").permitAll()
 						.requestMatchers("/communities").permitAll()
 						.requestMatchers("/communities/create").hasRole("USER")
-						.requestMatchers("/event/**").permitAll()
+						.requestMatchers("/event").permitAll()
+						.requestMatchers("/event/create").hasRole("USER")
 						.requestMatchers("/account/**").permitAll()
 
 						.anyRequest().authenticated())

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/head :: header}" />
+    <link rel="stylesheet" th:href="@{/css/custom.css}" href="/css/custom.css"
+        type="text/css"/>
+    <title>Vista crear evento</title>
+</head>
+<body class="d-flex flex-column h-100">
+
+    <header th:replace="~{fragments/nav.html :: nav}"></header>
+
+    <main class="flex-shrink-0 container mt-5">
+        <h2>Crear nuevo evento</h2>
+        <form th:action="@{/event/create}" th:object="${event}" method="post" class="mt-4">
+            <div class="mb-3">
+                <label for="title" class="form-label">Título del evento</label>
+                <input th:field="*{title}" type="text" class="form-control" required>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="date" class="form-label">Fecha y hora</label>
+                    <input th:field="*{date}" type="datetime-local" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="location" class="form-label">Ubicación</label>
+                    <input th:field="*{location}" type="text" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="price" class="form-label">Precio (€)</label>
+                    <input th:field="*{price}" type="number" step="0.01" class="form-control" min="0" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="capacity" class="form-label">Aforo máximo</label>
+                    <input th:field="*{capacity}" type="number" class="form-control" min="1" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="theme" class="form-label">Temática</label>
+                    <input th:field="*{theme}" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Descripción</label>
+                <textarea th:field="*{description}" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <div class="form-check mb-4">
+                <input th:field="*{private}" class="form-check-input" type="checkbox" id="isPrivate">
+                <label class="form-check-label" for="isPrivate"> ¿Es un evento privado? </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Crear evento</button>
+            <a th:href="@{/event}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </main>
+
+    <th:block th:replace="~{fragments/footer.html :: footer}" />
+</body>
+</html>

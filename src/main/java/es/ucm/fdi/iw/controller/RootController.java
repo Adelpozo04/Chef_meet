@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -15,6 +16,11 @@ import jakarta.servlet.http.HttpSession;
  * Non-authenticated requests only.
  */
 @Controller
+@ControllerAdvice
+// Al separar la logica en varios controladores no se comparte el metodo ModelAttribute populateModel
+// que solo se ejecutaba en este script.  
+// Usando ControllerAdvice se convierte en un metodo global para que Spring boot lo inyect
+// automaticamente en todas las vistas y controladores
 public class RootController {
 
     private static final Logger log = LogManager.getLogger(RootController.class);
@@ -52,12 +58,13 @@ public class RootController {
         return "communities";
     }
 
+    /* 
     @GetMapping("/event")
     public String event(Model model, HttpServletRequest request) {
         boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
         model.addAttribute("loginError", error);
         return "event";
-    }
+    }*/
 
     @GetMapping("/account")
     public String account(Model model, HttpServletRequest request) {
@@ -71,6 +78,7 @@ public class RootController {
         return "authors";
     }
 
+    /* 
     @GetMapping("/reserve")
     public String reserve(@RequestParam(name="nameString", required=false, defaultValue = "Evento") String nameString, Model model) {
         String image;
@@ -97,5 +105,5 @@ public class RootController {
         model.addAttribute("title", nameString);
         model.addAttribute("rootImage", image);
         return "reserve";
-    }
+    }*/
 }

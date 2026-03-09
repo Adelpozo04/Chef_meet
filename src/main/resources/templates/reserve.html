@@ -22,31 +22,40 @@
             <div class="row">
                 <div class="col-md-4">
                     <!-- Imagen del evento -->
-                    <img th:src="@{${rootImage}}" class="img-evento mb-4" alt="Imagen del evento">
+                    <img th:src="@{${event.imagePath != null ? event.imagePath : 'img/events/default.jpg'}}" class="img-evento mb-4" alt="Imagen del evento">
 
                     <!-- Información del evento -->
                     <div class="box-rounded text-center">
-                        <p class="mb-1">Precio: 5,00€</p>
-                        <p>Disponibles: 14/20</p>
+                        <p class="mb-1" th:text="'Precio: ' + ${event.price} + '€'"></p>
+                        <p th:text="'Disponibles: ' + ${availableSpots} + '/' + ${event.capacity}"></p>
                         <!-- Boton para reservar -->
-                        <button class="btn btn-reservar">Reservar</button>
+                        <form th:action="@{/reserve/confirm}" method="post">
+                            <input type="hidden" name="eventId" th:value="${event.id}">
+                            <button type="submit" class="btn btn-reservar" th:disabled="${availableSpots <= 0}">Reservar</button>
+                        </form>
                     </div>
                 </div>
 
                 <!-- Descripción del evento -->
                 <div class="col-md-8">
                     <div class="box-rounded h-100">
-                        <h2 class="fw-bold" th:text="${title}"></h2>
-                        <span class="badge bg-secondary mb-3">Temática</span>
+                        <h2 class="fw-bold" th:text="${event.title}"></h2>
+                        <span class="badge bg-secondary mb-3" th:text="${event.theme}"></span>
 
                         <div class="mt-4">
-                            <p><i class="fa-regular fa-calendar"></i>Fecha: 2 de marzo</p>
-                            <p><i class="fa-regular fa-clock"></i>Hora: 18:00</p>
-                            <p><i class="fa-solid fa-location-dot"></i>Lugar: Facultad de Informática UCM, Madrid</p>
+                            <p><i class="fa-regular fa-calendar"></i>Fecha: 
+                                <span th:text="${#temporals.format(event.date, 'dd/MM/yyyy')}"></span>
+                            </p>
+                            <p><i class="fa-regular fa-clock"></i>Hora: 
+                                <span th:text="${#temporals.format(event.date, 'HH:mm')}"></span>
+                            </p>
+                            <p><i class="fa-solid fa-location-dot"></i>Lugar: 
+                                <span th:text="${event.location}"></span>
+                            </p>
                         </div>
                         <hr>
                         <h4>Descripción del evento</h4>
-                        <p>Aquí irá la información detallada del evento.</p>
+                        <p th:text="${event.description}"></p>
                     </div>
                 </div>
             </div>  

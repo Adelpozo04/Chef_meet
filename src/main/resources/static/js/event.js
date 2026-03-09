@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     categories.forEach(category => {
         category.addEventListener('click', (e) => {
+
+            // Si el enlace no es '#', deja que el navegador vaya a la pagina normal y corta la ejecucion del filtro.
+            if (category.getAttribute('href') && category.getAttribute('href') !== '#') {
+                return;
+            }
             e.preventDefault(); // Evita recarga de pagina
 
             // Actualizar estilo visual de los botones dependiendo del filtro seleccionado
@@ -67,17 +72,31 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
             if(confirmation) {
                 const eventItem = this.closest('.card_item'); // Selecciona el contenedor padre del evento
+                const form = this.closest('form');            // Selecciona el formulario
+                
 
-                // Animacion transicion
-                eventItem.style.opacity = '0';
-                eventItem.style.transform = 'scale(0.3)';
+                // Mandar peticion al servidor antes de borrarlo visualmente
+                // Se usa fetch para enviar el post en segundo plano sin recargar la pagina
+                fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form) // Recoge el id del evento y el token de seguridad CRSF de Thymeleaf
+                })
+                .then(response => {
+                    if(response.ok) {
+                        // El servidor confima que ha borrado el evento de la base de datos
+                        // Animacion transicion
+                        eventItem.style.opacity = '0';
+                        eventItem.style.transform = 'scale(0.3)';
 
-                // Eliminacion definitiva del elemento del DOM tras la animacion
-                setTimeout(() => {
-                    eventItem.remove();
-                }, 400);
-
-                /* TODO: En un futuro se debera llamar al servidor para borrarlo de la base de datos*/
+                        // Eliminacion definitiva del elemento del DOM tras la animacion
+                        setTimeout(() => {
+                            eventItem.remove();
+                        }, 400);
+                    } else {
+                        alert("Hubo un error al borrar el evento en el servidor.")
+                    }
+                })
+                .catch(error => console.error("Error de red:", error));
             }
         });
     });
