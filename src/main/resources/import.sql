@@ -41,11 +41,6 @@ INSERT INTO community(id, owner_id, title, description) VALUES
 (1275, 2, 'Amantes de la comida valenciana', 'Comunidad dedicada a los amantes de la comida valenciana'),
 (1276, 2, 'Sushi lovers', 'Solo admitimos a amantes del sushi');
 
--- Ejemplos para miembros de comunidades(NO FUNCIONA)
-INSERT INTO community_members(community_id, member_id) VALUES
-(1275, 2),
-(1276, 2);
-
 
 -- start id numbering from a value that is larger than any assigned above
 ALTER SEQUENCE "PUBLIC"."GEN" RESTART WITH 2000;

@@ -12,14 +12,17 @@
 
     <div class="container mt-5">
         <h2>Crear nueva comunidad</h2>
+        <p th:if="${createError == true}" class="error">
+           Debes rellenar los campos obligatorios
+        </p>
         <form th:action="@{/communities/create}" th:object="${community}" method="post">
             <div class="mb-3">
-                <label for="title" class="form-label">Título de la comunidad</label>
-                <input th:field="*{title}" type="text" class="form-control" id="community-title" required>
+                <label for="title" class="form-label">Título de la comunidad(*)</label>
+                <input th:field="*{title}" type="text" class="form-control" id="community-title">
             </div>
             <div class="mb-3">
-                <label for="description" class="form-label">Descripción</label>
-                <textarea th:field="*{description}" class="form-control" rows="2" id="community-desc" required></textarea>
+                <label for="description" class="form-label">Descripción(*)</label>
+                <textarea th:field="*{description}" class="form-control" rows="2" id="community-desc"></textarea>
             </div>
             <button type="submit" class="btn btn-primary" id="create-button">Crear comunidad</button>
         </form>

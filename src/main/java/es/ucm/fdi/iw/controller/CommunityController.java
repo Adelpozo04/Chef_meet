@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,15 +26,14 @@ public class CommunityController {
     @Autowired
     private EntityManager entityManager;
 
-
     @GetMapping
     public String showCommunities(Model model, HttpSession session) {
-        
+
         User client = (User) session.getAttribute("u");
-        if(client == null){
+        if (client == null) {
             log.info("Usuario sin iniciar sesion accede a Communities");
         }
-        else{
+        else {
             log.info("Usuario con nombre {} accede a Communities", client.getUsername());
         }
 
@@ -43,6 +43,7 @@ public class CommunityController {
     @GetMapping("/create")
     public String createCommunity(Model model) {
         model.addAttribute("community", new Community());
+        model.addAttribute("createError", false);
         return "communities/create";
     }
 
@@ -54,10 +55,17 @@ public class CommunityController {
             Model model,
             HttpSession session) {
 
+        if (community.getTitle().isBlank() || community.getDescription().isBlank()) {
+            model.addAttribute("createError", true);
+            log.info("ERROR AL INTENTAR CREAR COMUNIDAD");
+            return "communities/create";
+        }
+        model.addAttribute("createError", false);
+
         // Usuario logueado que ejecuta esta query -> creador de la comunidad
         User owner = (User) session.getAttribute("u");
         owner = entityManager.find(User.class, owner.getId());
-        if(community.getMembers().isEmpty())
+        if (community.getMembers().isEmpty())
             owner.getOwnedCommunities().add(community);
 
         // Set community owner and add it as member
