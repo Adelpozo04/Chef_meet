@@ -7,7 +7,7 @@ Feature: Manejo de comunidades
     Given call read('login.feature@login_a')
     # Navegar a vista de comunidades
     And driver baseUrl + '/communities/create'
-    # Clickar boton crear comunidad
+    # Clicar boton crear comunidad
     When submit().click("#create-community")
     Then waitForUrl(baseUrl + '/communities/create')
     # Rellenar formulario
