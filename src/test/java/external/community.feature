@@ -6,7 +6,7 @@ Feature: Manejo de comunidades
     Given call read('login.feature@login_a')
     When submit().click("#create-community")
     Then waitForUrl(baseUrl + '/communities/create')
-    And input('community-title', "ComidaItaliana")
+    And input('community-title', "Italiana")
     And input('community-desc', "Comunidad privada amantes de arroz")
     When submit().click("#create-button")
     Then waitForUrl(baseUrl + '/communities')
@@ -41,4 +41,22 @@ Feature: Manejo de comunidades
     def num-com = script("document.querySelectorAll(.card).lenght - document.querySelectorAll(.card .d-none).lenght)
     Then num-com >= 0
 
-    //Crear dos comunidades con el mismo nombre y si te redirige a comunities va fino
+    
+  Scenario: comunidades con mismo nombre y distinto id
+    Given call read('login.feature@login_a')
+    When submit().click("#create-community")
+    Then waitForUrl(baseUrl + '/communities/create')
+    And input('community-title', "ComidaItaliana")
+    And input('community-desc', "Comunidad privada amantes de arroz")
+    When submit().click("#create-button")
+    Then waitForUrl(baseUrl + '/communities')
+    Given call read('login.feature@@logout')
+    Given call read('login.feature@login_b')
+    When submit().click("#create-community")
+    Then waitForUrl(baseUrl + '/communities/create')
+    And input('community-title', "ComidaItaliana")
+    And input('community-desc', "Comunidad privada amantes de arroz")
+    When submit().click("#create-button")
+    Then waitForUrl(baseUrl + '/communities')
+
+    
