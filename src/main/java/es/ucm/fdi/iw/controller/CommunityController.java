@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 
+
 @Controller
 @RequestMapping("/communities")
 public class CommunityController {
@@ -24,6 +25,20 @@ public class CommunityController {
     @Autowired
     private EntityManager entityManager;
 
+
+    @GetMapping
+    public String showCommunities(Model model, HttpSession session) {
+        
+        User client = (User) session.getAttribute("u");
+        if(client == null){
+            log.info("Usuario sin iniciar sesion accede a Communities");
+        }
+        else{
+            log.info("Usuario con nombre {} accede a Communities", client.getUsername());
+        }
+
+        return "communities";
+    }
 
     @GetMapping("/create")
     public String createCommunity(Model model) {
