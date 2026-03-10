@@ -40,3 +40,5 @@ Feature: Manejo de comunidades
     Then delay(500)
     def num-com = script("document.querySelectorAll(.card).lenght - document.querySelectorAll(.card .d-none).lenght)
     Then num-com >= 0
+
+    //Crear dos comunidades con el mismo nombre y si te redirige a comunities va fino
