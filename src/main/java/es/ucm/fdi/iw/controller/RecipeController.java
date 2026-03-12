@@ -49,9 +49,11 @@ public class RecipeController {
 
     @Transactional
     @PostMapping("/create")
-    public String createCommunity(
+    public String createRecipe(
             @ModelAttribute Recipe recipe,
             @ModelAttribute User edited,
+            @RequestParam(value="cover", required=false) MultipartFile cover,
+            @RequestParam Map<String, MultipartFile> stepPhotos,
             Model model,
             HttpSession session) {
 
@@ -75,6 +77,13 @@ public class RecipeController {
         entityManager.persist(recipe);
         entityManager.flush();
 
+        try{
+            setPic(cover, stepPhotos, recipe.getId(), null, session, model);
+        }
+        catch(IOException e){
+            log.warn("Error uploading photo for recipe {} ", recipe.getId(), e);
+        }
+
         log.info("New recipe created by: {}", recipe.getAuthor().getUsername());
         log.info("New recipe created with title: {}", recipe.getTitle());
         log.info("New recipe created with description: {}", recipe.getSteps()[0]);
@@ -97,15 +106,7 @@ public class RecipeController {
                       HttpServletResponse response, 
                       HttpSession session, Model model) throws IOException {
 
-    User target = entityManager.find(User.class, id);
-    model.addAttribute("user", target);
-
-    // check permissions
-    User requester = (User) session.getAttribute("u");
-    if (requester.getId() != target.getId() &&
-        !requester.hasRole(Role.ADMIN)) {
-      throw new NoEsTuPerfilException();
-    }
+    
 
     log.info("Updating photo for recipe {}", id);
 
@@ -124,21 +125,22 @@ public class RecipeController {
       }
     }
 
-    for(int i = 0; i < stepPhotos.size(); i++){
+    for (Map.Entry<String, MultipartFile> entry : stepPhotos.entrySet()){
 
-        f = localData.getFile("recipe", "" + id + "_step" + i + ".jpg");
+        f = localData.getFile("recipe", "" + id + "_step" + entry.getKey() + ".jpg");
 
-        if (stepPhotos.get("step" + i).isEmpty()) {
-        log.info("failed to upload photo: emtpy file?");
-        } else {
-        try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(f))) {
-            byte[] bytes = stepPhotos.get("step" + i).getBytes();
-            stream.write(bytes);
-            log.info("Uploaded photo for {} into {}!", id, f.getAbsolutePath());
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            log.warn("Error uploading " + id + " ", e);
-        }
+        if (stepPhotos.get(entry.getKey()).isEmpty()) {
+            log.info("failed to upload photo: emtpy file?");
+        } 
+        else {
+            try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(f))) {
+                byte[] bytes = stepPhotos.get(entry.getKey()).getBytes();
+                stream.write(bytes);
+                log.info("Uploaded photo for {} into {}!", id, f.getAbsolutePath());
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                log.warn("Error uploading " + id + " ", e);
+            }
         }
 
     }
