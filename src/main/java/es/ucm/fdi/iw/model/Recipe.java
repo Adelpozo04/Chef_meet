@@ -33,8 +33,6 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     @Column(nullable = false)
     private String[] steps;
 
-    private float calories;
-
     // Conexiones entre las distintas tablas de la base de datos.
     @ManyToMany
     private List<Ingredient> ingredients = new ArrayList<>();
@@ -49,7 +47,6 @@ public class Recipe implements Transferable<Recipe.Transfer> {
         private String time;
         private String difficulty;
         private String[] steps;
-        private float calories;
         private String ingredients;
         long id;
     }
@@ -63,7 +60,7 @@ public class Recipe implements Transferable<Recipe.Transfer> {
             ingr.append(i.getName()).append(", ");
         } 
 
-        return new Transfer(title, time, difficulty, steps, calories, ingr.toString(), id);
+        return new Transfer(title, time, difficulty, steps, ingr.toString(), id);
     }
 
     @Override

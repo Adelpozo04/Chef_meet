@@ -18,8 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.ucm.fdi.iw.LocalData;
 import es.ucm.fdi.iw.controller.UserController.NoEsTuPerfilException;
-import es.ucm.fdi.iw.model.Community;
-import es.ucm.fdi.iw.model.Event;
 import es.ucm.fdi.iw.model.Recipe;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
@@ -44,8 +42,8 @@ public class RecipeController {
 
     //Cuando se pulse el boton de crear receta se dirige a la pagina para rellenar el formulario con los datos de esta
     @GetMapping("/create")
-    public String createCommunity(Model model) {
-        model.addAttribute("recipe", new Community());
+    public String createRecipe(Model model) {
+        model.addAttribute("recipe", new Recipe());
         return "recipe/create";
     }
 
@@ -80,7 +78,7 @@ public class RecipeController {
         log.info("New recipe created by: {}", recipe.getAuthor().getUsername());
         log.info("New recipe created with title: {}", recipe.getTitle());
         log.info("New recipe created with description: {}", recipe.getSteps()[0]);
-        return "redirect:/recipes";
+        return "redirect:/recipe";
         
     }
 

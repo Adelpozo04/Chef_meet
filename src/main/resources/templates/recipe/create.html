@@ -13,20 +13,39 @@
 
     <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
         
-        <!--Apartado principal principal de la receta-->
-        <div class="d-flex flex-column align-items-center">
+        <template id="imageUploadTemplate">
+ 
+            <!-- Marco visual Bootstrap -->
+            <label class="d-flex flex-column align-items-center justify-content-center empty_image" 
+            style="cursor:pointer;">
 
-            <!-- Titulo -->
-            <h1 class="title_xxl editable" contenteditable="true"></h1>
+                <!-- Input oculto -->
+                <input type="file" name="imageRecipe" accept="image/*" class="empty_image_input">
 
-            <!--Imagen principal de la receta-->
-            <form method="post" enctype="multipart/form-data">
-     
+                <span>Pulsa para subir imagen</span>
+
+            </label>
+
+            <!-- Imagen de vista previa -->
+            <div>
+                <img class="main_image d-none" name="imageRecipePreview" >
+            </div>
+
+        </template>
+
+        <form th:action="@{/recipe/create}" th:object="${recipe}" enctype="multipart/form-data" method="post" class="mt-4">
+
+            <!--Apartado principal principal de la receta-->
+            <div class="d-flex flex-column align-items-center">
+
+                <!-- Titulo -->
+                <input th:field="*{title}" class="title_xxl border-0 text-center">
+        
                 <!-- Marco visual Bootstrap -->
                 <label class="d-flex flex-column align-items-center justify-content-center empty_image" 
                 style="cursor:pointer;">
 
-                     <!-- Input oculto -->
+                    <!-- Input oculto -->
                     <input type="file" name="imageRecipe" accept="image/*" class="empty_image_input">
 
                     <span>Pulsa para subir imagen</span>
@@ -36,86 +55,61 @@
                 <!-- Imagen de vista previa -->
                 <div>
                     <img class="main_image d-none" name="imageRecipePreview" >
+                </div>        
+                
+            </div>
+
+            <div>
+                <h3>Datos Generales</h3>
+
+                <div for="time" class="d-flex flex-row ml-3">
+                    <p>Tiempo de preparación:  </p>
+
+                    <!-- Tiempo de preparacion -->
+                    <input th:field="*{time}" class="title_m border-0 text-left">
                 </div>
 
-            </form>
+                <div for="difficulty" class="d-flex flex-row">
+                    <p>Nivel de dificultad:  </p>
 
-            <template id="imageUploadTemplate">
-                <form method="post" enctype="multipart/form-data">
+                    <!-- Nivel de dificultad -->
+                    <input th:field="*{difficulty}" class="title_m border-0 text-left">
+                </div>
+
+            </div>
+
+            <!--Ingredientes de la receta-->
+            <div>
+                <h3>Ingredientes</h3>
+                <ul class="list_disc" id="ingredientsList">
+
+                </ul>
+
+                <button class="category_item" type="button" id="addIngredient">
+                    Añadir Ingrediente
+                </button>
+
+                
+            </div>
+
+            <!--Pasos para elaborar la receta-->
+            <div>
+                <h3>Elaboración</h3>
+                <ol id="stepsList">
+
+
+                </ol>
+                <button class="category_item" type="button"id="addStep">
+                    Añadir Paso
+                </button>
+
+            </div>
+
+            <button type="submit" class="category_item" id="create-button">Crear Receta</button>
+        </form>
+
         
-                    <!-- Marco visual Bootstrap -->
-                    <label class="d-flex flex-column align-items-center justify-content-center empty_image" 
-                    style="cursor:pointer;">
 
-                        <!-- Input oculto -->
-                        <input type="file" name="imageRecipe" accept="image/*" class="empty_image_input">
-
-                        <span>Pulsa para subir imagen</span>
-
-                    </label>
-
-                    <!-- Imagen de vista previa -->
-                    <div>
-                        <img class="main_image d-none" name="imageRecipePreview" >
-                    </div>
-
-                </form>
-            </template>
-            
-            
-        </div>
-
-        <div>
-            <h3>Datos Generales</h3>
-
-            <div class="d-flex flex-row ml-3">
-                <p>Tiempo de preparación:  </p>
-
-                <!-- Tiempo de preparacion -->
-                <strong class="title_m editable" id="time" contenteditable="true"></strong>
-            </div>
-
-            <div class="d-flex flex-row">
-                <p>Nivel de dificultad:  </p>
-
-                <!-- Nivel de dificultad -->
-                <strong class="title_m editable" id="difficulty" contenteditable="true"></strong>
-            </div>
-
-        </div>
-
-        <!--Ingredientes de la receta-->
-        <div>
-            <h3>Ingredientes</h3>
-            <ul class="list_disc" id="ingredientsList">
-
-            </ul>
-
-            <button class="category_item" id="addIngredient">
-                Añadir Ingrediente
-            </button>
-
-            
-        </div>
-
-        <!--Pasos para elaborar la receta-->
-        <div>
-            <h3>Elaboración</h3>
-            <ol id="stepsList">
-
-
-            </ol>
-            <button class="category_item" id="addStep">
-                Añadir Paso
-            </button>
-
-        </div>
-
-        <!--Calculo de calorias de la receta-->
-        <div>
-            <h3>Calorías</h3>
-            
-        </div>
     </main>
     
     <script th:src="@{/js/recipe.js}"></script>

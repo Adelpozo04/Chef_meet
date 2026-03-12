@@ -149,12 +149,16 @@ document.addEventListener("DOMContentLoaded", function (){
         const template = document.getElementById("imageUploadTemplate");
         const clone = template.content.cloneNode(true);
 
-        const form = clone.querySelector("form");
-
-        form.querySelector(".empty_image").classList.add("d-none");
+        clone.querySelector(".empty_image").classList.add("d-none");
 
         //Creamos un elemento de la lista
         const newElement = document.createElement("li");
+        const stepDescription = document.createElement("input");
+        stepDescription.name = "steps";
+        stepDescription.type = "text";
+        stepDescription.classList.add("title_m");
+        stepDescription.classList.add("border-0");
+        stepDescription.classList.add("text-left");
 
         const buttonImage = document.createElement("button");
 
@@ -165,16 +169,12 @@ document.addEventListener("DOMContentLoaded", function (){
         buttonImage.classList.add("d-none");
 
         //Hacemos que dicho elemento pueda ser editable con un texto
-        newElement.contentEditable = true;
-
-        newElement.dataset.placeholder = "Escribe siguiente paso...";
-
-        newElement.classList.add("editable");
+        stepDescription.dataset.placeholder = "Escribe el paso a seguir...";
 
         //Anyadimos los elementos al contenedor de paso
-        container.appendChild(form);
         container.appendChild(newElement);
         container.appendChild(buttonImage);
+        newElement.appendChild(stepDescription);
 
         //Lo anyadimos todo a las lista de pasos
         list.appendChild(container);
@@ -196,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function (){
         //Permitimos al usuario la opcion de subir una imagen.
         buttonImage.addEventListener("click", function() {
 
-            form.querySelector(".empty_image").classList.remove("d-none");
+            clone.querySelector(".empty_image").classList.remove("d-none");
         })
 
     })
