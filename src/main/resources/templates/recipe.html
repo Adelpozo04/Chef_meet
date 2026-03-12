@@ -13,113 +13,17 @@
 
     <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
         
-        <!--Apartado principal principal de la receta-->
-        <div class="d-flex flex-column align-items-center">
-
-            <!-- Titulo -->
-            <h1 class="title_xxl editable" contenteditable="true"></h1>
-
-            <!--Imagen principal de la receta-->
-            <form method="post" enctype="multipart/form-data">
-     
-                <!-- Marco visual Bootstrap -->
-                <label class="d-flex flex-column align-items-center justify-content-center empty_image" 
-                style="cursor:pointer;">
-
-                     <!-- Input oculto -->
-                    <input type="file" name="imageRecipe" accept="image/*" class="empty_image_input">
-
-                    <span>Pulsa para subir imagen</span>
-
-                </label>
-
-                <!-- Imagen de vista previa -->
-                <div>
-                    <img class="main_image d-none" name="imageRecipePreview" >
-                </div>
-
-            </form>
-
-            <template id="imageUploadTemplate">
-                <form method="post" enctype="multipart/form-data">
-        
-                    <!-- Marco visual Bootstrap -->
-                    <label class="d-flex flex-column align-items-center justify-content-center empty_image" 
-                    style="cursor:pointer;">
-
-                        <!-- Input oculto -->
-                        <input type="file" name="imageRecipe" accept="image/*" class="empty_image_input">
-
-                        <span>Pulsa para subir imagen</span>
-
-                    </label>
-
-                    <!-- Imagen de vista previa -->
-                    <div>
-                        <img class="main_image d-none" name="imageRecipePreview" >
-                    </div>
-
-                </form>
-            </template>
-            
-            
-        </div>
-
-        <div>
-            <h3>Datos Generales</h3>
-
-            <div class="d-flex flex-row ml-3">
-                <p>Tiempo de preparación:  </p>
-
-                <!-- Tiempo de preparacion -->
-                <strong class="title_m editable" id="time" contenteditable="true"></strong>
+        <th:block th:if="${u}">
+        <div class="explorer_wrapper">
+            <div class="category_list">
+                <a href="#" class="category_item ct_item_active" category="all">Todas</a>
+                <a href="#" class="category_item" category="own">Mis recetas</a>
+                <a th:href="@{recipe/create}" class="category_item" category="own" id="create-recipe">Crear receta</a>
             </div>
-
-            <div class="d-flex flex-row">
-                <p>Nivel de dificultad:  </p>
-
-                <!-- Nivel de dificultad -->
-                <strong class="title_m editable" id="difficulty" contenteditable="true"></strong>
-            </div>
-
         </div>
-
-        <!--Ingredientes de la receta-->
-        <div>
-            <h3>Ingredientes</h3>
-            <ul class="list_disc" id="ingredientsList">
-
-            </ul>
-
-            <button class="category_item" id="addIngredient">
-                Añadir Ingrediente
-            </button>
-
-            
-        </div>
-
-        <!--Pasos para elaborar la receta-->
-        <div>
-            <h3>Elaboración</h3>
-            <ol id="stepsList">
-
-
-            </ol>
-            <button class="category_item" id="addStep">
-                Añadir Paso
-            </button>
-
-        </div>
-
-        <!--Calculo de calorias de la receta-->
-        <div>
-            <h3>Calorías</h3>
-            
-        </div>
+        </th:block>
+        <th:block th:replace="~{fragments/footer.html :: footer}" />
     </main>
-    
-    <script th:src="@{/js/recipe.js}"></script>
-    <th:block th:replace="~{fragments/footer.html :: footer}" />
 </body>
 
 </html>

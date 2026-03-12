@@ -65,11 +65,8 @@ public class User implements Transferable<User.Transfer> {
 	@JoinColumn(name = "recipient_id")
 	private List<Message> received = new ArrayList<>();
 
-	@ManyToMany(mappedBy = "members")
-	private List<Topic> groups = new ArrayList<>();
-
 	@OneToMany
-	@JoinColumn(name = "author_id")
+	@JoinColumn(name = "author")
 	private List<Recipe> recipes = new ArrayList<>();
 
 	/*
@@ -91,24 +88,18 @@ public class User implements Transferable<User.Transfer> {
 		private String username;
 		private int totalReceived;
 		private int totalSent;
-		private String groups;
 		private String recipes;
 	}
 
 	@Override
 	public Transfer toTransfer() {
 
-		StringBuilder gs = new StringBuilder();
-		for (Topic g : groups) {
-			gs.append(g.getName()).append(", ");
-		}
-
 		StringBuilder recips = new StringBuilder();
 		for (Recipe r : recipes) {
 			recips.append(r.getTitle()).append(", ");
 		}
 
-		return new Transfer(id, username, received.size(), sent.size(), gs.toString(), recips.toString());
+		return new Transfer(id, username, received.size(), sent.size(), recips.toString());
 	}
 
 	/**
