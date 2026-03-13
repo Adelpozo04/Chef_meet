@@ -16,20 +16,23 @@
         <template id="imageUploadTemplate">
  
             <!-- Marco visual Bootstrap -->
-            <label class="d-flex flex-column align-items-center justify-content-center empty_image" 
-            style="cursor:pointer;">
+            <div class="image-wrapper">
+                <label class="d-flex flex-column align-items-center justify-content-center empty_image" 
+                style="cursor:pointer;">
 
-                <!-- Input oculto -->
-                <input type="file" name="stepPhotos" accept="image/*" class="empty_image_input">
+                    <!-- Input oculto -->
+                    <input type="file" name="stepPhotos" accept="image/*" class="empty_image_input">
 
-                <span>Pulsa para subir imagen</span>
+                    <span>Pulsa para subir imagen</span>
 
-            </label>
+                </label>
 
-            <!-- Imagen de vista previa -->
-            <div>
-                <img class="main_image d-none" name="imageRecipePreview" >
+                <!-- Imagen de vista previa -->
+                <div>
+                    <img class="main_image d-none" name="imageRecipePreview" >
+                </div>
             </div>
+            
 
         </template>
 

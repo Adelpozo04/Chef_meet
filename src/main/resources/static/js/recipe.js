@@ -149,7 +149,9 @@ document.addEventListener("DOMContentLoaded", function (){
         const template = document.getElementById("imageUploadTemplate");
         const clone = template.content.cloneNode(true);
 
-        clone.querySelector(".empty_image").classList.add("d-none");
+        const wrapper = clone.querySelector(".image-wrapper");
+
+        wrapper.querySelector(".empty_image").classList.add("d-none");
 
         //Creamos un elemento de la lista
         const newElement = document.createElement("li");
@@ -166,12 +168,13 @@ document.addEventListener("DOMContentLoaded", function (){
 
         buttonImage.textContent = "Añadir imagen";
 
-        buttonImage.classList.add("d-none");
+        buttonImage.type = "button";
 
         //Hacemos que dicho elemento pueda ser editable con un texto
         stepDescription.dataset.placeholder = "Escribe el paso a seguir...";
 
         //Anyadimos los elementos al contenedor de paso
+        container.appendChild(wrapper);
         container.appendChild(newElement);
         container.appendChild(buttonImage);
         newElement.appendChild(stepDescription);
@@ -181,22 +184,10 @@ document.addEventListener("DOMContentLoaded", function (){
         
         newElement.focus();
 
-        //Hacemos que si el usuario hace click fuera del elemeto y dicho elemento no tiene nada puesto se elimine automaticamente
-        newElement.addEventListener("blur", function () {
-
-            if (newElement.textContent.trim() === "") {
-                container.remove();
-            }
-            else{
-                buttonImage.classList.remove("d-none");
-            }
-
-        });
-
         //Permitimos al usuario la opcion de subir una imagen.
         buttonImage.addEventListener("click", function() {
 
-            clone.querySelector(".empty_image").classList.remove("d-none");
+            wrapper.querySelector(".empty_image").classList.remove("d-none");
         })
 
     })
