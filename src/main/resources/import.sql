@@ -6,6 +6,19 @@ INSERT INTO IWUser (id, enabled, roles, username, password)
 VALUES (2, TRUE, 'USER', 'b',
     '{bcrypt}$2a$10$2BpNTbrsarbHjNsUWgzfNubJqBRf.0Vz9924nRSHBqlbPKerkgX.W');
 
+-- Ejemplo de paises
+INSERT INTO country (id, country_name, country_emoji) VALUES
+(0, 'España', '🇪🇸'),
+(1, 'Francia', '🇫🇷'),
+(2, 'Italia', '🇮🇹'),
+(3, 'Alemania', '🇩🇪'),
+(4, 'Portugal', '🇵🇹'),
+(5, 'Reino Unido', '🇬🇧'),
+(6, 'Estados Unidos', '🇺🇸'),
+(7, 'México', '🇲🇽'),
+(8, 'Japón', '🇯🇵'),
+(9, 'Corea del Sur', '🇰🇷');
+
 -- Ejemplos para Eventos
 INSERT INTO event(id, title, description, theme, date, location, price, capacity, is_private, organizer_id, image_path)
 VALUES (next value for gen, 'Evento paella', 'Aprende a cocinar la auténtica paella valenciana paso a paso.', 'España', '2026-03-02 18:00:00', 'FDI UCM Madrid', 5.0, 20, false, 1, '/img/events/ev_espana.jpg');
@@ -37,10 +50,9 @@ INSERT INTO message(id, sender_id, recipient_id, text, date_sent, complain_type)
 VALUES (next value for gen, 1, 1, 'Esta receta contiene fotos inapropiadas.', '2026-02-28 19:00:00', 'RECIPE', 5);
 
 -- Ejemplos para comunidades
-INSERT INTO community(id, owner_id, title, description) VALUES 
-(1275, 2, 'Amantes de la comida valenciana', 'Comunidad dedicada a los amantes de la comida valenciana'),
-(1276, 2, 'Sushi lovers', 'Solo admitimos a amantes del sushi');
-
+INSERT INTO community(id, owner_id, country_id, title, description) VALUES 
+(1275, 2, 0, 'Amantes de la comida valenciana', 'Comunidad dedicada a los amantes de la comida valenciana'),
+(1276, 2, 1, 'Sushi lovers', 'Solo admitimos a amantes del sushi');
 
 -- start id numbering from a value that is larger than any assigned above
 ALTER SEQUENCE "PUBLIC"."GEN" RESTART WITH 2000;

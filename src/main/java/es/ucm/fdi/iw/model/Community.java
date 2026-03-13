@@ -11,7 +11,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +26,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
+@NamedQueries({
+    @NamedQuery(name = "Community.selectAll", query = "SELECT c FROM Community c")
+    //@NamedQuery(name = "", query = ""),
+    //@NamedQuery(name = "", query = "")
+})
 public class Community {
 
     @Id
@@ -39,6 +47,9 @@ public class Community {
     @Column(name = "description", length = 200)
     private String description;
 
+    @ManyToOne
+    private Country country;
+
     @ManyToMany
     @JoinTable(
         name = "community_members",
@@ -46,9 +57,6 @@ public class Community {
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<User> members = new ArrayList<>();
-
-    // @OneToMany
-    // private List<Event> events = new ArrayList<>();
 
     @OneToMany(mappedBy = "community")
     private List<Event> events = new ArrayList<>();

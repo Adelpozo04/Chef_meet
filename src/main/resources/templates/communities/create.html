@@ -11,19 +11,33 @@
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
     <div class="container mt-5">
+
         <h2>Crear nueva comunidad</h2>
+
         <p th:if="${createError == true}" class="error">
            Debes rellenar los campos obligatorios
         </p>
+
         <form th:action="@{/communities/create}" th:object="${community}" method="post">
+
             <div class="mb-3">
-                <label for="title" class="form-label">Título de la comunidad(*)</label>
-                <input th:field="*{title}" type="text" class="form-control" id="community-title">
+                <label for="community-title" class="form-label">Título de la comunidad(*)</label>
+                <input th:field="*{title}" class="form-control" type="text">
             </div>
+
             <div class="mb-3">
-                <label for="description" class="form-label">Descripción(*)</label>
-                <textarea th:field="*{description}" class="form-control" rows="2" id="community-desc"></textarea>
+                <label for="community-country" class="form-label">País(*)</label>
+                <select name="countryID" class="form-select">
+                    <option value="" disabled selected>Selecciona un país</option>
+                    <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.countryName}"></option>
+                </select>
             </div>
+            
+            <div class="mb-3">
+                <label for="community-desc" class="form-label">Descripción(*)</label>
+                <textarea th:field="*{description}" class="form-control" rows="2"></textarea>
+            </div>
+            
             <button type="submit" class="btn btn-primary" id="create-button">Crear comunidad</button>
         </form>
     </div>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <th:block th:replace="~{fragments/head :: header}" />
+    <link rel="stylesheet" th:href="@{/css/communities.css}" href="/css/communities.css"
+        type="text/css"/>
+    <title>Comunidad</title>
+</head>
+<body>
+
+    <header th:replace="~{fragments/nav.html :: nav}"></header>
+
+    <div class="community-container">
+        <div class="community-header">
+            <h1 th:text="${community.title}">Título de la comunidad</h1>
+            <p class="community-category" th:utext="|${community.country.countryName} ${community.country.emoji}|"></p>
+        </div>
+        <div class="community-content">
+            <p th:text="${community.description}">Descripción de la comunidad</p>
+        </div>
+    </div>
+    
+</body>
+</html>

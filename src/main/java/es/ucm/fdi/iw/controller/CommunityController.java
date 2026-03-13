@@ -1,5 +1,7 @@
 package es.ucm.fdi.iw.controller;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import es.ucm.fdi.iw.model.Community;
+import es.ucm.fdi.iw.model.Country;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +31,7 @@ public class CommunityController {
     @Autowired
     private EntityManager entityManager;
 
+
     @GetMapping
     public String showCommunities(Model model, HttpSession session) {
 
@@ -37,13 +43,35 @@ public class CommunityController {
             log.info("Usuario con nombre {} accede a Communities", client.getUsername());
         }
 
+        List<Community> communities = entityManager.createNamedQuery("Community.selectAll", Community.class).getResultList();
+        model.addAttribute("communities", communities);
+
+        for(Community c : communities) {
+            log.info("Community: {}", c.getTitle());
+        }
+
         return "communities";
     }
 
+    @GetMapping("/{id}")
+    public String showOneCommunity(
+        @PathVariable long id, 
+        Model model) {
+
+        Community community = entityManager.find(Community.class, id);
+        model.addAttribute("community", community);
+        return "communities/view";
+    }
+
     @GetMapping("/create")
-    public String createCommunity(Model model) {
+    public String viewcreateCommunity(Model model) {
+
+        List<Country> countries = entityManager.createNamedQuery("Country.selectAll", Country.class).getResultList();
+        model.addAttribute("countries", countries);
         model.addAttribute("community", new Community());
+
         model.addAttribute("createError", false);
+
         return "communities/create";
     }
 
@@ -51,8 +79,8 @@ public class CommunityController {
     @PostMapping("/create")
     public String createCommunity(
             @ModelAttribute Community community,
-            @ModelAttribute User edited,
             Model model,
+            @RequestParam(value = "countryID") Long countryId,
             HttpSession session) {
 
         if (community.getTitle().isBlank() || community.getDescription().isBlank()) {
@@ -60,7 +88,6 @@ public class CommunityController {
             log.info("ERROR AL INTENTAR CREAR COMUNIDAD");
             return "communities/create";
         }
-        model.addAttribute("createError", false);
 
         // Usuario logueado que ejecuta esta query -> creador de la comunidad
         User owner = (User) session.getAttribute("u");
@@ -68,15 +95,19 @@ public class CommunityController {
         if (community.getMembers().isEmpty())
             owner.getOwnedCommunities().add(community);
 
-        // Set community owner and add it as member
         community.setOwner(owner);
         community.getMembers().add(owner);
+        community.setCountry(entityManager.find(Country.class, countryId));
+
         entityManager.persist(community);
         entityManager.flush();
 
+        model.addAttribute("createError", false);
         log.info("New community created by: {}", community.getOwner().getUsername());
         log.info("New community created with title: {}", community.getTitle());
         log.info("New community created with description: {}", community.getDescription());
         return "redirect:/communities";
     }
+
+
 }
