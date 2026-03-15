@@ -4,21 +4,80 @@
     <th:block th:replace="~{fragments/head :: header}" />
     <link rel="stylesheet" th:href="@{/css/communities.css}" href="/css/communities.css"
         type="text/css"/>
-    <title>Comunidad</title>
+    <title th:text="${community.title}">Nombre de la comunidad</title>
 </head>
 <body>
 
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <div class="community-container">
-        <div class="community-header">
-            <h1 th:text="${community.title}">Título de la comunidad</h1>
-            <p class="community-category" th:utext="|${community.country.countryName} ${community.country.emoji}|"></p>
+    <div class="community-header">
+        
+        <div class="community-controls-title">
+            <div class="community-buttons">
+
+                <th:block th:if="${!isMember and !isOwner}">
+                    <button type="button">Unirse a comunidad</button>
+                </th:block>
+                <th:block th:if="${isMember}">
+                    <button type="button">Salir de comunidad</button>
+                </th:block>
+                <th:block th:if="${isOwner}">
+                     <button type="button">Eliminar comunidad</button>
+                </th:block>
+                
+            </div>
+
+            <div class="community-title">
+                <h1 th:text="${community.title}">Título de la comunidad</h1>
+                <p class="community-category" th:utext="|${community.country.countryName} ${community.country.emoji}|"></p>
+            </div>
         </div>
-        <div class="community-content">
+        
+        <div class="community-desc">
             <p th:text="${community.description}">Descripción de la comunidad</p>
         </div>
     </div>
+
+    <main class="community-info">
+
+        <div class="community-members">
+            <h2>Miembros</h2>
+            <ul class="community-members-list">
+                <li>
+                    <p> Un usuario </p>
+                </li>
+                <li>
+                    <p> Otro usuario </p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="community-posts">
+            <h2>Publicaciones</h2>
+            <ul class="community-posts-list">
+                <li>
+                    <p> Una publicación </p>
+                </li>
+                <li>
+                    <p> Otra publicación </p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="community-events">
+            <h2>Eventos</h2>
+            <ul class="community-events-list">
+                <li>
+                    <p> Un evento </p>
+                </li>
+                <li>
+                    <p> Otro evento </p>
+                </li>
+            </ul>
+        </div>
+
+    </main>
     
+    <th:block th:replace="~{fragments/footer.html :: footer}" />
 </body>
 </html>

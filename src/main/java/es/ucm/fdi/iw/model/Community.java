@@ -14,7 +14,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,8 +26,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @NamedQueries({
-    @NamedQuery(name = "Community.selectAll", query = "SELECT c FROM Community c")
-    //@NamedQuery(name = "", query = ""),
+    @NamedQuery(name = "Community.selectAll", query = "SELECT c FROM Community c"),
+    @NamedQuery(name = "Community.selectWhereMeMember", query = "SELECT c FROM Community c WHERE c.owner.id = :userId"),
     //@NamedQuery(name = "", query = "")
 })
 public class Community {
@@ -38,15 +37,15 @@ public class Community {
     @SequenceGenerator(name = "gen", sequenceName = "gen")
     private long id;
 
-    @ManyToOne
-    private User owner;
-
     @Column(name = "title", length = 50, nullable = false)
     private String title;
 
     @Column(name = "description", length = 200)
     private String description;
 
+    @ManyToOne
+    private User owner;
+    
     @ManyToOne
     private Country country;
 

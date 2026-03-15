@@ -245,3 +245,9 @@ img.preview {
     content: attr(data-placeholder);
     color: gray;
 }
+
+
+/* Estilos de sección comunidades */
+.comunities-list {
+    
+}

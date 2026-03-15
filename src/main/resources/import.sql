@@ -1,3 +1,6 @@
+-- start id numbering from a value that is larger than any assigned above
+ALTER SEQUENCE "PUBLIC"."GEN" RESTART WITH 2000;
+
 -- insert admin (username a, password aa)
 INSERT INTO IWUser (id, enabled, roles, username, password)
 VALUES (1, TRUE, 'ADMIN,USER', 'a',
@@ -50,9 +53,14 @@ INSERT INTO message(id, sender_id, recipient_id, text, date_sent, complain_type)
 VALUES (next value for gen, 1, 1, 'Esta receta contiene fotos inapropiadas.', '2026-02-28 19:00:00', 'RECIPE', 5);
 
 -- Ejemplos para comunidades
-INSERT INTO community(id, owner_id, country_id, title, description) VALUES 
-(1275, 2, 0, 'Amantes de la comida valenciana', 'Comunidad dedicada a los amantes de la comida valenciana'),
-(1276, 2, 1, 'Sushi lovers', 'Solo admitimos a amantes del sushi');
-
--- start id numbering from a value that is larger than any assigned above
-ALTER SEQUENCE "PUBLIC"."GEN" RESTART WITH 2000;
+INSERT INTO community(country_id, id, owner_id, title, description) VALUES 
+(0, 1275, 2, 'Amantes de la comida valenciana', 'Comunidad dedicada a los amantes de la comida valenciana'),
+(1, 1276, 2, 'Sushi lovers', 'Solo admitimos a amantes del sushi'),
+(0, 1951, 1, 'Comunidad 1', 'Comunidad 1'),
+(1, 1952, 1, 'Comunidad 2', 'Comunidad 2'),
+(2, 1953, 1, 'Comunidad 3', 'Comunidad 3'),
+(3, 1954, 1, 'Comunidad 4', 'Comunidad 4'),
+(4, 1955, 1, 'Comunidad 5', 'Comunidad 5'),
+(4, 1956, 1, 'Comunidad 6', 'Comunidad 6'),
+(5, 1957, 1, 'Comunidad 7', 'Comunidad 7'),
+(6, 1958, 1, 'Comunidad 8', 'Comunidad 8');

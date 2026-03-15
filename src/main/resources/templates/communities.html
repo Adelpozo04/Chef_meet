@@ -10,6 +10,8 @@
     
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
+    <h1>Explorar comunidades</h1>
+
     <!-- Barra de busqueda de bootstrap -->
     <div class="row justify-content-center mb-4" id="search-community-bar">
         <div class="col-md-6">
@@ -31,22 +33,60 @@
     </th:block>
 
     <!-- Lista de comunidades del usuario -->
-    <div class="card-grid">
+    <section class="comunities-list">
 
-        <a class="card"
-            th:each="community : ${communities}"
-            th:href="@{/communities/{id}(id=${community.id})}"
-            th:id="'community-' + ${community.id}">
+        <details open>
+            <summary class="communities-dropdown">Mis comunidades</summary>
 
-            <div class="card__background" 
-            th:style="'background-image: url(' + @{/img/communities/default-image.png} + ')'"></div>
-            <div class="card__content">
-                <p class="card__category" th:utext="|${community.country.countryName} ${community.country.emoji}|"></p>
-                <p class="card__heading" th:text="${community.title}"></p>
+            <div th:if="${#lists.isEmpty(myCommunities)}" class="no-communities">
+                <p>No estás en ninguna comunidad. ¡Únete a una o crea la tuya propia!</p>
             </div>
-        </a>
+            <div class="card-grid" th:if="${!#lists.isEmpty(myCommunities)}">
+                <a class="card"
+                    th:each="community : ${myCommunities}"
+                    th:href="@{/communities/{id}(id=${community.id})}"
+                    th:id="'community-' + ${community.id}">
 
-    </div>
+                    <div class="card__background" 
+                    th:style="'background-image: url(' + @{/img/communities/default-image.png} + ')'"></div>
+                    <div class="card__content">
+                        <p class="card__category" th:utext="|${community.country.countryName} ${community.country.emoji}|"></p>
+                        <h3 class="card__heading" th:text="${community.title}"></h3>
+                    </div>
+                </a>
+            </div>
+        </details>
+
+    </section>
+
+    <!-- Lista de comunidades genericas -->
+    <section class="comunities-list">
+        
+        <details open>
+            <summary class="communities-dropdown">Otras comunidades</summary>
+
+            <div th:if="${#lists.isEmpty(otherCommunities)}" class="no-communities">
+                <p>No estás en ninguna comunidad. ¡Únete a una o crea la tuya propia!</p>
+            </div>
+            <div class="card-grid" th:if="${!#lists.isEmpty(otherCommunities)}">
+                <a class="card"
+                    th:each="community : ${otherCommunities}"
+                    th:href="@{/communities/{id}(id=${community.id})}"
+                    th:id="'community-' + ${community.id}">
+
+                    <div class="card__background" 
+                    th:style="'background-image: url(' + @{/img/communities/default-image.png} + ')'"></div>
+                    <div class="card__content">
+                        <p class="card__category" th:utext="|${community.country.countryName} ${community.country.emoji}|"></p>
+                        <h3 class="card__heading" th:text="${community.title}"></h3>
+                    </div>
+                </a>
+            </div>
+        </details>        
+
+    </section>
+    
+    <th:block th:replace="~{fragments/footer.html :: footer}" />
 
 </body>
 </html>

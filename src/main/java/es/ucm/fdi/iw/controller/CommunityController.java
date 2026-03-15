@@ -1,5 +1,6 @@
 package es.ucm.fdi.iw.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -36,30 +37,58 @@ public class CommunityController {
     public String showCommunities(Model model, HttpSession session) {
 
         User client = (User) session.getAttribute("u");
-        if (client == null) {
-            log.info("Usuario sin iniciar sesion accede a Communities");
-        }
-        else {
-            log.info("Usuario con nombre {} accede a Communities", client.getUsername());
+        List<Community> myCommunities = new ArrayList<>();
+        List<Community> otherCommunities = null;
+
+        if(client != null){
+            myCommunities = entityManager.createNamedQuery("Community.selectWhereMeMember", Community.class)
+            .setParameter("userId", client.getId())
+            .getResultList();
+
+            log.info("Mostrar comunidades creadas por usuario con ID {}", client.getId());
+            for(Community c : myCommunities){
+                log.info("Comunidad {} encontrada", c.getTitle());
+            }
+
         }
 
-        List<Community> communities = entityManager.createNamedQuery("Community.selectAll", Community.class).getResultList();
-        model.addAttribute("communities", communities);
-
-        for(Community c : communities) {
-            log.info("Community: {}", c.getTitle());
+        otherCommunities = entityManager.createNamedQuery("Community.selectAll", Community.class).getResultList();
+        for(Community c : myCommunities){   // Eliminar las repeticiones -> MUY TEMPORAL
+            otherCommunities.removeIf(comm -> comm.getId() == c.getId());
         }
 
+        model.addAttribute("myCommunities", myCommunities);
+        model.addAttribute("otherCommunities", otherCommunities);
         return "communities";
     }
+
 
     @GetMapping("/{id}")
     public String showOneCommunity(
         @PathVariable long id, 
-        Model model) {
+        Model model,
+        HttpSession session) {
 
+        User user = (User) session.getAttribute("u");
         Community community = entityManager.find(Community.class, id);
+        boolean userIsOwner = community.getOwner().getId() == user.getId();
+        boolean userIsMember = community.getMembers().stream().
+                                anyMatch(u -> u.getId() == user.getId());
+
+        if(userIsOwner)
+            log.info("El usuario {} es el creador de la comunidad {}", user.getUsername(), community.getTitle());
+        else
+            log.info("El usuario {} NO es el creador de la comunidad {}", user.getUsername(), community.getTitle());
+
+        if(userIsMember)
+            log.info("El usuario {} pertence a la comunidad {}", user.getUsername(), community.getTitle());
+        else
+            log.info("El usuario {} NO pertence a la comunidad {}", user.getUsername(), community.getTitle());
+
         model.addAttribute("community", community);
+        model.addAttribute("isOwner", userIsOwner);
+        model.addAttribute("isMember", userIsMember);
+
         return "communities/view";
     }
 

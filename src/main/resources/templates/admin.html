@@ -67,26 +67,24 @@
                         <th>Id</th>
                         <th>Nombre & Apellidos</th>
                         <th>Roles</th>
-                        <th>Grupos</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
+
                 <tbody id="tabla-usuarios">
                     <tr th:each="user : ${users}">
-                        <td th:text="${user.id}">1</td>
-                        <td th:text="${user.username}">paco</td>
-                        <td th:text="${user.firstName + ' ' + user.lastName}">Nombre</td>
+
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.username}"></td>
+                        <td th:text="${user.firstName + ' ' + user.lastName}"></td>
+
                         <td>
                             <ul>
-                                <li th:text="${user.roles}">Role</li>
+                                <li th:text="${user.roles}"></li>
                             </ul>
                         </td>
+
                         <td>
-                          <ul>
-                              <li th:text="${user.groups}">Role</li>
-                          </ul>
-                      </td>
-                      <td>
                             <form th:action="@{'/admin/toggle/' + ${user.id}}" th:method="post">
                                 <button th:if="${user.enabled}" type="submit"
                                     class="toggle btn btn-danger">Deshabilitar</button>
@@ -94,6 +92,7 @@
                                     class="toggle btn btn-primary">Habilitar</button>
                             </form>
                         </td>
+
                     </tr>
                 </tbody>
             </table>
