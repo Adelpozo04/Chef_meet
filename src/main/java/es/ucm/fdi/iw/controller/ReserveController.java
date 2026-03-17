@@ -6,10 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import es.ucm.fdi.iw.model.Event;
+import es.ucm.fdi.iw.model.Reserve;
+import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Controller
 public class ReserveController {
@@ -35,6 +39,30 @@ public class ReserveController {
         model.addAttribute("availableSpots", availableSpots);
 
         return "reserve";
+    }
+
+    @Transactional
+    @PostMapping("/reserve/confirm")
+    public String confirmReserve(@RequestParam long eventId, HttpSession session) {
+        // Obtener el usuario logueado de la sesion
+        User u = (User) session.getAttribute("u");
+        u = entityManager.find(User.class, u.getId());
+
+        // Buscar el evento que queremos reservar
+        Event event = entityManager.find(Event.class, eventId);
+
+        // Si existen ambos, se crea la reserva en la base de datos
+        if(event != null && u != null) {
+            Reserve reserve = new Reserve();
+            reserve.setAttendee(u);
+            reserve.setEvent(event);
+
+            entityManager.persist(reserve);
+            entityManager.flush();
+        }
+
+        // Redirigir al perfil del usuario 
+        return "redirect:/account";
     }
 }
 

@@ -8,7 +8,7 @@
     <script th:src="@{/js/reserve.js}"></script>
 </head>
 
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100">     
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
     <main class="flex-shrink-0">
@@ -31,7 +31,11 @@
                         <!-- Boton para reservar -->
                         <form th:action="@{/reserve/confirm}" method="post">
                             <input type="hidden" name="eventId" th:value="${event.id}">
-                            <button type="submit" class="btn btn-reservar" th:disabled="${availableSpots <= 0}">Reservar</button>
+                            <button type="submit" class="btn btn-reservar" 
+                                    th:disabled="${availableSpots <= 0}"
+                                    th:data-price="${event.price}">
+                                Reservar
+                            </button>
                         </form>
                     </div>
                 </div>
