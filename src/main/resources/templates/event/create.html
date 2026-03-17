@@ -18,30 +18,35 @@
             </svg>
         </a>
         <h2>Crear nuevo evento</h2>
-        <form th:action="@{/event/create}" th:object="${event}" method="post" class="mt-4">
+        <form th:action="@{/event/create}" th:object="${event}" method="post" class="mt-4" enctype="multipart/form-data">
             <div class="mb-3">
-                <label for="title" class="form-label">Título del evento</label>
+                <label for="title" class="form-label">Título del evento(*)</label>
                 <input th:field="*{title}" type="text" class="form-control" required>
             </div>
 
+            <div class="mb-4">
+                <label for="photo" class="form-label"> Foto del evento</label>
+                <input type="file" name="photo" id="photo" class="form-control" accept="image/*">
+            </div>
+            
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="date" class="form-label">Fecha y hora</label>
+                    <label for="date" class="form-label">Fecha y hora(*)</label>
                     <input th:field="*{date}" type="datetime-local" class="form-control" required>
                 </div>
                 <div class="col-md-6">
-                    <label for="location" class="form-label">Ubicación</label>
+                    <label for="location" class="form-label">Ubicación(*)</label>
                     <input th:field="*{location}" type="text" class="form-control" required>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="price" class="form-label">Precio (€)</label>
+                    <label for="price" class="form-label">Precio (€)(*)</label>
                     <input th:field="*{price}" type="number" step="0.01" class="form-control" min="0" required>
                 </div>
                 <div class="col-md-4">
-                    <label for="capacity" class="form-label">Aforo máximo</label>
+                    <label for="capacity" class="form-label">Aforo máximo(*)</label>
                     <input th:field="*{capacity}" type="number" class="form-control" min="1" required>
                 </div>
                 <div class="col-md-4">
@@ -51,7 +56,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="description" class="form-label">Descripción</label>
+                <label for="description" class="form-label">Descripción(*)</label>
                 <textarea th:field="*{description}" class="form-control" rows="3" required></textarea>
             </div>
 
