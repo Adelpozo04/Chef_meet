@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,7 +21,6 @@ import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
 
 @Controller
@@ -71,6 +71,7 @@ public class CommunityController {
 
         User user = (User) session.getAttribute("u");
         Community community = entityManager.find(Community.class, id);
+        User owner = community.getOwner();
         boolean userIsOwner = community.getOwner().getId() == user.getId();
         boolean userIsMember = community.getMembers().stream().
                                 anyMatch(u -> u.getId() == user.getId());
@@ -88,8 +89,42 @@ public class CommunityController {
         model.addAttribute("community", community);
         model.addAttribute("isOwner", userIsOwner);
         model.addAttribute("isMember", userIsMember);
+        model.addAttribute("owner", owner);
+        model.addAttribute("members", community.getMembers());
 
         return "communities/view";
+    }
+
+    @Transactional
+    @PostMapping("/{id}/add")
+    public String addUserToCommunity(
+        @PathVariable long id,
+        HttpSession session){
+
+        User user = (User) session.getAttribute("u");
+        Community community = entityManager.find(Community.class, id);
+
+        if ( !community.getMembers().contains(user) )
+            community.getMembers().add(user);
+
+
+        log.info("Usuario {} quiere unirse a la comunidad con ID {}", user.getUsername(), community.getId());
+        return "redirect:/communities/" + id;
+    }
+
+    @Transactional
+    @PostMapping("/{id}/remove")
+    public String removeUserFromCommunity(
+        @PathVariable long id,
+        HttpSession session){
+
+        User user = (User) session.getAttribute("u");
+        Community community = entityManager.find(Community.class, id);
+
+        community.getMembers().removeIf( u -> u.getId() == user.getId() );
+
+        log.info("Usuario {} quiere salirse de la comunidad con ID {}", user.getUsername(), community.getId());
+        return "redirect:/communities/" + id;
     }
 
     @GetMapping("/create")
@@ -114,8 +149,8 @@ public class CommunityController {
 
         if (community.getTitle().isBlank() || community.getDescription().isBlank()) {
             model.addAttribute("createError", true);
-            log.info("ERROR AL INTENTAR CREAR COMUNIDAD");
-            return "communities/create";
+            log.error("Intentando crear comunidad: Campos vacios");
+            return "redirect:/communities/create";
         }
 
         // Usuario logueado que ejecuta esta query -> creador de la comunidad

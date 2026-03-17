@@ -16,13 +16,19 @@
             <div class="community-buttons">
 
                 <th:block th:if="${!isMember and !isOwner}">
-                    <button type="button">Unirse a comunidad</button>
+                    <form th:action="@{/communities/{id}/add(id=${community.id})}" method="post">
+                        <button type="submit">Unirse a la comunidad</button>
+                    </form>
                 </th:block>
+
                 <th:block th:if="${isMember}">
-                    <button type="button">Salir de comunidad</button>
+                    <form th:action="@{/communities/{id}/remove(id=${community.id})}" method="post">
+                        <button type="submit">Salirse de la comunidad</button>
+                    </form>
                 </th:block>
+                
                 <th:block th:if="${isOwner}">
-                     <button type="button">Eliminar comunidad</button>
+                    <button type="button">Eliminar comunidad</button>
                 </th:block>
                 
             </div>
@@ -43,12 +49,17 @@
         <div class="community-members">
             <h2>Miembros</h2>
             <ul class="community-members-list">
-                <li>
-                    <p> Un usuario </p>
+                
+                <li class="community-creator">
+                    <p th:text="'Creador: ' + ${owner.username}">Creador</p>
                 </li>
-                <li>
-                    <p> Otro usuario </p>
+
+                <hr>
+
+                <li th:each="member : ${members}" class="community-member">
+                    <p th:text="${member.username}">Miembro</p>
                 </li>
+
             </ul>
         </div>
 
