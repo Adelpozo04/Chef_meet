@@ -49,7 +49,7 @@ INSERT INTO message(id, sender_id, recipient_id, text, date_sent, complain_type,
 VALUES (next value for gen, 2, 1, 'Este usuario está insultando en el chat de sushi.', '2026-02-28 15:20:00', 'USER', 3);
 
 -- Queja sobre una receta
-INSERT INTO message(id, sender_id, recipient_id, text, date_sent, complain_type)
+INSERT INTO message(id, sender_id, recipient_id, text, date_sent, complain_type, reference_id)
 VALUES (next value for gen, 1, 1, 'Esta receta contiene fotos inapropiadas.', '2026-02-28 19:00:00', 'RECIPE', 5);
 
 -- Ejemplos para comunidades

@@ -52,16 +52,15 @@ public class RecipeController {
     public String createRecipe(
             @ModelAttribute Recipe recipe,
             @ModelAttribute User edited,
-            @RequestParam(value="cover", required=false) MultipartFile cover,
-            @RequestParam Map<String, MultipartFile> stepPhotos,
+            @RequestParam Map<String, MultipartFile> allParams,
             Model model,
             HttpSession session) {
 
         if (recipe.getTitle().isBlank() || recipe.getDifficulty().isBlank() || 
-            recipe.getTime().isBlank() || recipe.getSteps().length == 0) {
+            recipe.getTime().isBlank()) {
             model.addAttribute("createError", true);
             log.info("ERROR AL INTENTAR CREAR RECETA");
-            return "communities/create";
+            return "recipe/create";
         }
 
         model.addAttribute("createError", false);
@@ -78,7 +77,7 @@ public class RecipeController {
         entityManager.flush();
 
         try{
-            setPic(cover, stepPhotos, recipe.getId(), null, session, model);
+            setPic(allParams, recipe.getId(), null, session, model);
         }
         catch(IOException e){
             log.warn("Error uploading photo for recipe {} ", recipe.getId(), e);
@@ -87,65 +86,74 @@ public class RecipeController {
         log.info("New recipe created by: {}", recipe.getAuthor().getUsername());
         log.info("New recipe created with title: {}", recipe.getTitle());
         log.info("New recipe created with description: {}", recipe.getSteps()[0]);
-        return "redirect:/recipe";
+        return "recipe";
         
     }
 
    /**
    * Uploads a profile pic for a user id
    * 
-   * @param id
-   * @return
-   * @throws IOException
+   * @param cover: Imagen principal de la receta
+   * @param stepPhotos: map con las imagenes de las fotografias y la key que representa el paso al que pertenecen
+   * 
    */
   @PostMapping("{id}/pic")
   @ResponseBody
-  public String setPic(@RequestParam(value="cover", required=false) MultipartFile cover,
-                      @RequestParam Map<String, MultipartFile> stepPhotos,
+  public String setPic(@RequestParam Map<String, MultipartFile> allParams,
                       @PathVariable long id,
                       HttpServletResponse response, 
                       HttpSession session, Model model) throws IOException {
 
     
 
-    log.info("Updating photo for recipe {}", id);
+        log.info("Updating photo for recipe {}", id);
 
-    File f = localData.getFile("recipe", "" + id + "_cover.jpg");
+        
 
-    if (cover.isEmpty()) {
-      log.info("failed to upload photo: emtpy file?");
-    } else {
-      try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(f))) {
-        byte[] bytes = cover.getBytes();
-        stream.write(bytes);
-        log.info("Uploaded photo for {} into {}!", id, f.getAbsolutePath());
-      } catch (Exception e) {
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        log.warn("Error uploading " + id + " ", e);
-      }
-    }
+        //Si no se ha enviado el cover sacamos mensaje de error
+        if (allParams.isEmpty()) {
 
-    for (Map.Entry<String, MultipartFile> entry : stepPhotos.entrySet()){
-
-        f = localData.getFile("recipe", "" + id + "_step" + entry.getKey() + ".jpg");
-
-        if (stepPhotos.get(entry.getKey()).isEmpty()) {
             log.info("failed to upload photo: emtpy file?");
-        } 
-        else {
-            try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(f))) {
-                byte[] bytes = stepPhotos.get(entry.getKey()).getBytes();
-                stream.write(bytes);
-                log.info("Uploaded photo for {} into {}!", id, f.getAbsolutePath());
-            } catch (Exception e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                log.warn("Error uploading " + id + " ", e);
+
+        } else {
+
+            for (Map.Entry<String, MultipartFile> entry : allParams.entrySet()){
+
+                if(entry.getKey().equals("cover") || entry.getKey().startsWith("step")){
+                    //Nos creamos la ruta en la que se va a guardar la fotografia
+                    File f = localData.getFile("recipe", "" + id + "_" + entry.getKey() + ".jpg");
+
+                    if (allParams.get(entry.getKey()).isEmpty()) {
+                        log.info("failed to upload photo: emtpy file?");
+                    } 
+                    else {
+                        //Sacamos el stream de la ruta que hemos indicado donde se va a almacenar la fotografia
+                        try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(f))) {
+
+                            //Nos almacenamos los bytes de la imagen que se nos ha pasado
+                            byte[] bytes = entry.getValue().getBytes();
+
+                            //Escribimos los bytes en el fichero cuya ruta hemos indicado anteriormente
+                            stream.write(bytes);
+
+                            log.info("Uploaded photo for {} into {}!", id, f.getAbsolutePath());
+
+                        } catch (Exception e) {
+
+                            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+                            log.warn("Error uploading " + id + " ", e);
+                        }
+                    }
+
+                }
+                
             }
+
         }
 
+        return "{\"status\":\"photo uploaded correctly\"}";
+  
     }
-
-    return "{\"status\":\"photo uploaded correctly\"}";
-  }
     
 }

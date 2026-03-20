@@ -138,11 +138,13 @@ document.addEventListener("DOMContentLoaded", function (){
 //Anyadir para los pasos
 document.addEventListener("DOMContentLoaded", function (){
 
+    let counter = 0;
+
     const button = document.getElementById("addStep");
     const list = document.getElementById("stepsList");
 
     button.addEventListener("click", function() {
-
+    
         const container = document.createElement("div");
 
         //
@@ -152,6 +154,8 @@ document.addEventListener("DOMContentLoaded", function (){
         const wrapper = clone.querySelector(".image-wrapper");
 
         wrapper.querySelector(".empty_image").classList.add("d-none");
+
+        wrapper.querySelector("input").name = "step" + counter;
 
         //Creamos un elemento de la lista
         const newElement = document.createElement("li");
@@ -183,6 +187,8 @@ document.addEventListener("DOMContentLoaded", function (){
         list.appendChild(container);
         
         newElement.focus();
+
+        counter++;
 
         //Permitimos al usuario la opcion de subir una imagen.
         buttonImage.addEventListener("click", function() {
