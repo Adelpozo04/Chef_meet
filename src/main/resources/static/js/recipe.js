@@ -39,7 +39,13 @@ document.addEventListener("change", function (event){
 
 });
 
+//Obtenemos los ingredientes mediante una consulta asincrona a la base de datos
+let ingredients = [];
 
+document.addEventListener("DOMContentLoaded", async function () {
+    const response = await fetch("ingredients");
+    ingredients = await response.json();
+});
 
 
 //Anyadir para los ingredientes
@@ -62,27 +68,22 @@ document.addEventListener("DOMContentLoaded", function (){
         //Creamos un elemento de la lista
         const dropdown = document.createElement("select");
 
-        dropdown.multiple = true;
+        dropdown.multiple = false;
 
-        //creamos los ingredientes del dropdown
-        for(let i = 0; i < 3; i++){
+        //asignamos los ingredientes al dropdown
+        ingredients.forEach(ing => {
             const option = document.createElement("option")
-            
-            option.value = "Ingrediente: " + counter;
-            option.text = "Ingrediente: " + counter;
+
+            option.value = ing.id;
+            option.text = ing.name;
 
             dropdown.append(option);
+        })
 
-            counter++;
-        }
+        
 
         //Anyadimos el dropdown al nuevo elemento de la lista
         newIndex.append(dropdown);
-
-        //Creamos el dropdown de las cantidades sin rellenar aun 
-        const dropdownAmount = document.createElement("select");
-
-        dropdownAmount.multiple = true;
 
         //Creamos el texto de la cantidad
         const textAmount = document.createElement("p");
@@ -97,41 +98,15 @@ document.addEventListener("DOMContentLoaded", function (){
 
         dropdown.addEventListener("change", function() {
             //Si quiero el texto y no el value hay que usar select.options[select.selectedIndex].text;
-            newIndex.textContent = dropdown.value;
+            const selectedOption = dropdown.options[dropdown.selectedIndex];
+            newIndex.textContent = selectedOption.text;
+            
             dropdown.remove();
 
             newIndex.append(textAmount);
-
-            //Nos bajamos los distintos sistemas de cantidad
-            for(let i = 0; i < 3; i++){
-                const option = document.createElement("option")
-                
-                option.value = "Medida: " + counter;
-                option.text = "Medida: " + counter;
-
-                dropdownAmount.append(option);
-
-                counter++;
-            }
-
-            newIndex.append(dropdownAmount);
             
         });
 
-        dropdownAmount.addEventListener("change", function() {
-            //Si quiero el texto y no el value hay que usar select.options[select.selectedIndex].text;
-            const selectedOption = dropdownAmount.options[dropdownAmount.selectedIndex];
-            const amountText = textAmount.textContent.trim();
-
-            textAmount.remove();
-            dropdownAmount.remove();
-
-            newIndex.textContent += " " + amountText;
-            newIndex.textContent += " " + selectedOption.text;
-
-            
-
-        })
     })
 })
 

@@ -1,7 +1,5 @@
 package es.ucm.fdi.iw.controller;
 
-import es.ucm.fdi.iw.model.User.Role;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.ucm.fdi.iw.LocalData;
-import es.ucm.fdi.iw.controller.UserController.NoEsTuPerfilException;
 import es.ucm.fdi.iw.model.Recipe;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
