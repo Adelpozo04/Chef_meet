@@ -138,6 +138,7 @@ document.addEventListener("DOMContentLoaded", function (){
 //Anyadir para los pasos
 document.addEventListener("DOMContentLoaded", function (){
 
+    //Contador para marcar la key que tendra cada uno de los pasos
     let counter = 0;
 
     const button = document.getElementById("addStep");
@@ -145,37 +146,38 @@ document.addEventListener("DOMContentLoaded", function (){
 
     button.addEventListener("click", function() {
     
+        //Agrupacion de los elementos del paso
         const container = document.createElement("div");
 
-        //
+        //Creamos el elemento de subida de imagen mediante el template declarado en el html
         const template = document.getElementById("imageUploadTemplate");
         const clone = template.content.cloneNode(true);
-
         const wrapper = clone.querySelector(".image-wrapper");
 
+        //Que sea invisible
         wrapper.querySelector(".empty_image").classList.add("d-none");
-
+        //Le damos un index para relacionarlo con el controllador de receta
         wrapper.querySelector("input").name = "step" + counter;
 
-        //Creamos un elemento de la lista
+        //Creamos el cuadro de texto para el paso a seguir
         const newElement = document.createElement("li");
         const stepDescription = document.createElement("input");
+
         stepDescription.name = "steps";
         stepDescription.type = "text";
+
         stepDescription.classList.add("title_m");
         stepDescription.classList.add("border-0");
         stepDescription.classList.add("text-left");
 
-        const buttonImage = document.createElement("button");
-
-        buttonImage.classList.add("category_item");
-
-        buttonImage.textContent = "Añadir imagen";
-
-        buttonImage.type = "button";
-
-        //Hacemos que dicho elemento pueda ser editable con un texto
+        //Escribimos un texto como placeholder
         stepDescription.dataset.placeholder = "Escribe el paso a seguir...";
+
+        //Creamos el boton para añadir una imagen
+        const buttonImage = document.createElement("button");
+        buttonImage.classList.add("category_item");
+        buttonImage.textContent = "Añadir imagen";
+        buttonImage.type = "button";
 
         //Anyadimos los elementos al contenedor de paso
         container.appendChild(wrapper);
@@ -188,9 +190,10 @@ document.addEventListener("DOMContentLoaded", function (){
         
         newElement.focus();
 
+        //Aumentamos el contador para el siguiente paso
         counter++;
 
-        //Permitimos al usuario la opcion de subir una imagen.
+        //Permitimos al usuario la opcion de subir una imagen al quitar la clase que esconde el input de subir imagem
         buttonImage.addEventListener("click", function() {
 
             wrapper.querySelector(".empty_image").classList.remove("d-none");
