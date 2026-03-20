@@ -24,6 +24,7 @@ import jakarta.transaction.Transactional;
 
 import java.io.*;
 import java.util.Map;
+import java.util.List;
 
 @Controller
 @RequestMapping("/recipe")
@@ -87,6 +88,15 @@ public class RecipeController {
         
     }
 
+    // Cargar recetas
+    @GetMapping({"", "/"})
+    public String showRecipes(Model model) {
+        // Se piden todas las recetas a la base de datos
+        List<Recipe> recipes = entityManager.createQuery("SELECT r FROM Recipe r", Recipe.class).getResultList();
+        model.addAttribute("recipes", recipes);
+        return "recipe"; // Redirige a recipe.html
+    }
+
    /**
    * Uploads a profile pic for a user id
    * 
@@ -118,7 +128,7 @@ public class RecipeController {
 
                 if(entry.getKey().equals("cover") || entry.getKey().startsWith("step")){
                     //Nos creamos la ruta en la que se va a guardar la fotografia
-                    File f = localData.getFile("recipe", "" + id + "_" + entry.getKey() + ".jpg");
+                    File f = localData.getFile("../src/main/resources/static/img/recipes", "" + id + "_" + entry.getKey() + ".jpg");
 
                     if (allParams.get(entry.getKey()).isEmpty()) {
                         log.info("failed to upload photo: emtpy file?");
