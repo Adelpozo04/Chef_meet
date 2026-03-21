@@ -27,6 +27,9 @@ public class Ingredient implements Transferable<Ingredient.Transfer>  {
     private String name;
 
     @Column(nullable = false)
+    private String quantity;
+
+    @Column(nullable = false)
     private String[] allergens;
 
     // Conexiones entre las distintas tablas de la base de datos.
@@ -40,6 +43,7 @@ public class Ingredient implements Transferable<Ingredient.Transfer>  {
         private long id;
         private String[] allergens;
         private String recipes;
+        private String quantity;
     }
     
     @Override
@@ -51,7 +55,7 @@ public class Ingredient implements Transferable<Ingredient.Transfer>  {
             recips.append(r.getTitle()).append(", ");
         } 
 
-        return new Transfer(name, id, allergens, recips.toString());
+        return new Transfer(name, id, allergens, recips.toString(), quantity);
     }
 
     @Override

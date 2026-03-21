@@ -99,16 +99,27 @@ document.addEventListener("DOMContentLoaded", function (){
         dropdown.addEventListener("change", function() {
             //Si quiero el texto y no el value hay que usar select.options[select.selectedIndex].text;
             const selectedOption = dropdown.options[dropdown.selectedIndex];
-            newIndex.textContent = selectedOption.text;
+
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "ingredientIds";
+            hiddenInput.value = selectedOption.value;
+
+            newIndex.innerHTML = ""; // limpia
+
+            const text = document.createElement("p");
+            text.textContent = selectedOption.text;
+
+            newIndex.appendChild(text);
+            newIndex.appendChild(hiddenInput);
+            newIndex.appendChild(textAmount);
             
             dropdown.remove();
 
-            newIndex.append(textAmount);
-            
         });
 
-    })
-})
+    });
+});
 
 //Anyadir para los pasos
 document.addEventListener("DOMContentLoaded", function (){

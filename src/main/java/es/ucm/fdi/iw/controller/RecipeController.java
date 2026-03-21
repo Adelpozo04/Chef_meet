@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.ucm.fdi.iw.LocalData;
+import es.ucm.fdi.iw.model.Ingredient;
 import es.ucm.fdi.iw.model.Recipe;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
@@ -24,6 +25,7 @@ import jakarta.transaction.Transactional;
 
 import java.io.*;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -51,6 +53,7 @@ public class RecipeController {
             @ModelAttribute Recipe recipe,
             @ModelAttribute User edited,
             @RequestParam Map<String, MultipartFile> allParams,
+            @RequestParam List<Long> ingredientIds,
             Model model,
             HttpSession session) {
 
@@ -74,6 +77,17 @@ public class RecipeController {
         entityManager.persist(recipe);
         entityManager.flush();
 
+        List<Ingredient> ingredientList = new ArrayList<>();
+
+        for (Long id : ingredientIds) {
+            Ingredient ing = entityManager.find(Ingredient.class, id);
+            if (ing != null) {
+                ingredientList.add(ing);
+            }
+        }
+
+        recipe.setIngredients(ingredientList);
+
         try{
             setPic(allParams, recipe.getId(), null, session, model);
         }
@@ -84,7 +98,7 @@ public class RecipeController {
         log.info("New recipe created by: {}", recipe.getAuthor().getUsername());
         log.info("New recipe created with title: {}", recipe.getTitle());
         log.info("New recipe created with description: {}", recipe.getSteps()[0]);
-        return "recipe";
+        return "redirect:/recipe";
         
     }
 
