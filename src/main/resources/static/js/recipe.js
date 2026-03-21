@@ -105,6 +105,14 @@ document.addEventListener("DOMContentLoaded", function (){
             hiddenInput.name = "ingredientIds";
             hiddenInput.value = selectedOption.value;
 
+            const hiddenQuantity = document.createElement("input");
+            hiddenQuantity.type = "hidden";
+            hiddenQuantity.name = "quantities";
+
+            textAmount.addEventListener("input", function () {
+                hiddenQuantity.value = textAmount.textContent.trim();
+            });
+
             newIndex.innerHTML = ""; // limpia
 
             const text = document.createElement("p");
@@ -112,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function (){
 
             newIndex.appendChild(text);
             newIndex.appendChild(hiddenInput);
+            newIndex.appendChild(hiddenQuantity);
             newIndex.appendChild(textAmount);
             
             dropdown.remove();

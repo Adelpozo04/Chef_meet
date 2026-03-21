@@ -49,10 +49,10 @@
         <div>
 
             <h3>Ingredientes</h3>
-            <ul th:each="ingredient, iterStat : ${recipe.ingredients}" id="ingredientsList">
+            <ul th:each="ingredient, iterStat : ${recipe.recipeIngredients}" id="ingredientsList">
 
                 <li class="mb-3">                    
-                    <p th:text="${ingredient.name} + ' ' + ${ingredient.quantity}"></p> 
+                    <p th:text="${ingredient.ingredientUsed.name} + ' ' + ${ingredient.quantity}"></p> 
                 </li>
 
             </ul>

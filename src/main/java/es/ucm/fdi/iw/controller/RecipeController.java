@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.ucm.fdi.iw.LocalData;
 import es.ucm.fdi.iw.model.Ingredient;
+import es.ucm.fdi.iw.model.IngredientInRecipe;
 import es.ucm.fdi.iw.model.Recipe;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
@@ -54,6 +55,7 @@ public class RecipeController {
             @ModelAttribute User edited,
             @RequestParam Map<String, MultipartFile> allParams,
             @RequestParam List<Long> ingredientIds,
+            @RequestParam List<String> quantities,
             Model model,
             HttpSession session) {
 
@@ -77,16 +79,29 @@ public class RecipeController {
         entityManager.persist(recipe);
         entityManager.flush();
 
-        List<Ingredient> ingredientList = new ArrayList<>();
+        //Nos creamos una lista de ingredientes usados en la receta
+        List<IngredientInRecipe> list = new ArrayList<>();
 
-        for (Long id : ingredientIds) {
-            Ingredient ing = entityManager.find(Ingredient.class, id);
-            if (ing != null) {
-                ingredientList.add(ing);
-            }
+        //Iteramos sobre los ingredientes y la cantidad de cada uno para crear los IngredientInRecipe necesarios para la receta
+        for (int i = 0; i < ingredientIds.size(); i++) {
+
+            //Sacamos el ingrediente segun el id
+            Ingredient ing = entityManager.find(Ingredient.class, ingredientIds.get(i));
+
+            //Nos creamos un ingrediente de receta
+            IngredientInRecipe ri = new IngredientInRecipe();
+
+            //Le asignamos sus valores
+            ri.setRecipeUsed(recipe);
+            ri.setIngredientUsed(ing);
+            ri.setQuantity(quantities.get(i));
+
+            //Lo anyadimos a la lista
+            list.add(ri);
         }
 
-        recipe.setIngredients(ingredientList);
+        //Le pasamos la lista a la receta
+        recipe.setRecipeIngredients(list);
 
         try{
             setPic(allParams, recipe.getId(), null, session, model);

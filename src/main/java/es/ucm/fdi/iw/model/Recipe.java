@@ -34,8 +34,8 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     private String[] steps;
 
     // Conexiones entre las distintas tablas de la base de datos.
-    @ManyToMany
-    private List<Ingredient> ingredients = new ArrayList<>();
+    @OneToMany(mappedBy = "recipeUsed", cascade = CascadeType.ALL)
+    private List<IngredientInRecipe> recipeIngredients = new ArrayList<>();
 
     @ManyToOne
     private User author;
@@ -56,8 +56,8 @@ public class Recipe implements Transferable<Recipe.Transfer> {
 
         StringBuilder ingr = new StringBuilder();
 
-        for (Ingredient i : ingredients) {
-            ingr.append(i.getName()).append(", ");
+        for (IngredientInRecipe i : recipeIngredients) {
+            ingr.append(i.getIngredientUsed().getName()).append(", ");
         } 
 
         return new Transfer(title, time, difficulty, steps, ingr.toString(), id);
