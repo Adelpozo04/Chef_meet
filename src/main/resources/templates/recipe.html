@@ -26,7 +26,7 @@
         <section class="cards_list">
             <div class="card_item" th:each="recip: ${recipes}" 
             th:attr="category=${session.u != null and recip.author != null and recip.author.id == session.u.id ? 'own' : 'none'}">
-                <a th:href="@{/recipe/{id}(id=${recip.id})}" class="card_link">
+                <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
                     <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" alt="Imagen de la receta">
                     <span class="card_footer" th:text="${recip.title}">Título</span>
                 </a>

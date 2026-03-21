@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{fragments/head :: header}" />
+    <title>IW: Informacion de Receta</title>
+    <link rel="stylesheet" th:href="@{/css/custom.css}" href="/css/custom.css"
+        type="text/css" />
+</head>
+
+<body class="d-flex flex-column h-100">
+    <header th:replace="~{fragments/nav.html :: nav}"></header>
+
+    <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
+
+
+
+        <!--Apartado principal principal de la receta-->
+        <div class="d-flex flex-column align-items-center">
+
+            <!-- Titulo -->
+            <h1 th:text="${recipe.title}" class="title_xxl border-0 text-center"></h1>
+
+            <!-- Imagen de vista previa -->
+            <div>
+                <img class="main_image" th:src="@{/img/recipes/{id}_cover.jpg(id=${recipe.id})}" alt="Imagen de la receta">
+            </div>        
+            
+        </div>
+
+        <div>
+            <h3>Datos Generales</h3>
+
+            <div for="time" class="d-flex flex-row ml-3">
+                <p th:text="'Tiempo de preparación: ' + ${recipe.time}"></p>
+            </div>
+
+            <div for="difficulty" class="d-flex flex-row">
+                <p th:text="'Nivel de dificultad: ' + ${recipe.difficulty}"></p>
+            </div>
+
+        </div>
+
+        <!--Ingredientes de la receta-->
+        
+
+        <!--Pasos para elaborar la receta-->
+            <div>
+                <h3>Elaboración</h3>
+                <ol th:each="step, iterStat : ${recipe.steps}" id="stepsList">
+
+                    <li class="mb-3">
+                        <img class="main_image" 
+                        th:src="@{/img/recipes/{id}_step{index}.jpg(id=${recipe.id}, index=${iterStat.index})}" 
+                        alt="Imagen de la receta">
+                        
+                        <p th:text="${step}"></p> 
+                    </li>
+
+                </ol>
+
+            </div>
+        
+
+    </main>
+    
+    <th:block th:replace="~{fragments/footer.html :: footer}" />
+</body>
+
+</html>
