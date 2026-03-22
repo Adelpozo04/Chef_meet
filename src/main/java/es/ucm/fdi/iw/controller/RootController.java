@@ -78,6 +78,7 @@ public class RootController {
         User u = (User) session.getAttribute("u");
         if(u != null) {
             // Consulta a la base de datos para obtener las reservas y eventos del usuario, ordenados alfabeticamente
+            // En la tabla de reservas busca todas las que pertenezcan al usuario con este ID y obtiene el evento, devolviendo una lista de objetos Event
             List<Event> myEvents = entityManager.createQuery(
                 "SELECT r.event FROM Reserve r WHERE r.attendee.id = :userId ORDER BY r.event.title ASC", Event.class)
                 .setParameter("userId", u.getId())
