@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.IOException;
+import jakarta.validation.Valid;
 
 
 @Controller
@@ -55,11 +57,17 @@ public class EventController {
     @Transactional
     @PostMapping("/create")
     public String createEvent(
-        @ModelAttribute Event event,
+        @Valid @ModelAttribute Event event,
+        BindingResult result,
         @RequestParam("photo") MultipartFile photo,
         Model model, // para poder mandar mensajes de error al HTML
         HttpSession session) {
             
+            // Comprobar si hay errores en los datos del evento
+            if(result.hasErrors()) {
+                log.warn("Errores de validacion en el evento: {}", result.getAllErrors());
+                return "event/create";
+            }
             // Validar imagen
             if(!photo.isEmpty()) {
                 // Verificar el tipo de archivo

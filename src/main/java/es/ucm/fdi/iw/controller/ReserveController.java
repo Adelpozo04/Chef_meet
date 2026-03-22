@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -21,8 +22,8 @@ public class ReserveController {
     @Autowired
     private EntityManager entityManager;
 
-    @GetMapping("/reserve")
-    public String showReservePage(@RequestParam long id, Model model) {
+    @GetMapping("/reserve/{id}")
+    public String showReservePage(@PathVariable long id, Model model) {
         // Buscar el evento en la base de datos usando el id que viene en la url
         Event event = entityManager.find(Event.class, id);
 

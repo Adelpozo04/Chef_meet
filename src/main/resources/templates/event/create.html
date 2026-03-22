@@ -27,7 +27,8 @@
         <form th:action="@{/event/create}" th:object="${event}" method="post" class="mt-4" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="title" class="form-label">Título del evento(*)</label>
-                <input th:field="*{title}" type="text" class="form-control" required>
+                <input th:field="*{title}" type="text" class="form-control" th:classappend="${#fields.hasErrors('title')}? 'is-invalid' : ''" required>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
             </div>
 
             <div class="mb-4">
@@ -38,22 +39,26 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="date" class="form-label">Fecha y hora(*)</label>
-                    <input th:field="*{date}" type="datetime-local" class="form-control" required>
+                    <input th:field="*{date}" type="datetime-local" class="form-control" th:classappend="${#fields.hasErrors('date')}? 'is-invalid' : ''" required>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
                 </div>
                 <div class="col-md-6">
                     <label for="location" class="form-label">Ubicación(*)</label>
-                    <input th:field="*{location}" type="text" class="form-control" required>
+                    <input th:field="*{location}" type="text" class="form-control" th:classappend="${#fields.hasErrors('location')}? 'is-invalid' : ''" required>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></div>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="price" class="form-label">Precio (€)(*)</label>
-                    <input th:field="*{price}" type="number" step="0.01" class="form-control" min="0" required>
+                    <input th:field="*{price}" type="number" step="0.01" class="form-control" min="0" th:classappend="${#fields.hasErrors('price')}? 'is-invalid' : ''" required>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
                 </div>
                 <div class="col-md-4">
                     <label for="capacity" class="form-label">Aforo máximo(*)</label>
-                    <input th:field="*{capacity}" type="number" class="form-control" min="1" required>
+                    <input th:field="*{capacity}" type="number" class="form-control" min="1" th:classappend="${#fields.hasErrors('capacity')}? 'is-invalid' : ''" required>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></div>
                 </div>
                 <div class="col-md-4">
                     <label for="theme" class="form-label">Temática</label>
@@ -63,7 +68,8 @@
 
             <div class="mb-3">
                 <label for="description" class="form-label">Descripción(*)</label>
-                <textarea th:field="*{description}" class="form-control" rows="3" required></textarea>
+                <textarea th:field="*{description}" class="form-control" rows="3" th:classappend="${#fields.hasErrors('description')}? 'is-invalid' : ''" required></textarea>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
             </div>
 
             <div class="form-check mb-4">
