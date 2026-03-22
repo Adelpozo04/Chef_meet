@@ -61,8 +61,8 @@ public class ReserveController {
             entityManager.flush();
         }
 
-        // Redirigir al perfil del usuario 
-        return "redirect:/account";
+        // Redirigir al perfil del usuario a la pestaña de mis eventos
+        return "redirect:/account?tab=events";
     }
 }
 

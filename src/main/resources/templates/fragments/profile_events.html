@@ -3,6 +3,17 @@
 <body>
     <div th:fragment="events">
     <h2>Mis eventos</h2>
-     <p>Aún no te has apuntado a ningún evento.</p>
+     <p th:if="${#lists.isEmpty(myEvents)}">Aún no te has apuntado a ningún evento.</p>
+
+    <!-- Cards lista de eventos -->
+                <section class="cards_list" th:unless="${#lists.isEmpty(myEvents)}">
+                    <div class="card_item" th:each="ev: ${myEvents}">
+                        <a th:href="@{/reserve(id=${ev.id})}" class="card_link">
+                            <img th:src="@{${ev.imagePath != null ? ev.imagePath: '/img/events/default.jpg'}}" alt="Imagen del evento">
+                            <span class="card_footer" th:text="${ev.title}">Título</span>
+                        </a>
+                    </div>
+                </section>
     </div>
 </body>
+</html>

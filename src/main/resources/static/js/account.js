@@ -1,8 +1,9 @@
-// FUNCIONALIDAD: Cambio de pestañas de opciones en el perfil
+// FUNCIONALIDAD: Cambio de pestañas de opciones en el perfil y apertura de estas por URL
 document.addEventListener('DOMContentLoaded', () => {
     const options = document.querySelectorAll('.option_item');
     const contents = document.querySelectorAll('.view_content');
 
+    // Comportamiento de los clics
     options.forEach(option => {
         option.addEventListener('click', (e) => {
             e.preventDefault(); // Evitar que el enlace recargue la pagina
@@ -20,7 +21,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if(targetView) {
                 targetView.classList.remove('d-none');
+
+                history.pushState(null, '', '?tab=' + targetId);
             }
         });
     });
+
+    // Abrir una pestaña especifica si viene en la URL
+    // Leer los parametros de la URL
+    const params = new URLSearchParams(window.location.search);
+    const tabName = params.get('tab');
+
+    if(tabName) {
+        // Si existe, busca el boton de esta pestaña en el menu lateral y hace clic en el
+        const targetTab = document.querySelector(`.option_item[option="${tabName}"]`);
+        if(targetTab) {
+            targetTab.click();
+        }
+    }
 });

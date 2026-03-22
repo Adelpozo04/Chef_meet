@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.persistence.EntityManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import es.ucm.fdi.iw.model.User;
+import es.ucm.fdi.iw.model.Event;
 
 /**
  * Non-authenticated requests only.
@@ -61,10 +66,26 @@ public class RootController {
         return "event";
     }*/
 
+    @Autowired
+    private EntityManager entityManager;
+
     @GetMapping("/account")
-    public String account(Model model, HttpServletRequest request) {
+    public String account(Model model, HttpSession session, HttpServletRequest request) {
         boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
         model.addAttribute("loginError", error);
+
+        // Obtener el usuario de la sesion
+        User u = (User) session.getAttribute("u");
+        if(u != null) {
+            // Consulta a la base de datos para obtener las reservas y eventos del usuario, ordenados alfabeticamente
+            List<Event> myEvents = entityManager.createQuery(
+                "SELECT r.event FROM Reserve r WHERE r.attendee.id = :userId ORDER BY r.event.title ASC", Event.class)
+                .setParameter("userId", u.getId())
+                .getResultList();
+            
+                // Pasar la lista ordenada al HTML
+                model.addAttribute("myEvents", myEvents);
+        }
         return "account";
     }
 

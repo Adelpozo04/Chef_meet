@@ -41,7 +41,7 @@
                     </div>
                 </th:block>
 
-                <!-- Fotos lista de eventos -->
+                <!-- Cards lista de eventos -->
                 <section class="cards_list">
                     <div class="card_item" th:each="ev: ${events}" 
                     th:attr="category=${session.u != null and (ev.organizer.id == session.u.id or ev.attendees.![attendee.id].contains(session.u.id)) ? 'own' : 'all'}">
