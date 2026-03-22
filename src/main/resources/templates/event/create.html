@@ -18,6 +18,12 @@
             </svg>
         </a>
         <h2>Crear nuevo evento</h2>
+        <!-- Alerta de error de imagen -->
+        <div th:if="${errorImage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>¡Formato no válido!</strong> Solo se permiten imágenes en formato JPG, JPEG o PNG.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
         <form th:action="@{/event/create}" th:object="${event}" method="post" class="mt-4" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="title" class="form-label">Título del evento(*)</label>
@@ -26,7 +32,7 @@
 
             <div class="mb-4">
                 <label for="photo" class="form-label"> Foto del evento</label>
-                <input type="file" name="photo" id="photo" class="form-control" accept="image/*">
+                <input type="file" name="photo" id="photo" class="form-control" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
             </div>
             
             <div class="row mb-3">

@@ -19,6 +19,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.IOException;
+
 
 @Controller
 @RequestMapping("/event")
@@ -50,8 +56,21 @@ public class EventController {
     @PostMapping("/create")
     public String createEvent(
         @ModelAttribute Event event,
+        @RequestParam("photo") MultipartFile photo,
+        Model model, // para poder mandar mensajes de error al HTML
         HttpSession session) {
             
+            // Validar imagen
+            if(!photo.isEmpty()) {
+                // Verificar el tipo de archivo
+                String contentType = photo.getContentType();
+
+                if(contentType == null ||  (!contentType.equals("image/jpeg") && !contentType.equals("image/png"))){
+                    // Mandar señal de error al HTML y recargar formulario
+                    model.addAttribute("errorImage", true);
+                    return "event/create";
+                }
+            }
             // Obtener el usuario logueado de la sesion
             User organizer = (User) session.getAttribute("u");
             organizer = entityManager.find(User.class, organizer.getId());
@@ -62,6 +81,38 @@ public class EventController {
             // Guardar en la base de datos
             entityManager.persist(event);
             entityManager.flush();
+
+            // Guardar la imagen si el usuario ha subido alguna
+            if(!photo.isEmpty()) {
+                try {
+                    String contentType = photo.getContentType();
+                    // Asignar la extension correcta segun el tipo
+                    String extension = contentType.equals("image/png") ? ".png" : ".jpg";
+                    // Nombrar la foto usando el id del evento
+                    String fileName = "ev_" + event.getId() + extension;
+
+                    // Asegurar de que la carpeta existe fisicamente, si no la crea
+                    Path directory = Paths.get("src/main/resources/static/img/events/");
+                    if(!Files.exists(directory)) {
+                        Files.createDirectories(directory);
+                    }
+                    // Ruta final
+                    Path path = directory.resolve(fileName);
+
+                    // Guardar el archivo
+                    Files.write(path, photo.getBytes());
+
+                    // Actualizar el evento con la ruta para que el HTML sepa donde buscarla
+                    event.setImagePath("/img/events/" + fileName);
+
+                    // Forzar a la base de datos a guardar esta actualizacion
+                    entityManager.merge(event);
+                    entityManager.flush();
+                    // Al usar @Transactional, JPA guarda este cambio final en la base de datos automaticamente
+                } catch (IOException e) {
+                    log.error("Error al guardar la imagen del evento", e);
+                }
+            }
 
             log.info("Nuevo evento creado por {}: {}", organizer.getUsername(), event.getTitle());
 
