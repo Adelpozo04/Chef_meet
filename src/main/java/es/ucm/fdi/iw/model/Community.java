@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @NamedQueries({
     @NamedQuery(name = "Community.selectAll", query = "SELECT c FROM Community c"),
     @NamedQuery(name = "Community.selectWhereMeMember", query = "SELECT c FROM Community c WHERE c.owner.id = :userId"),
-    //@NamedQuery(name = "", query = "")
+    @NamedQuery(name = "Community.delete", query = "DELETE FROM Community c WHERE c.id = :id")
 })
 public class Community {
 
