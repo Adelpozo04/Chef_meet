@@ -161,4 +161,4 @@ En base a los filtros seleccionados, deberán poder verse todos los datos que sa
 
 
 ## Estructura base de datos
-![Base de datos](/bd.png)
+![Base de datos](/bd.jpg)
