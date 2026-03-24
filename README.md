@@ -12,7 +12,7 @@ En la plataforma existen los siguientes roles:
 Gestiona el alta de los usuarios y supervisa los reportes de comportamiento inapropiado. Modera las comunidades públicas y tiene capacidad de banear usuarios o eliminar contenido ofensivo para garantizar una plataforma segura. 
 
 - <strong>Usuario estándar:</strong>
-Debe estar registrado y dado de alta. Gestiona su perfil público con nickname, foto, una pequeña descripción, logros y valoración global. Crea o se une a comunidades y eventos, y comparte y valora otras recetas y usuarios.
+Debe estar registrado y dado de alta. Gestiona su perfil público con nickname, foto y una pequeña descripción. Crea o se une a comunidades y eventos, y comparte y valora otras recetas y usuarios.
 
 - <strong>Usuario inivitado:</strong>
 Su acceso es solo de lectura. Pueden navegar por la plataforma y visualizar recetas, grupos y eventos públicos sin poder interactuar con ellos.
@@ -54,7 +54,7 @@ Esta característica es un _nice to have_, será una pequeña opción en la cual
 Para subir la receta es necesario pulsar un botón al final de esta. Dicho botón guarda automáticamente la receta en tu perfil.
 
 > [Cosas funcionales]
-> Actualmente estas las siguientes caracteristicas ya implementadas y funcionales:
+> Actualmente las siguientes caracteristicas ya están implementadas y funcionales:
 > - Vista de receta pudiendo observar las creadas por el usuario o usuarios externos
 > - Posibilidad de crear una receta mediante la introduccion de TITULO, IMAGEN COVER, DESCRIPCION, INGREDIENTES, PASOS E IMAGENES DE LOS PASOS.
 > - Creacion de una base de datos con distintos ingredientes los cuales marcan tambien las alergias que estos introducen.
@@ -143,11 +143,28 @@ Los eventos están representados con tarjetas (diseño aún por definir)
 que incluyen información cómo el nombre, temática, fecha, localización, precio, número máximo de participantes y una imagen.
 También está el botón para crear un evento, donde aparecerá una pestaña con la información a rellenar, que es la misma que aparece en las tarjetas.
 
+> [Cosas funcionales]
+> Actualmente las siguientes caracteristicas ya están implementadas y funcionales:
+> - Vista de eventos pudiendo filtrar todos o los que ya está apuntado el usuario.
+> - Posibilidad de crear una evento mediante la introduccion de TITULO, IMAGEN COVER, FECHA, HORA, PRECIO, UBICACION, AFORO, TEMATICA y DESCRIPCION.
+
+> [Cosas que faltan]
+> Actualmente faltan las siguientes implementaciones de la vista de eventos:
+> - Barra de búsqueda funcional.
+> - El mapa interactivo con la ubicación de los eventos.
+> - Diseño definitivo de las tarjetas.
+> - La conexión de eventos asociados a comunidades.
+> - Añadir tags a los eventos.
+
+
 ### Vista de reserva y pago de evento
 ![Eventos](/imgReadMe/pagos.png)
 Cuando el usuario interactúe con una de estas tarjetas, se le lleva a otra ventana donde aparece la información del evento más detallada y donde el usuario puede reservar una plaza y, si se debe, realizar el pago para asistir.
 
-Tras pulsar el botón de reservar, se abre una pasarela de pago cifrada donde el usuario introduce sus datos bancarios de forma protegida. Una vez validado el pago, se muestra un mensaje de éxito y el evento se incluye a "Mis eventos".
+Tras pulsar el botón de reservar, se abre una simulación de una pasarela de pago cifrada. Una vez validado el pago, se muestra un mensaje de éxito, el evento se incluye a "Mis eventos" y se redirige al usuario a la pestaña de mis eventos dentro del perfil.
+
+> [Cosas funcionales]
+> - Vista completa mostrando toda la información del evento y con un botón con la capacidad de reservar una plaza y simular la pasarela de pago.
 
 ## Vista de perfil
 ![Perfil](/imgReadMe/perfil.png)
@@ -155,17 +172,24 @@ La vista de perfil está estructurada mediante un selector lateral. Dependiendo 
 
 - <strong>Datos personales:</strong> Contiene información del usuario como el nombre, la foto del perfil, una breve presentación y las Estrellas Michelin.
 
+> Pendiente de implementar.
+
 - <strong>Mis recetas:</strong> Contiene todas las recetas que el usuario haya compartido en la plataforma, con posibilidad de organizarlas como considere.
+
+> Pendiente de implementar.
 
 - <strong>Mis comunidades:</strong> Contiene las comunidades a las que pertenece el usuario para poder acceder a ellas más rápidamente.
 
-- <strong>Mis eventos:</strong> Contiene las entradas de los eventos a los que se ha apuntado el usuario.
+> Pendiente de implementar.
 
-- <strong>Personalización:</strong>
+- <strong>Mis eventos:</strong> Contiene las entradas de los eventos a los que se ha apuntado el usuario.
+> Implementada.
 
 - <strong>Reportar:</strong> Permite enviar quejas y reportes directamente al administrador.
+> Pendiente de implementar.
 
 - <strong>Log out:</strong> Para cerrar sesión.
+> Pendiente de implementar.
 
 ## Vista de administrador
 ![Vista administrador](/imgReadMe/admin.png)
@@ -180,6 +204,7 @@ En base a los filtros seleccionados, deberán poder verse todos los datos que sa
 - <strong>Comunidades:</strong> Permitirá al administrador buscar comunidades según su identificador único, nombre de comunidad, nombre de usuario o identificador del creador, tamaño mínimo y máximo de usuarios asociados a esta y país de esta comunidad.
 - <strong>Eventos:</strong> Permitirá al administrador buscar eventos por su identificador único, nombre de evento, país en el que tiene lugar y su fecha de comienzo.
 
+> Pendiente de implementar.
 
 ## Estructura base de datos
 ![Base de datos](/bd.jpg)
