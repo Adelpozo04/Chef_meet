@@ -29,15 +29,14 @@ La vista de receta se puede usar tanto para crear una receta como para verla o e
 El usuario propietario puede crear o editar la receta, para ello debe introducir un título arriba de esta. Tras esto, tiene un espacio para subir una imagen que se usará como representación de la receta en el formato tarjeta.
 
 - <strong>Descripción:</strong>
-Aqui se deben indicar puntos importantes de cada receta, siendo estos el tiempo de elaboración, el tiempo de cocción y
-el número de raciones. Estos datos son obligatorios y aparecen en la descripción de las recetas.
+Aqui se deben indicar puntos importantes de cada receta, siendo estos el tiempo de elaboración y la dificultad de la receta. Estos datos son obligatorios y aparecen en la descripción de las recetas.
 
 - <strong>Ingredientes:</strong>
     - Para añadir los ingrendientes, el usuario debe pulsar un botón de _add_ cada vez que quiera introducir uno nuevo.
 
     - El ingrediente debe ser escrito y acompañado en otro espacio distinto de una cantidad a añadir. En caso de no escribir nada, dicho espacio de ingrediente será eliminado automaticamente.
 
-    - En un futuro y como un _nice to have_, se integrará una base de datos con ingredientes comunes. Esos podrán seleccionarse mediante un _dropdown_ con barra de búsqueda. Vinculado a este, habrá otro _dropdown_ con las unidades de medida típicas del ingrediente, siendo obligatorio seleccionar una.
+    - En un futuro y como un _nice to have_, se integrará una base de datos con ingredientes comunes. Esos podrán seleccionarse mediante un _dropdown_ con barra de búsqueda.
 
 > [!NOTE]
 > El botón de añadir debe salir desde el último ingrediente añadido, para que el usuario no deba subir arriba del todo para añadir otro*
@@ -45,16 +44,38 @@ el número de raciones. Estos datos son obligatorios y aparecen en la descripci�
 - <strong>Elaboración:</strong>
 De forma similar que en el apartado anterior: el usuario puede añadir distintos pasos donde describa mediante un texto la elaboración de la receta.
 
-De forma similar, en cada uno de los pasos aparece un botón debajo indicando la posibilidad de subir una imagen o vídeo como acompañamiento a la descripción.
+> [!NOTE]
+> De forma similar, en cada uno de los pasos aparece un botón debajo indicando la posibilidad de subir una imagen o vídeo como acompañamiento a la descripción.
 
 - <strong>Calorías:</strong>
-Esta característica es un _nice to have_, será una pequeña opción en la cual el usuario podrá indicar las calorías de cada uno de los ingredientes (excepto si se agregaron con el _dropdown_, ya que aquí se pondrá las calorías automáticamente) y al finalizar la página hará un cálculo automático de calorías por ración.
+Esta característica es un _nice to have_, será una pequeña opción en la cual el usuario podrá indicar las calorías que tiene su receta en total.
 
 - <strong>Subida de receta:</strong>
-Para subir la receta es necesario pulsar un botón al final de esta. Dicho botón guarda automáticamente la receta en tu perfil y aparece un _pop-up_ dando la opción de enviar la receta a alguna de las comunidades a las que perteneces.
+Para subir la receta es necesario pulsar un botón al final de esta. Dicho botón guarda automáticamente la receta en tu perfil.
+
+> [Cosas funcionales]
+> Actualmente estas las siguientes caracteristicas ya implementadas y funcionales:
+> - Vista de receta pudiendo observar las creadas por el usuario o usuarios externos
+> - Posibilidad de crear una receta mediante la introduccion de TITULO, IMAGEN COVER, DESCRIPCION, INGREDIENTES, PASOS E IMAGENES DE LOS PASOS.
+> - Creacion de una base de datos con distintos ingredientes los cuales marcan tambien las alergias que estos introducen.
+> - Creacion de un paso intermedio entre ingredientes y receta que establezca las medidas de cada ingrediente para esa receta en especifico.
+
+
+> [Cosas que faltan]
+> Actualmente faltan las siguientes implementaciones de la vista de la receta:
+> - Poner buscador en dropdown ingredientes
+> - Cambiar botón de añadir peso para que sea más visible
+> - Añadir opción para introducir calorias de la receta
+> - Borrar receta
+> - Poder editar una receta
+> - Barra de búsqueda de tus recetas
+> - Tags de recetas para la exploracion
+> - Poner las alergias al ver las recetas 
+> - Establecer recetas publicas o privadas
+> - Creacion de clase de valoracion
 
 ### Ver receta
-El _layout_ es igual tan solo quitando todos los botones y opciones de personalización
+El _layout_ es igual tan solo quitando todos los botones y opciones de personalización. Tambien en la parte de arriba aparecera una media de la valoracion que le han dado los usuarios a la receta.
 
 ## Vista de comunidades
 En esta vista se diferencia entre la vista donde se pueden explorar todas las comunidades y la vista dentro de una comunidad concreta.
