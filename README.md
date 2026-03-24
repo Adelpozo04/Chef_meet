@@ -137,3 +137,7 @@ En base a los filtros seleccionados, deberán poder verse todos los datos que sa
 - <strong>Recetas:</strong> Permitirá al administrador buscar recetas mediante su identificador único, nombre de receta o ingredientes. Para este último deberían poder seleccionarse varios ingredientes, de tal forma que la búsqueda permita filtrar por recetas que contengan el ingrediente 1, ingrediente 2... Y así, sucesivamente.
 - <strong>Comunidades:</strong> Permitirá al administrador buscar comunidades según su identificador único, nombre de comunidad, nombre de usuario o identificador del creador, tamaño mínimo y máximo de usuarios asociados a esta y país de esta comunidad.
 - <strong>Eventos:</strong> Permitirá al administrador buscar eventos por su identificador único, nombre de evento, país en el que tiene lugar y su fecha de comienzo.
+
+
+## Estructura base de datos
+![Base de datos](/bd.png)
