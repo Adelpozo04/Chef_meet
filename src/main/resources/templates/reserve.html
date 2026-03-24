@@ -27,14 +27,23 @@
                     <!-- Información del evento -->
                     <div class="box-rounded text-center">
                         <p class="mb-1" th:text="'Precio: ' + ${event.price} + '€'"></p>
-                        <p th:text="'Disponibles: ' + ${availableSpots} + '/' + ${event.capacity}"></p>
+                        <p th:text="'Disponibles: ' + ${reservedSpots} + '/' + ${event.capacity}"></p>
+                        
+                        <div th:if="${isAlreadyAttending}" class="alert alert-info py-2 mt-3 mb-0" role="alert">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill me-1" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                            </svg>
+                            Ya tienes plaza reservada
+                        </div>
+                        
+                        
                         <!-- Boton para reservar -->
-                        <form th:action="@{/reserve/confirm}" method="post">
+                        <form th:if="${!isAlreadyAttending}" th:action="@{/reserve/confirm}" method="post" class="mt-3">
                             <input type="hidden" name="eventId" th:value="${event.id}">
                             <button type="submit" class="btn btn-reservar" 
                                     th:disabled="${availableSpots <= 0}"
                                     th:data-price="${event.price}">
-                                Reservar
+                                <span th:text="${availableSpots <= 0 ? 'Evento Completo' : 'Reservar'}"></span>
                             </button>
                         </form>
                     </div>

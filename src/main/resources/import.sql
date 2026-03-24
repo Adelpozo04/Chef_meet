@@ -27,7 +27,7 @@ INSERT INTO event(id, title, description, theme, date, location, price, capacity
 VALUES (next value for gen, 'Evento paella', 'Aprende a cocinar la auténtica paella valenciana paso a paso.', 'España', '2026-03-02 18:00:00', 'FDI UCM Madrid', 5, 20, false, 1, '/img/events/ev_espana.jpg');
 
 INSERT INTO event(id, title, description, theme, date, location, price, capacity, is_private, organizer_id, image_path)
-VALUES (next value for gen, 'Evento pizza', 'Evento exclusivo para miembros de la comunidad italiana.', 'Italiana', '2026-03-14 14:30:00', 'Plaza de España, Madrid', 15, 18, true, 1, '/img/events/ev_italia.jpg');
+VALUES (next value for gen, 'Evento pizza', 'Evento exclusivo para miembros de la comunidad italiana.', 'Italiana', '2026-03-14 14:30:00', 'Plaza de España, Madrid', 15, 1, true, 1, '/img/events/ev_italia.jpg');
 
 INSERT INTO event(id, title, description, theme, date, location, price, capacity, is_private, organizer_id, image_path)
 VALUES (next value for gen, 'Evento sushi', 'Evento exclusivo para miembros de la comunidad japonesa.', 'Asiática', '2026-03-24 20:30:00', 'Callao, Madrid', 25, 10, true, 1, '/img/events/ev_japon.jpg');

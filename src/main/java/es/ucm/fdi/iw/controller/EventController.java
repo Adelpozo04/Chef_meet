@@ -39,7 +39,11 @@ public class EventController {
 
     // Cargar eventos
     @GetMapping({"", "/"})
-    public String showEvents(Model model) {
+    public String showEvents(Model model, @RequestParam(required = false) String error) {
+        // Si la URL trae "?error=full", se le envia la señal al HTML
+        if("full".equals(error)) {
+            model.addAttribute("errorFull", true);
+        }
         // Se piden todos los eventos a la base de datos
         List<Event> events = entityManager.createQuery("SELECT e FROM Event e", Event.class).getResultList();
         model.addAttribute("events", events);

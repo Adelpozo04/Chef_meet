@@ -18,6 +18,11 @@
 
             <h1>Explora eventos</h1>
 
+            <div th:if="${errorFull}" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                <strong>¡Lo sentimos!</strong> El evento al que has intentado apuntarte ya no tiene plazas disponibles.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
             <!-- Barra de busqueda de bootstrap -->
             <div class="row justify-content-center mb-4">
                 <div class="col-md-6">
