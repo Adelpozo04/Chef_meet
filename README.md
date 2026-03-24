@@ -56,6 +56,7 @@ Para subir la receta es necesario pulsar un botón al final de esta. Dicho botó
 ### Ver receta
 El _layout_ es igual tan solo quitando todos los botones y opciones de personalización
 
+
 ## Vista de comunidades
 En esta vista se diferencia entre la vista donde se pueden explorar todas las comunidades y la vista dentro de una comunidad concreta.
 
@@ -72,6 +73,26 @@ Cuando el usuario pulsa la tarjeta de una comunidad entra en esta vista.
 Contiene un título con un fondo de una imagen personalizada como fondo. Dicho texto se esconde cada vez que el usuario haga scroll hacia abajo y aparece cuando hace scroll hacia arriba.
 
 Dentro de esta vista existen tres pestañas con funcionalidades distintas: recetas, miembros y eventos.
+ 
+> [!NOTE]\
+> Implementado:
+> - Creación de comunidades en base a un país, titulo y descripción de comunidad
+> - Filtrar entre comunidades creadas por el usuario y creadas por otros usuarios
+> - Acceder a la vista de una comunidad concreta
+> - Ver los usuarios que formand parte de una comunidad
+> - Unirse y salirse de una comunidad
+
+> [!NOTE]\
+> Por implementar:
+> - Eliminar comunidades como creador de estas. Además de todos los usuarios, recetas, eventos y mensajes asociados a esta
+> - Eliminar comunidades como administrador
+> - Crear/Consultar/Eliminar/Modificar eventos asociados a una comunidad como creador de estas 
+> - Crear/Consultar/Eliminar/Modificar eventos asociados a una comunidad como administrador
+> - Crear/Consultar/Eliminar/Modificar recetas asociadas a una comunidad como miembro 
+> - Crear/Consultar/Eliminar/Modificar recetas asociadas a una comunidad como administrador
+> - Filtrar por comunidades en base al titulo, tipo de gastronomia, pais u otros parámetros
+> - Ver e interactuar con el chat de comunidad
+
 #### Pestaña recetas
 ![Receta](/imgReadMe/comunidad.png)
 
