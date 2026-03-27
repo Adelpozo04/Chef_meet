@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -71,5 +74,15 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     public String toString() {
         return toTransfer().toString();
     }
+
+    public Set<String> getAllergens() {
+    Set<String> allergens = new HashSet<>();
+
+    for (IngredientInRecipe ri : recipeIngredients) {
+        allergens.addAll(Arrays.asList(ri.getIngredientUsed().getAllergens()));
+    }
+
+    return allergens;
+}
 
 }
