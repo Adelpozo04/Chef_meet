@@ -87,6 +87,8 @@ document.addEventListener("DOMContentLoaded", function (){
 
         //Creamos el texto de la cantidad
         const textAmount = document.createElement("p");
+        textAmount.style.backgroundColor = "white";
+        textAmount.style.display = "inline-block";
 
         //Hacemos que dicho elemento pueda ser editable con un texto
         textAmount.contentEditable = true;
