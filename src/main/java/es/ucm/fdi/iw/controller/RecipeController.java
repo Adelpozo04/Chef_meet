@@ -191,5 +191,21 @@ public class RecipeController {
         return "{\"status\":\"photo uploaded correctly\"}";
   
     }
+
+    // Borrar el evento en la base de datos
+    @Transactional
+    @PostMapping("/{id}/delete") 
+    public String deleteEvent(@PathVariable long id) {
+        // Buscar el evento en la base de datos pot su id
+        Recipe recipe = entityManager.find(Recipe.class, id);
+
+        if(recipe != null) {
+            // Eliminar de la base de datos
+            entityManager.remove(recipe);
+            log.info("El administrador ha borrado la receta: {}", recipe.getTitle());
+        }
+
+        return "redirect:/recipe";
+    } 
     
 }
