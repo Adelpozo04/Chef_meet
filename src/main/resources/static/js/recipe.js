@@ -42,10 +42,12 @@ document.addEventListener("change", function (event){
 //Obtenemos los ingredientes mediante una consulta asincrona a la base de datos
 let ingredients = [];
 
-document.addEventListener("DOMContentLoaded", async function () {
+async function loadIngredients() {
+
     const response = await fetch("ingredients");
     ingredients = await response.json();
-});
+    
+}
 
 
 //Anyadir para los ingredientes
@@ -56,12 +58,12 @@ document.addEventListener("DOMContentLoaded", function (){
 
     let counter = 0;
 
-    button.addEventListener("click", function() {
+    button.addEventListener("click", async function() {
+
+        await loadIngredients();
 
         //Creamos un elemento de la lista
         const newIndex = document.createElement("li");
-
-        //TODO: que los elementos en la lista sean posicionados en columnas.
 
         list.appendChild(newIndex);
 
@@ -69,6 +71,9 @@ document.addEventListener("DOMContentLoaded", function (){
         const dropdown = document.createElement("select");
 
         dropdown.multiple = false;
+
+        console.log(ingredients);
+        console.log(typeof ingredients);
 
         //asignamos los ingredientes al dropdown
         ingredients.forEach(ing => {
@@ -79,8 +84,6 @@ document.addEventListener("DOMContentLoaded", function (){
 
             dropdown.append(option);
         })
-
-        
 
         //Anyadimos el dropdown al nuevo elemento de la lista
         newIndex.append(dropdown);
