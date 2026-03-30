@@ -60,7 +60,7 @@ public class RecipeController {
             HttpSession session) {
 
         if (recipe.getTitle().isBlank() || recipe.getDifficulty().isBlank() || 
-            recipe.getTime().isBlank() || recipe.getCalories().isBlank()) {
+            recipe.getTime().isBlank() || recipe.getCalories().isBlank()){
             model.addAttribute("createError", true);
             log.info("ERROR AL INTENTAR CREAR RECETA");
             return "recipe/create";
