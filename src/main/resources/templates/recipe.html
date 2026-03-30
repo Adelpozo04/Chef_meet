@@ -13,6 +13,17 @@
 
     <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
         
+        <!-- Barra de busqueda de bootstrap -->
+        <div class="row justify-content-center mb-4" id="search-community-bar">
+            <div class="col-md-6">
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Buscar comunidades..." aria-label="Search"/>
+                    <button class="btn btn-busqueda" type="submit">Buscar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Botón para crear receta solo visible para usuarios logueados -->
         <th:block th:if="${u}">
         <div class="explorer_wrapper">
             <div class="category_list">
@@ -21,33 +32,79 @@
         </div>
         </th:block>
 
-        <section class="cards_list">
-            <div class="card_item" th:each="recip: ${recipes}" 
-            th:attr="category=${session.u != null and recip.author != null and recip.author.id == session.u.id ? 'own' : 'none'}">
+        <!-- Lista de recetas del usuario propias -->
+        <details open>
+            <summary class="communities-dropdown">Mis Recetas</summary>
 
-                <div th:if="${recip.publicRecipe || (!recip.publicRecipe && session.u != null && recip.author != null && recip.author.id == session.u.id) || (session.u != null && session.u.hasRole('ADMIN'))}">
+            <section class="cards_list">
+                <div class="card_item" th:each="recip: ${recipes}" 
+                th:attr="category=${session.u != null and recip.author != null and recip.author.id == session.u.id ? 'own' : 'none'}">
 
-                    <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
-                        <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" alt="Imagen de la receta">
-                        <span class="card_footer" th:text="${recip.title}">Título</span>
-                    </a>
+                    <!--Criba de recetas para que solo sean las propias-->
+                    <div th:if="${(session.u != null && recip.author != null && recip.author.id == session.u.id)}">
 
-                    <!-- Botón de eliminar solo visible para el autor o admin -->
-                    <form th:if="${session.u != null && session.u.hasRole('ADMIN')}"
-                            th:action="@{/recipe/{id}/delete(id=${recip.id})}" method="post">
-                        <button type="submit" onclick="return confirm('¿Seguro que quieres borrar esta receta?')"
-                            class="btn btn-danger btn-sm mt-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                            </svg>
-                        </button>
-                    </form> 
+                        <!--Enlace a la informacion de la receta-->
+                        <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
+                            <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" alt="Imagen de la receta">
+                            <span class="card_footer" th:text="${recip.title}">Título</span>
+                        </a>
 
+                        <!-- Botón de eliminar solo visible para el autor o admin -->
+                        <form
+                                th:action="@{/recipe/{id}/delete(id=${recip.id})}" method="post">
+                            <button type="submit" onclick="return confirm('¿Seguro que quieres borrar esta receta?')"
+                                class="btn btn-danger btn-sm mt-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                </svg>
+                            </button>
+                        </form> 
+
+                    </div>
+                    
                 </div>
-                
-            </div>
 
-        </section>
+            </section>
+
+        </details>
+
+        <!-- Lista de recetas publicas de otros usuarios -->
+        <details open>
+            <summary class="communities-dropdown">Otras Recetas</summary>
+
+            <section class="cards_list">
+                <div class="card_item" th:each="recip: ${recipes}" 
+                th:attr="category=${session.u != null and recip.author != null and recip.author.id == session.u.id ? 'own' : 'none'}">
+
+                    <!--Criba de recetas para que solo sean las publicas extenas al usuario o cualquiera si es admin-->
+                    <div th:if="${(recip.publicRecipe && session.u != null && recip.author != null && recip.author.id != session.u.id) || (session.u != null && session.u.hasRole('ADMIN'))}">
+
+                        <!--Enlace a la informacion de la receta-->
+                        <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
+                            <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" alt="Imagen de la receta">
+                            <span class="card_footer" th:text="${recip.title}">Título</span>
+                        </a>
+
+                        <!-- Botón de eliminar solo visible para el autor o admin -->
+                        <form th:if="${session.u != null && session.u.hasRole('ADMIN')}"
+                                th:action="@{/recipe/{id}/delete(id=${recip.id})}" method="post">
+                            <button type="submit" onclick="return confirm('¿Seguro que quieres borrar esta receta?')"
+                                class="btn btn-danger btn-sm mt-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                </svg>
+                            </button>
+                        </form> 
+
+                    </div>
+                    
+                </div>
+
+            </section>
+
+        </details>
+
+
         
     </main>
 
