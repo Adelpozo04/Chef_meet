@@ -33,3 +33,42 @@ document.addEventListener('DOMContentLoaded', () =>{
         });
     }
 });
+
+
+// Funcion para cargar el mapa individual del evento
+function initMapReserve() {
+
+    const mapDiv = document.getElementById("map-reserve");
+    const locationText = document.getElementById("event-location");
+
+    // Parar si no hay mapa o no hay texto de ubicacion
+    if (!mapDiv || !locationText) return;
+
+    // Crear mapa centrado en España 
+    const map = new google.maps.Map(mapDiv, {
+        zoom: 16,
+        center: {lat: 40.4168, lng: -3.7038},
+        disableDefaultUI: true,                 // quitar botones de google
+        zommControl: true                       // dejar botones + y -
+    });
+
+    // Herramienta para convertir textos a coordenadas
+    const geocoder = new google.maps.Geocoder();
+
+    // Pedir a google las coordenadas del lugar
+    geocoder.geocode({ address: locationText.innerText + ", Spain"}, (results, status) => {
+                    if (status === "OK") {
+                        // Centrar el mapa en la coordenada 
+                        map.setCenter(results[0].geometry.location);
+
+                        // Ubicacion marcada en el mapa
+                        new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location
+                        });
+                    } else {
+                        console.warn("Google Maps no ha podido encontrar la ubicacion");
+                        mapDiv.innerHTML = "<p style='padding: 10px; text-align:center; color: #666;'>Mapa no disponible para esta ubicación.</p>";
+                    }
+                });
+}

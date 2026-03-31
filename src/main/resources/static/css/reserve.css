@@ -63,3 +63,11 @@
     border-color:#40b6f1;
     transform: scale(1.1);
 }
+
+#map-reserve {
+    width: 280px;
+    height: 200px;
+    border-radius: 10px;
+    background-color: #eee;
+    border: 1px solid #ddd;
+}

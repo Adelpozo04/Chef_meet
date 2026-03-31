@@ -15,12 +15,17 @@ import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 
 @Controller
 public class ReserveController {
     
     @Autowired
     private EntityManager entityManager;
+
+    // Obtener clave de google maps desde application.properties
+    @Value("${google.maps.key}")
+    private String googleMapsKey;
 
     @GetMapping("/reserve/{id}")
     public String showReservePage(@PathVariable long id, Model model, HttpSession session) {
@@ -49,6 +54,8 @@ public class ReserveController {
         model.addAttribute("availableSpots", availableSpots);
         model.addAttribute("reservedSpots", reservedSpots);
         model.addAttribute("isAlreadyAttending", isAlreadyAttending);
+        // Pasar la API key al HTML
+        model.addAttribute("googleMapsKey", googleMapsKey);
         return "reserve";
     }
 

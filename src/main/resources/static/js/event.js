@@ -105,8 +105,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
 // fetch para peticiones asincronas AJAX para pedir los eventos al endpoint y pintarlos en el mapa
 function initMap() {
+    const mapDiv = document.getElementById("map");
     // Crear mapa centrado en España con un zoom alejado
-    const map = new google.maps.Map(document.getElementById("map"), {
+    const map = new google.maps.Map(mapDiv, {
         zoom: 6,
         center: {lat: 40.463667, lng: -3.74922}, // Centro de la peninsula
     });
