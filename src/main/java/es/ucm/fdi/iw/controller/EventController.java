@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,6 +39,10 @@ public class EventController {
 
     @Autowired
     private EntityManager entityManager;
+
+    // Obtener clave de google maps desde application.properties
+    @Value("${google.maps.key}")
+    private String googleMapsKey;
 
     // Cargar eventos
     @GetMapping({"", "/"})
@@ -77,6 +82,10 @@ public class EventController {
 
         // Todos los eventos
         model.addAttribute("events", allEvents);
+
+        // Pasar la API key al HTML
+        model.addAttribute("googleMapsKey", googleMapsKey);
+        
         return "event"; // Redirige a event.html
     }
     

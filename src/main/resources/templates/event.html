@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}" href="css/custom.css"/>
 
     <script th:src="@{/js/event.js}"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjMc33R5ey6X1h_sH_8XbQiuDWLhVJ28k&callback=initMap"></script>
+    <script async defer th:src="|https://maps.googleapis.com/maps/api/js?key=${googleMapsKey}&callback=initMap|"></script>
 </head>
 
 <body class="d-flex flex-column h-100">
