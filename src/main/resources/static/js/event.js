@@ -101,3 +101,45 @@ document.addEventListener('DOMContentLoaded', ()=> {
         });
     });
 });
+
+
+// fetch para peticiones asincronas AJAX para pedir los eventos al endpoint y pintarlos en el mapa
+function initMap() {
+    // Crear mapa centrado en España con un zoom alejado
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 6,
+        center: {lat: 40.463667, lng: -3.74922}, // Centro de la peninsula
+    });
+
+    // Herramienta para convertir textos a coordenadas
+    const geocoder = new google.maps.Geocoder();
+
+    // Pedir los eventos al servidor java usando fetch
+    fetch('/event/api/all')
+        .then(response => response.json())
+        .then(events => {
+
+            // Comprobar si events es una lista
+            if (!Array.isArray(events)) {
+                console.error("Error: Java no ha devuelto una lista.")
+                return;
+            }
+            // recorrer cada evento que devuelve el servidor
+            events.forEach(ev => {
+                // Pedir a Google que busque las coordenadas de ese texto
+                geocoder.geocode({ address: ev.location + ", Spain"}, (results, status) => {
+                    if (status === "OK") {
+                        // Ubicacion marcada en el mapa
+                        new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location,
+                            title: ev.title // para que al pasar el raton por encima se vea el nombre del evento
+                        });
+                    } else {
+                        console.warn("Google Maps no ha podido encontrar la ubicacion de:", ev.title);
+                    }
+                });
+            });
+        })
+        .catch(error => console.error("Error cargando los eventos para el mapa:", error));
+}

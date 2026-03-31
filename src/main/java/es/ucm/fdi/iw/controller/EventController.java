@@ -1,6 +1,7 @@
 package es.ucm.fdi.iw.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +21,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -175,4 +177,20 @@ public class EventController {
 
         return "redirect:/event";
     } 
+
+    // Endpoint de la API REST que devuelve todos los eventos registrados en la base de datos.
+    // Implementado como un punto de acceso para peticiones asincronas AJAX o fetch desde el frontend, 
+    // para cargar los marcadores de ubicaciones en el mapa
+
+    // Cuando el navegador hace una peticion web a esta ruta, entra aqui
+    // Respuesta en formato JSON
+    @GetMapping(path = "/api/all", produces = "application/json")
+    @ResponseBody
+    public List<Event.Transfer> getEventsForMap() {
+        // Consulta a la base de datos para obtener todos los eventos y guardarlos en una lista de objetos Event.Java
+        List<Event> events = entityManager.createQuery("SELECT e FROM Event e", Event.class).getResultList();
+
+        // Convertir los eventos al formato JSON seguro Event.Transfer
+        return events.stream().map(Event::toTransfer).collect(Collectors.toList());
+    }
 }

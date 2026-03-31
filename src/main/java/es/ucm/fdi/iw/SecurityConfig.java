@@ -70,6 +70,7 @@ public class SecurityConfig {
 						.requestMatchers("/event").permitAll()
 						.requestMatchers("/event/create").hasRole("USER")
 						.requestMatchers("/account/**").permitAll()
+						.requestMatchers("/event/api/all").permitAll()
 
 						.anyRequest().authenticated())
 				.formLogin(formLogin -> formLogin
