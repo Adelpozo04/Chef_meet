@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -44,6 +46,7 @@ public class Recipe implements Transferable<Recipe.Transfer> {
 
     // Conexiones entre las distintas tablas de la base de datos.
     @OneToMany(mappedBy = "recipeUsed", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<IngredientInRecipe> recipeIngredients = new ArrayList<>();
 
     @ManyToOne

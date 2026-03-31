@@ -4,6 +4,8 @@ package es.ucm.fdi.iw.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -31,6 +33,7 @@ public class Ingredient implements Transferable<Ingredient.Transfer>  {
 
     // Conexiones entre las distintas tablas de la base de datos.
     @OneToMany(mappedBy = "ingredientUsed", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<IngredientInRecipe> ingredientsInRecipes = new ArrayList<>();
 
     @Getter
