@@ -32,41 +32,70 @@
                     </form>
                 </div>
             </div>
+            
+            <div th:if="${session.u}" class="d-flex justify-content-center mb-4">
+                <a th:href="@{event/create}" class="category_item">Crear evento</a>
+            </div>
 
             <!-- Filtros -->
             <div class="explorer_wrapper">
 
-                <th:block th:if="${u}">
-                    <div class="explorer_wrapper">
-                        <div class="category_list">
-                            <a href="#" class="category_item ct_item_active" category="all">Todos</a>
-                            <a href="#" class="category_item" category="own">Mis eventos</a>
-                            <a th:href="@{event/create}" class="category_item" category="own">Crear evento</a>
-                        </div>
-                    </div>
-                </th:block>
-
-                <!-- Cards lista de eventos -->
-                <section class="cards_list">
-                    <div class="card_item" th:each="ev: ${events}" 
-                    th:attr="category=${session.u != null and (ev.organizer.id == session.u.id or ev.attendees.![attendee.id].contains(session.u.id)) ? 'own' : 'all'}">
-                        <a th:href="@{/reserve/{id}(id=${ev.id})}" class="card_link">
-                            <img th:src="@{${ev.imagePath != null ? ev.imagePath: '/img/events/default.jpg'}}" alt="Imagen del evento">
-                            <span class="card_footer" th:text="${ev.title}">Título</span>
-                        </a>
-
-                        <!-- Boton papelera (solo visible para Admin) -->
-                        <form th:if="${session.u != null && session.u.hasRole('ADMIN')}"
-                              th:action="@{/event/{id}/delete(id=${ev.id})}" method="post">
-                            <button type="button" class="btn btn-danger btn-sm mt-2 btn_delete">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                            </svg>
-                        </button>
-                        </form> 
+                <section th:if="${session.u}" class="events-list">
                         
-                    </div>
+                    <details open>
+                        <summary class="events-dropdown"> Mis eventos </summary>
 
+                        <div th:if="${#lists.isEmpty(myEvents)}" class="no-events">
+                            <p>Aún no te has a puntado a ningún evento. ¡Únete a uno o crea el tuyo propio!</p>
+                        </div>
+
+                        <div th:if="${!#lists.isEmpty(myEvents)}" class="cards_list mt-3">
+                            <div class="card_item" th:each="ev: ${myEvents}">
+                                
+                                <a th:href="@{/reserve/{id}(id=${ev.id})}" class="card_link">
+                                    <img th:src="@{${ev.imagePath != null ? ev.imagePath: '/img/events/default.jpg'}}" alt="Imagen del evento">
+                                    <span class="card_footer" th:text="${ev.title}">Título</span>
+                                </a>
+                                <form th:if="${session.u != null && session.u.hasRole('ADMIN')}"
+                                      th:action="@{/event/{id}/delete(id=${ev.id})}" method="post">
+                                    <button type="submit" class="btn btn-danger btn-sm mt-2 btn_delete">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                        </svg>
+                                    </button>
+                                </form> 
+                            </div>
+                        </div>
+                    </details>
+                </section>
+
+                <section class="events-list">
+                         
+                    <details open>
+                        <summary class="events-dropdown"> Otros eventos</summary>
+                        <div th:if="${#lists.isEmpty(otherEvents)}" class="no-events">
+                            <p>No hay otros eventos disponibles en este momento.</p>
+                        </div>
+
+                        <div th:if="${!#lists.isEmpty(otherEvents)}" class="cards_list mt-3">
+                            <div class="card_item" th:each="ev: ${otherEvents}">
+                                
+                                <a th:href="@{/reserve/{id}(id=${ev.id})}" class="card_link">
+                                    <img th:src="@{${ev.imagePath != null ? ev.imagePath: '/img/events/default.jpg'}}" alt="Imagen del evento">
+                                    <span class="card_footer" th:text="${ev.title}">Título</span>
+                                </a>
+
+                                <form th:if="${session.u != null && session.u.hasRole('ADMIN')}"
+                                      th:action="@{/event/{id}/delete(id=${ev.id})}" method="post">
+                                    <button type="submit" class="btn btn-danger btn-sm mt-2 btn_delete">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                        </svg>
+                                    </button>
+                                </form> 
+                            </div>
+                        </div>
+                    </details>
                 </section>
 
             </div>
@@ -75,5 +104,4 @@
     
     <th:block th:replace="~{fragments/footer.html :: footer}" />
 </body>
-
 </html>

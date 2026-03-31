@@ -280,3 +280,21 @@ img.preview {
 .comunities-list {
     
 }
+
+/* Estilos de la seccion de eventos*/
+.events-list {
+    margin: 10px 0 10px 0;
+}
+
+.events-dropdown {
+    margin: 0 0 0 15%;
+    cursor: pointer;
+}
+
+.events-dropdown:hover {
+    color: #40b6f1
+}
+
+.no-events {
+    margin: 0 0 0 20%;
+}

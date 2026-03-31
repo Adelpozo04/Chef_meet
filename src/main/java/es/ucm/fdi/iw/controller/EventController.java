@@ -39,14 +39,42 @@ public class EventController {
 
     // Cargar eventos
     @GetMapping({"", "/"})
-    public String showEvents(Model model, @RequestParam(required = false) String error) {
+    public String showEvents(Model model, HttpSession session, @RequestParam(required = false) String error) {
         // Si la URL trae "?error=full", se le envia la señal al HTML
         if("full".equals(error)) {
             model.addAttribute("errorFull", true);
         }
         // Se piden todos los eventos a la base de datos
-        List<Event> events = entityManager.createQuery("SELECT e FROM Event e", Event.class).getResultList();
-        model.addAttribute("events", events);
+        List<Event> allEvents = entityManager.createQuery("SELECT e FROM Event e", Event.class).getResultList();
+        
+        User sessionUser = (User) session.getAttribute("u");
+
+        if(sessionUser != null) {
+            // Usuario logueado: separar en dos listas
+            long uid = sessionUser.getId();
+
+            // Mis eventos: Soy el organizador estoy en la lista de asistentes
+            List<Event> myEvents = allEvents.stream()
+                .filter(e -> (e.getOrganizer() != null && e.getOrganizer().getId() == uid) ||
+                             (e.getOrganizer() != null && e.getAttendees().stream().anyMatch(r -> r.getAttendee().getId() == uid)))      
+                .toList();
+                
+            // Otros eventos
+            List<Event> otherEvents = allEvents.stream()
+                .filter(e -> !myEvents.contains(e))
+                .toList();
+            
+            model.addAttribute("myEvents", myEvents);
+            model.addAttribute("otherEvents", otherEvents);
+
+        }
+        else {
+            // Usuario anonimo: todos los eventos van a otros eventos
+            model.addAttribute("otherEvents", allEvents);
+        }
+
+        // Todos los eventos
+        model.addAttribute("events", allEvents);
         return "event"; // Redirige a event.html
     }
     
