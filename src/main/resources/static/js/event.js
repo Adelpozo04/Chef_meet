@@ -5,6 +5,42 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const events = document.querySelectorAll('.card_item');
     const searchInput = document.querySelector('input[type="search"]');
 
+    // Busqueda de eventos en tiempo real en la barra de busqueda
+    searchInput.addEventListener('input', (e) =>{
+        // Obtener lo escrito por el usario, en minusculas y sin espacios
+        const searchEvent = e.target.value.toLowerCase().trim();
+
+        events.forEach(event => {
+            // Leer los datos ocultos inyectados en cada tarjeta en el html (titulo y tematica)
+            const title = event.getAttribute('data-title').toLowerCase();
+            const theme = event.getAttribute('data-theme').toLowerCase();
+
+            // Comprobar que el titulo o la tematica contienen lo buscado
+            if (title.includes(searchEvent) || theme.includes(searchEvent)) {
+                // Mostrar evento
+                event.style.display = 'flex';
+
+                // Animacion transicion
+                setTimeout(() => {
+                    event.style.opacity = '1'; 
+                    event.style.transform = 'scale(1)';
+                }, 10);
+            } else {
+                // Ocultar evento
+                event.style.opacity = '0';
+                event.style.transform = 'scale(0.7)'
+
+                // Esperar a que termine la transicion antes de ocultar del todo
+                setTimeout(() => {
+                    if(event.style.opacity === '0') {
+                        event.style.display = 'none';
+                    }
+                    
+                }, 400);
+            }
+        });
+    });
+
     categories.forEach(category => {
         category.addEventListener('click', (e) => {
 
@@ -101,3 +137,47 @@ document.addEventListener('DOMContentLoaded', ()=> {
         });
     });
 });
+
+
+// fetch para peticiones asincronas AJAX para pedir los eventos al endpoint y pintarlos en el mapa
+function initMap() {
+    const mapDiv = document.getElementById("map");
+    // Crear mapa centrado en España con un zoom alejado
+    const map = new google.maps.Map(mapDiv, {
+        zoom: 6,
+        center: {lat: 40.463667, lng: -3.74922}, // Centro de la peninsula
+    });
+
+    // Herramienta para convertir textos a coordenadas
+    const geocoder = new google.maps.Geocoder();
+
+    // Pedir los eventos al servidor java usando fetch
+    fetch('/event/api/all')
+        .then(response => response.json())
+        .then(events => {
+
+            // Comprobar si events es una lista
+            if (!Array.isArray(events)) {
+                console.error("Error: Java no ha devuelto una lista.")
+                return;
+            }
+            // recorrer cada evento que devuelve el servidor
+            events.forEach(ev => {
+                // Pedir a Google que busque las coordenadas de ese texto
+                geocoder.geocode({ address: ev.location + ", Spain"}, (results, status) => {
+                    if (status === "OK") {
+                        // Ubicacion marcada en el mapa
+                        new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location,
+                            title: ev.title // para que al pasar el raton por encima se vea el nombre del evento
+                        });
+                    } else {
+                        console.warn("Google Maps no ha podido encontrar la ubicacion de:", ev.title);
+                    }
+                });
+            });
+        })
+        .catch(error => console.error("Error cargando los eventos para el mapa:", error));
+}
+

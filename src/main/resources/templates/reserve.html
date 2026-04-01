@@ -6,6 +6,7 @@
     <title>IW: Reserva de Evento</title>
     <link rel="stylesheet" th:href="@{/css/reserve.css}" href="css/reserve.css"/>
     <script th:src="@{/js/reserve.js}"></script>
+    <script async defer th:src="|https://maps.googleapis.com/maps/api/js?key=${googleMapsKey}&callback=initMapReserve|"></script>
 </head>
 
 <body class="d-flex flex-column h-100">     
@@ -20,13 +21,15 @@
                 </svg>
             </a>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 left-panel">
                     <!-- Imagen del evento -->
-                    <img th:src="@{${event.imagePath != null ? event.imagePath : 'img/events/default.jpg'}}" class="img-evento mb-4" alt="Imagen del evento">
+                    <img th:src="@{${event.imagePath != null ? event.imagePath : '/img/events/default.jpg'}}" class="img-evento mb-4" alt="Imagen del evento">
 
                     <!-- Información del evento -->
-                    <div class="box-rounded text-center">
-                        <p class="mb-1" th:text="'Precio: ' + ${event.price} + '€'"></p>
+                    <div class="box-rounded text-center price-box">
+                        <p class="mb-1" th:text="${event.price == 0 ? 'Precio: Gratis' : 
+                                                  (event.price % 1 == 0 ? 'Precio: ' + #numbers.formatDecimal(event.price, 1, 'COMMA', 0, 'POINT') + '€' :
+                                                  'Precio: ' + #numbers.formatDecimal(event.price, 1, 'COMMA', 2, 'POINT') + '€')}"></p>
                         <p th:text="'Disponibles: ' + ${reservedSpots} + '/' + ${event.capacity}"></p>
                         
                         <div th:if="${isAlreadyAttending}" class="alert alert-info py-2 mt-3 mb-0" role="alert">
@@ -50,10 +53,13 @@
                 </div>
 
                 <!-- Descripción del evento -->
-                <div class="col-md-8">
-                    <div class="box-rounded h-100">
+                <div class="col-md-8 right-panel">
+                    <div class="box-rounded description-box">
+
+                        <div id="map-reserve" class="float-end ms-3 mb-2 shadow-sm"></div>
+
                         <h2 class="fw-bold" th:text="${event.title}"></h2>
-                        <span class="badge bg-secondary mb-3" th:text="${event.theme}"></span>
+                        <span class="badge theme-badge mb-3" th:text="${event.theme}"></span>
 
                         <div class="mt-4">
                             <p><i class="fa-regular fa-calendar"></i>Fecha: 
@@ -63,7 +69,7 @@
                                 <span th:text="${#temporals.format(event.date, 'HH:mm')}"></span>
                             </p>
                             <p><i class="fa-solid fa-location-dot"></i>Lugar: 
-                                <span th:text="${event.location}"></span>
+                                <span id="event-location" th:text="${event.location}"></span>
                             </p>
                         </div>
                         <hr>

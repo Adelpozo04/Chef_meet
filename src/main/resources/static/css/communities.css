@@ -190,6 +190,9 @@ h1 {
 .communities-dropdown {
     margin: 0 0 0 15%;
 }
+.communities-dropdown:hover {
+    color: #40b6f1
+}
 .no-communities {
     margin: 0 0 0 20%;
 }

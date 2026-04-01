@@ -1,10 +1,12 @@
 package es.ucm.fdi.iw.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,11 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import es.ucm.fdi.iw.model.Event;
+import es.ucm.fdi.iw.model.Reserve;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,16 +41,52 @@ public class EventController {
     @Autowired
     private EntityManager entityManager;
 
+    // Obtener clave de google maps desde application.properties
+    @Value("${google.maps.key}")
+    private String googleMapsKey;
+
     // Cargar eventos
     @GetMapping({"", "/"})
-    public String showEvents(Model model, @RequestParam(required = false) String error) {
+    public String showEvents(Model model, HttpSession session, @RequestParam(required = false) String error) {
         // Si la URL trae "?error=full", se le envia la señal al HTML
         if("full".equals(error)) {
             model.addAttribute("errorFull", true);
         }
         // Se piden todos los eventos a la base de datos
-        List<Event> events = entityManager.createQuery("SELECT e FROM Event e", Event.class).getResultList();
-        model.addAttribute("events", events);
+        List<Event> allEvents = entityManager.createQuery("SELECT e FROM Event e", Event.class).getResultList();
+        
+        User sessionUser = (User) session.getAttribute("u");
+
+        if(sessionUser != null) {
+            // Usuario logueado: separar en dos listas
+            long uid = sessionUser.getId();
+
+            // Mis eventos: Soy el organizador estoy en la lista de asistentes
+            List<Event> myEvents = allEvents.stream()
+                .filter(e -> (e.getOrganizer() != null && e.getOrganizer().getId() == uid) ||
+                             (e.getAttendees() != null && e.getAttendees().stream().anyMatch(r -> r.getAttendee().getId() == uid)))      
+                .toList();
+                
+            // Otros eventos
+            List<Event> otherEvents = allEvents.stream()
+                .filter(e -> !myEvents.contains(e))
+                .toList();
+            
+            model.addAttribute("myEvents", myEvents);
+            model.addAttribute("otherEvents", otherEvents);
+
+        }
+        else {
+            // Usuario anonimo: todos los eventos van a otros eventos
+            model.addAttribute("otherEvents", allEvents);
+        }
+
+        // Todos los eventos
+        model.addAttribute("events", allEvents);
+
+        // Pasar la API key al HTML
+        model.addAttribute("googleMapsKey", googleMapsKey);
+        
         return "event"; // Redirige a event.html
     }
     
@@ -82,6 +122,13 @@ public class EventController {
                     model.addAttribute("errorImage", true);
                     return "event/create";
                 }
+
+                // Restriccion de tamanyo
+                long maxBytes = 2 * 1024 * 1024; // 2 MB
+                if (photo.getSize() > maxBytes) {
+                    model.addAttribute("errorSize", true);
+                    return "event/create";
+                }
             }
             // Obtener el usuario logueado de la sesion
             User organizer = (User) session.getAttribute("u");
@@ -92,6 +139,21 @@ public class EventController {
 
             // Guardar en la base de datos
             entityManager.persist(event);
+            entityManager.flush();
+
+            // Autoreserva para el organizador
+            Reserve autoReserve = new Reserve();
+            autoReserve.setAttendee(organizer);
+            autoReserve.setEvent(event);
+
+            // Si la lista de asistentes esta vacia, se inicia y se mete la reserva
+            if (event.getAttendees() == null) {
+                event.setAttendees(new java.util.ArrayList<>());
+            }
+            event.getAttendees().add(autoReserve);
+
+            // Guardar la reserva en la base de datos
+            entityManager.persist(autoReserve);
             entityManager.flush();
 
             // Guardar la imagen si el usuario ha subido alguna
@@ -147,4 +209,20 @@ public class EventController {
 
         return "redirect:/event";
     } 
+
+    // Endpoint de la API REST que devuelve todos los eventos registrados en la base de datos.
+    // Implementado como un punto de acceso para peticiones asincronas AJAX o fetch desde el frontend, 
+    // para cargar los marcadores de ubicaciones en el mapa
+
+    // Cuando el navegador hace una peticion web a esta ruta, entra aqui
+    // Respuesta en formato JSON
+    @GetMapping(path = "/api/all", produces = "application/json")
+    @ResponseBody
+    public List<Event.Transfer> getEventsForMap() {
+        // Consulta a la base de datos para obtener todos los eventos y guardarlos en una lista de objetos Event.Java
+        List<Event> events = entityManager.createQuery("SELECT e FROM Event e", Event.class).getResultList();
+
+        // Convertir los eventos al formato JSON seguro Event.Transfer
+        return events.stream().map(Event::toTransfer).collect(Collectors.toList());
+    }
 }
