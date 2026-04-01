@@ -5,6 +5,42 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const events = document.querySelectorAll('.card_item');
     const searchInput = document.querySelector('input[type="search"]');
 
+    // Busqueda de eventos en tiempo real en la barra de busqueda
+    searchInput.addEventListener('input', (e) =>{
+        // Obtener lo escrito por el usario, en minusculas y sin espacios
+        const searchEvent = e.target.value.toLowerCase().trim();
+
+        events.forEach(event => {
+            // Leer los datos ocultos inyectados en cada tarjeta en el html (titulo y tematica)
+            const title = event.getAttribute('data-title').toLowerCase();
+            const theme = event.getAttribute('data-theme').toLowerCase();
+
+            // Comprobar que el titulo o la tematica contienen lo buscado
+            if (title.includes(searchEvent) || theme.includes(searchEvent)) {
+                // Mostrar evento
+                event.style.display = 'flex';
+
+                // Animacion transicion
+                setTimeout(() => {
+                    event.style.opacity = '1'; 
+                    event.style.transform = 'scale(1)';
+                }, 10);
+            } else {
+                // Ocultar evento
+                event.style.opacity = '0';
+                event.style.transform = 'scale(0.7)'
+
+                // Esperar a que termine la transicion antes de ocultar del todo
+                setTimeout(() => {
+                    if(event.style.opacity === '0') {
+                        event.style.display = 'none';
+                    }
+                    
+                }, 400);
+            }
+        });
+    });
+
     categories.forEach(category => {
         category.addEventListener('click', (e) => {
 
@@ -144,3 +180,4 @@ function initMap() {
         })
         .catch(error => console.error("Error cargando los eventos para el mapa:", error));
 }
+

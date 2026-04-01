@@ -146,6 +146,9 @@ img.preview {
     background-color: white;
     color: #40b6f1;
     border: 2px solid #40b6f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /*UPDATE HTML*/
@@ -155,6 +158,34 @@ img.preview {
     border-color:#40b6f1;
 }
 
+/* Barra de busqueda*/
+
+/* Contenedor principal*/
+.search-bar-container {
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+    border-radius: 50px;
+    overflow: hidden;
+    border: 2px solid #40b6f1;
+}
+
+/* Lupa*/
+.search-icon {
+    background-color: white;
+    color:#40b6f1;
+    border: none;
+    padding-left: 20px;
+}
+
+/* Caja*/
+.search-input {
+    border: none;
+}
+
+/* Efecto al hacer clic para escribir*/
+.search-input:focus {
+    box-shadow: none; /*Quitar halo por defecto de bootsrap*/
+    outline: none; /*Quitar la linea negra de los navegadores*/
+}
 /*UPDATE HTML*/
 /* Boton de papelera */
 .btn_delete{

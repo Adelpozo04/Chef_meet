@@ -29,10 +29,14 @@
             <!-- Barra de busqueda de bootstrap -->
             <div class="row justify-content-center mb-4">
                 <div class="col-md-6">
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Buscar eventos..." aria-label="Search"/>
-                        <button class="btn btn_search" type="submit">Buscar</button>
-                    </form>
+                    <div class="input-group search-bar-container">
+                        <span class="input-group-text search-icon" id="search-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </span>
+                        <input class="form-control search-input" type="search" placeholder="Buscar eventos..." aria-label="Search" aria-describedby="search-icon"/>
+                    </div>
                 </div>
             </div>
             
@@ -55,7 +59,10 @@
                         </div>
 
                         <div th:if="${!#lists.isEmpty(myEvents)}" class="cards_list mt-3">
-                            <div class="card_item" th:each="ev: ${myEvents}">
+                            <!-- Inyectar titulo y tematica a las tarjetas para la busqueda-->
+                            <div class="card_item" th:each="ev: ${myEvents}"
+                                 th:data-title="${ev.title}"
+                                 th:data-theme="${ev.theme}">
                                 
                                 <a th:href="@{/reserve/{id}(id=${ev.id})}" class="card_link">
                                     <img th:src="@{${ev.imagePath != null ? ev.imagePath: '/img/events/default.jpg'}}" alt="Imagen del evento">
@@ -83,7 +90,9 @@
                         </div>
 
                         <div th:if="${!#lists.isEmpty(otherEvents)}" class="cards_list mt-3">
-                            <div class="card_item" th:each="ev: ${otherEvents}">
+                            <div class="card_item" th:each="ev: ${otherEvents}"
+                                 th:data-title="${ev.title}"
+                                 th:data-theme="${ev.theme}">
                                 
                                 <a th:href="@{/reserve/{id}(id=${ev.id})}" class="card_link">
                                     <img th:src="@{${ev.imagePath != null ? ev.imagePath: '/img/events/default.jpg'}}" alt="Imagen del evento">
