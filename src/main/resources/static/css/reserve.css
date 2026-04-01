@@ -13,7 +13,6 @@
     width: 100%;
     height: 250px;
     object-fit: cover;
-    border: 2px solid #1e354e;
     border-radius: 25px;
 }
 
@@ -70,4 +69,27 @@
     border-radius: 10px;
     background-color: #eee;
     border: 1px solid #ddd;
+}
+
+.theme-badge {
+    background-color: #40b6f1;
+    color: white;
+    font-size: 0.9em;
+    padding: 8px 12px;
+}
+
+.left-panel, .right-panel{
+    display: flex;
+    flex-direction: column;
+}
+
+.price-box{
+    flex-grow: 1; /* Estirar hacia abajo*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.description-box {
+    flex-grow: 1;
 }
