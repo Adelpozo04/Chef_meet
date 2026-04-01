@@ -122,6 +122,13 @@ public class EventController {
                     model.addAttribute("errorImage", true);
                     return "event/create";
                 }
+
+                // Restriccion de tamanyo
+                long maxBytes = 2 * 1024 * 1024; // 2 MB
+                if (photo.getSize() > maxBytes) {
+                    model.addAttribute("errorSize", true);
+                    return "event/create";
+                }
             }
             // Obtener el usuario logueado de la sesion
             User organizer = (User) session.getAttribute("u");

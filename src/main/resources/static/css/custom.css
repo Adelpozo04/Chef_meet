@@ -168,18 +168,20 @@ img.preview {
 /* Texto de tematica */
 .event-card_theme {
     color: rgba(255,255,255, 0.9);
-    font-size: 1.1rem;
-    font-weight: 500;
+    font-size: 1.2rem;
+    font-weight: 600;
     margin: 0 0 4px 0;
     text-transform: uppercase;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.9);
 }
  
 /* Texto de fecha */
 .event-card_date {
     color: rgba(255,255,255, 0.9);
-    font-size: 1.1rem;
-    font-weight: 500;
+    font-size: 1.2rem;
+    font-weight: 600;
     margin: 0;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.9);
 }
 
 /* Titulo del evento */
