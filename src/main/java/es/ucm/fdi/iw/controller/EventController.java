@@ -52,23 +52,49 @@ public class EventController {
         if("full".equals(error)) {
             model.addAttribute("errorFull", true);
         }
+
         // Se piden todos los eventos a la base de datos
         List<Event> allEvents = entityManager.createQuery("SELECT e FROM Event e", Event.class).getResultList();
         
         User sessionUser = (User) session.getAttribute("u");
 
+        // Filtrar eventos segun privacidad
+        List<Event> visibleEvents = new java.util.ArrayList<>();
+        for(Event e: allEvents) {
+            if(!e.isPrivate()) {
+                visibleEvents.add(e); // Eventos publicos, siempre visibles
+            } 
+            else if(sessionUser != null) {
+                User u = entityManager.find(User.class, sessionUser.getId());
+
+                // Es miembro de la comunidad?
+                boolean isMember = e.getCommunity() != null && e.getCommunity().getMembers().contains(u);
+                // Organizador del evento?
+                boolean isOrganizer = e.getOrganizer() != null && e.getOrganizer().getId() == u.getId();
+                // Tiene una reserva para el evento?
+                boolean isAttendee = e.getAttendees() != null && e.getAttendees().stream().anyMatch(r -> r.getAttendee().getId() == u.getId());
+                // Eventos privados, solo visibles si el usuario pertenece a la comunidad
+                
+                // Si cumple cualquiera de las tres condiciones, el evento es visible
+                if(isMember || isOrganizer || isAttendee) {
+                    visibleEvents.add(e);
+                }
+            }
+        }
+
+        // Filtrar eventos en mis eventos y otros eventos
         if(sessionUser != null) {
             // Usuario logueado: separar en dos listas
             long uid = sessionUser.getId();
 
             // Mis eventos: Soy el organizador estoy en la lista de asistentes
-            List<Event> myEvents = allEvents.stream()
+            List<Event> myEvents = visibleEvents.stream()
                 .filter(e -> (e.getOrganizer() != null && e.getOrganizer().getId() == uid) ||
                              (e.getAttendees() != null && e.getAttendees().stream().anyMatch(r -> r.getAttendee().getId() == uid)))      
                 .toList();
                 
             // Otros eventos
-            List<Event> otherEvents = allEvents.stream()
+            List<Event> otherEvents = visibleEvents.stream()
                 .filter(e -> !myEvents.contains(e))
                 .toList();
             
@@ -78,11 +104,11 @@ public class EventController {
         }
         else {
             // Usuario anonimo: todos los eventos van a otros eventos
-            model.addAttribute("otherEvents", allEvents);
+            model.addAttribute("otherEvents", visibleEvents);
         }
 
         // Todos los eventos
-        model.addAttribute("events", allEvents);
+        model.addAttribute("events", visibleEvents);
 
         // Pasar la API key al HTML
         model.addAttribute("googleMapsKey", googleMapsKey);
@@ -90,10 +116,19 @@ public class EventController {
         return "event"; // Redirige a event.html
     }
     
-    // Mostrar formulario? crear evento
+    // Mostrar formulario crear evento
     @GetMapping("/create") 
-    public String createEvent(Model model) {
+    public String createEvent(Model model, HttpSession session, @RequestParam(required = false) Long communityId) {
+        User sessionUser = (User) session.getAttribute("u");
+
+        // Buscar a que comunidades pertenece el usuario
+        List<es.ucm.fdi.iw.model.Community> myCommunities = entityManager.createQuery(
+            "SELECT c FROM Community c JOIN c.members m WHERE m.id = :uid", es.ucm.fdi.iw.model.Community.class)
+            .setParameter("uid", sessionUser.getId()).getResultList();
+
         model.addAttribute("event", new Event());
+        model.addAttribute("myCommunities", myCommunities);
+        model.addAttribute("preselectedCommunityId", communityId); // Para poder preseleccionar en el menu
         return "event/create";
     }
 
@@ -103,6 +138,7 @@ public class EventController {
     public String createEvent(
         @Valid @ModelAttribute Event event,
         BindingResult result,
+        @RequestParam(required = false) Long communityId,
         @RequestParam("photo") MultipartFile photo,
         Model model, // para poder mandar mensajes de error al HTML
         HttpSession session) {
@@ -136,6 +172,15 @@ public class EventController {
 
             // Asignarlo como organizador
             event.setOrganizer(organizer);
+
+            // Asignar el evento a una comunidad si se debe
+            if (communityId != null) {
+                es.ucm.fdi.iw.model.Community community = entityManager.find(es.ucm.fdi.iw.model.Community.class, communityId);
+                event.setCommunity(community);
+            }
+            else {
+                event.setPrivate(false); // Si no esta asociado a una comunidad, forzar a que el evento sea publico
+            }
 
             // Guardar en la base de datos
             entityManager.persist(event);

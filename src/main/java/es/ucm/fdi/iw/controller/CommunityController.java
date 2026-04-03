@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.Country;
 import es.ucm.fdi.iw.model.User;
+import es.ucm.fdi.iw.model.Event;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -86,6 +87,18 @@ public class CommunityController {
         else
             log.info("El usuario {} NO pertence a la comunidad {}", user.getUsername(), community.getTitle());
 
+        // Separar los eventos en proximos y pasados
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+        List<Event> upcomingEvents = community.getEvents().stream()
+                .filter(e -> e.getDate().isAfter(now))
+                .toList();
+        List<Event> pastEvents = community.getEvents().stream()
+                .filter(e -> e.getDate().isBefore(now))
+                .toList();
+        
+        model.addAttribute("upcomingEvents", upcomingEvents);
+        model.addAttribute("pastEvents", pastEvents);
+            
         model.addAttribute("community", community);
         model.addAttribute("isOwner", userIsOwner);
         model.addAttribute("isMember", userIsMember);

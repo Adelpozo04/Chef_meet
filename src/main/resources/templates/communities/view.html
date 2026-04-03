@@ -76,14 +76,29 @@
         </div>
 
         <div class="community-events">
-            <h2>Eventos</h2>
+            <div class="events-header">
+                <h2 class="events-title">Eventos</h2>
+                <a th:if="${isMember}" th:href="@{/event/create(communityId=${community.id})}" class="btn btn-sm btn-primary">
+                    + Crear evento
+                </a>
+            </div>
+            
+            <h4 class="events-subtitle upcoming">Próximos</h4>
             <ul class="community-events-list">
-                <li>
-                    <p> Un evento </p>
+                <li th:each="ev: ${upcomingEvents}" class="event-item">
+                    <a th:href="@{/reserve/{id}(id=${ev.id})}" th:text="${ev.title}" class="event-link dark"></a>
+                    <span th:text="${#temporals.format(ev.date, ' (dd/MM/yy)')}" class="event-date"></span>
+                    <span th:if="${ev.isPrivate()}" class="badge-private">Privado</span>
                 </li>
-                <li>
-                    <p> Otro evento </p>
+                <li th:if="${#lists.isEmpty(upcomingEvents)}" class="event-empty">No hay eventos proximamente.</li>
+            </ul>
+
+            <h4 class="events-subtitle past">Pasados</h4>
+            <ul class="community-events-list">
+                <li th:each="ev: ${pastEvents}" class="event-item">
+                    <a th:href="@{/reserve/{id}(id=${ev.id})}" th:text="${ev.title}" class="event-link light"></a>
                 </li>
+                <li th:if="${#lists.isEmpty(pastEvents)}" class="event-empty">No hay eventos pasados.</li>
             </ul>
         </div>
 
