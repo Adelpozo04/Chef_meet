@@ -144,6 +144,7 @@ public class RecipeController {
     }
 
     @PostMapping("/addToCommunity")
+    @Transactional
     public String addRecipe(@RequestParam Long communityId,
                             @RequestParam Long recipeId){
 
@@ -154,6 +155,7 @@ public class RecipeController {
         recipe.getCommunities().add(community);
 
         entityManager.persist(community);
+        entityManager.persist(recipe);
         entityManager.flush();
 
         return "redirect:/recipe";
