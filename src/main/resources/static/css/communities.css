@@ -271,8 +271,84 @@ h1 {
     background-color: #fae68b;
 }
 
+/* Eventos dentro de comunidad */
 .community-events {
     width: 20%;
     height: 100%;
     background-color: #ff9292;
+    padding: 1rem;
+}
+
+.events-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.5rem;
+}
+
+.events-title {
+    margin: 0;
+}
+
+.events-subtitle {
+    font-size: 1.1rem;
+}
+
+.events-subtitle.upcoming {
+    color: #198754;
+    margin-top: 1rem;
+}
+
+.events-subtitle.past {
+    color: black;
+    margin-top: 1.5rem;
+}
+
+.community-events-list {
+    margin-left: 1rem;
+    list-style: none;
+    padding-left: 0;
+}
+
+.event-item {
+    margin-bottom: 0.5rem;
+}
+
+.event-link {
+   text-decoration: none;
+}
+
+.event-link.dark {
+   font-weight: bold;
+   color: #212529;
+}
+
+.event-link.light {
+   color: #6c757d;
+}
+
+.event-link:hover {
+   text-decoration: underline;
+}
+
+.event-date {
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+.badge-private {
+    background-color: #dc3545;
+    color: white;
+    font-size: 0.7em;
+    padding: 0.25em 0.5em;
+    border-radius: 5px;
+    margin-left: 0.25rem;
+    vertical-align: middle;
+}
+
+.event-empty {
+    color: #6c757d;
+    font-style: italic;
 }

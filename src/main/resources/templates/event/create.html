@@ -10,7 +10,7 @@
 
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0 container mt-5">
+    <main class="flex-shrink-0 container create-main">
          <!-- Boton para volver -->
         <a href="javascript:history.back()" class="btn-volver"> 
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -29,18 +29,18 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-        <form th:action="@{/event/create}" th:object="${event}" method="post" class="mt-4" enctype="multipart/form-data">
-            <div class="mb-3">
+        <form th:action="@{/event/create}" th:object="${event}" method="post" class="create-form" enctype="multipart/form-data">
+            <div class="form-group">
                 <label for="title" class="form-label">Título del evento(*)</label>
                 <input th:field="*{title}" type="text" class="form-control" th:classappend="${#fields.hasErrors('title')}? 'is-invalid' : ''" required>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
             </div>
 
-            <div class="mb-4">
+            <div class="form-group-large">
                 <label for="photo" class="form-label"> Foto del evento</label>
                 <input type="file" name="photo" id="photo" class="form-control" accept="image/jpeg, image/png, .jpg, .jpeg, .png">
 
-                <div class="form-text mt-1 text-secondary">
+                <div class="photo-help-text">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-info-circle me-1" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                         <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
@@ -49,45 +49,65 @@
                 </div>
             </div>
             
-            <div class="row mb-3">
-                <div class="col-md-6">
+            <div class="form-row-2col">
+                <div>
                     <label for="date" class="form-label">Fecha y hora(*)</label>
                     <input th:field="*{date}" type="datetime-local" class="form-control" th:classappend="${#fields.hasErrors('date')}? 'is-invalid' : ''" required>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
                 </div>
-                <div class="col-md-6">
+                <div>
                     <label for="location" class="form-label">Ubicación(*)</label>
                     <input th:field="*{location}" type="text" class="form-control" th:classappend="${#fields.hasErrors('location')}? 'is-invalid' : ''" required>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></div>
                 </div>
             </div>
 
-            <div class="row mb-3">
-                <div class="col-md-4">
+            <div class="form-row-3col">
+                <div>
                     <label for="price" class="form-label">Precio (€)(*)</label>
                     <input th:field="*{price}" type="number" step="0.01" class="form-control" min="0" th:classappend="${#fields.hasErrors('price')}? 'is-invalid' : ''" required>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
                 </div>
-                <div class="col-md-4">
+                <div>
                     <label for="capacity" class="form-label">Aforo máximo(*)</label>
                     <input th:field="*{capacity}" type="number" class="form-control" min="1" th:classappend="${#fields.hasErrors('capacity')}? 'is-invalid' : ''" required>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></div>
                 </div>
-                <div class="col-md-4">
+                <div>
                     <label for="theme" class="form-label">Temática</label>
                     <input th:field="*{theme}" type="text" class="form-control">
                 </div>
             </div>
 
-            <div class="mb-3">
+            <div class="form-group">
                 <label for="description" class="form-label">Descripción(*)</label>
                 <textarea th:field="*{description}" class="form-control" rows="3" th:classappend="${#fields.hasErrors('description')}? 'is-invalid' : ''" required></textarea>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
             </div>
 
-            <div class="form-check mb-4">
-                <input th:field="*{private}" class="form-check-input" type="checkbox" id="isPrivate">
-                <label class="form-check-label" for="isPrivate"> ¿Es un evento privado? </label>
+            <div class="community-privacy-box">
+                <div>
+                    <label for="communityId" class="form-label highlight-label">Vincular a una comunidad (Opcional)</label>
+                    <select name="communityId" id="communityId" class="form-select">
+                        <option value="">-- Ninguna --</option>
+                        <option th:each="c : ${myCommunities}"
+                                th:value="${c.id}"
+                                th:text="${c.title}"
+                                th:selected="${c.id == preselectedCommunityId}">
+                        </option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label highlight-label d-block">Privacidad del evento</label>
+                    <div class="privacy-radio">
+                        <input class="form-check-input" type="radio" th:field="*{private}" id="publico" value="false">
+                        <label class="form-check-label" for="publico">Público (Visible para todos)</label>
+                    </div>
+                    <div class="privacy-radio">
+                        <input class="form-check-input" type="radio" th:field="*{private}" id="privado" value="true">
+                        <label class="form-check-label" for="privado">Privado (Solo para miembros)</label>
+                    </div>
+                </div>
             </div>
 
             <button type="submit" class="btn btn-primary">Crear evento</button>

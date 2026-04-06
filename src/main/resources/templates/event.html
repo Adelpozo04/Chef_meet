@@ -17,7 +17,7 @@
     <main class="flex-shrink-0">
         <div class="container py-5">
 
-            <h1>Explora eventos</h1>
+            <h1>Explorar eventos</h1>
 
             <div th:if="${errorFull}" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
                 <strong>¡Lo sentimos!</strong> El evento al que has intentado apuntarte ya no tiene plazas disponibles.
@@ -58,7 +58,7 @@
                             <p>Aún no te has a puntado a ningún evento. ¡Únete a uno o crea el tuyo propio!</p>
                         </div>
 
-                        <div th:if="${!#lists.isEmpty(myEvents)}" class="cards_list mt-3">
+                        <div th:if="${!#lists.isEmpty(myEvents)}" class="cards_list">
                             <!-- Inyectar titulo y tematica a las tarjetas para la busqueda-->
                             <div class="card_item" th:each="ev: ${myEvents}"
                                  th:data-title="${ev.title}"
@@ -98,7 +98,7 @@
                             <p>No hay otros eventos disponibles en este momento.</p>
                         </div>
 
-                        <div th:if="${!#lists.isEmpty(otherEvents)}" class="cards_list mt-3">
+                        <div th:if="${!#lists.isEmpty(otherEvents)}" class="cards_list">
                             <div class="card_item" th:each="ev: ${otherEvents}"
                                  th:data-title="${ev.title}"
                                  th:data-theme="${ev.theme}">

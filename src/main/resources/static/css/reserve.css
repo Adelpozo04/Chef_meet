@@ -14,6 +14,7 @@
     aspect-ratio: 100 / 80;
     object-fit: cover;
     border-radius: 25px;
+    margin-bottom: 1.rem;
 }
 
 .btn-reservar {
@@ -69,6 +70,10 @@
     border-radius: 10px;
     background-color: #eee;
     border: 1px solid #ddd;
+    float: right;
+    margin-left: 1rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
 }
 
 .theme-badge {
@@ -76,6 +81,7 @@
     color: white;
     font-size: 0.9em;
     padding: 8px 12px;
+    margin-bottom: 1rem;
 }
 
 .left-panel, .right-panel{
@@ -88,8 +94,47 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
 }
 
 .description-box {
     flex-grow: 1;
+}
+
+.price-text { 
+    margin-bottom: 0.25rem;
+}
+
+.reserve-alert {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.reserve-form {
+    margin-top: 1rem;
+}
+
+.community-badge {
+    background-color: #FF4000;
+    color: white;
+    margin-bottom: 1rem;
+    margin-left: 0.25rem;
+}
+
+.event-details {
+    margin-top: 1.5rem;
+}
+
+.reserve-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+@media (min-width: 768px) {
+    .reserve-layout {
+        grid-template-columns: 1fr 2fr; 
+    }
 }
