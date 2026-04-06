@@ -62,6 +62,12 @@
                                 </button>
                             </form>
 
+                            <a th:if="${session.u != null}"
+                                th:href="@{/recipe/addToCommunity/{id}(id=${recip.id})}"
+                                class="category_item">
+                                Añadir a comunidad
+                            </a>
+
                         </div>
                         
 
@@ -101,6 +107,8 @@
                                     </svg>
                                 </button>
                             </form> 
+
+                            
                         </div>
                         
                     </div>

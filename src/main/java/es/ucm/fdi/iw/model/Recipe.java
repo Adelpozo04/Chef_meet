@@ -49,6 +49,10 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     @JsonIgnore
     private List<IngredientInRecipe> recipeIngredients = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "recipes")
+    @JsonIgnore
+    private List<Community> communities = new ArrayList<>();
+
     @ManyToOne
     private User author;
 
