@@ -59,4 +59,7 @@ public class Community {
 
     @OneToMany(mappedBy = "community")
     private List<Event> events = new ArrayList<>();
+
+    @ManyToMany
+    private List<Recipe> recipes = new ArrayList<>();
 }

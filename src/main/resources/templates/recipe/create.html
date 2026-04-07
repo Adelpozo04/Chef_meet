@@ -108,6 +108,24 @@
 
             </div>
 
+            <div>
+                <h3>Calorías</h3>
+
+                <div for="calories" class="d-flex flex-row ml-3">
+                    <!-- Calorías -->
+                    <input th:field="*{calories}" class="title_m border-0 text-left">
+                </div>
+
+            </div>
+
+            <div>
+                <h3>Receta Pública</h3>
+                <label>
+                    <input type="checkbox" th:field="*{publicRecipe}">
+                    Pública
+                </label>
+            </div>
+
             <button type="submit" class="category_item" id="create-button">Crear Receta</button>
         </form>
 

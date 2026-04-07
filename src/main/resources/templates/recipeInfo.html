@@ -76,7 +76,24 @@
                 </ol>
 
             </div>
-        
+
+        <div>
+            <h3>Alergias</h3>
+
+            <p th:each="allergen : ${recipe.allergens}"
+                th:text="${allergen}">
+            </p>
+
+        </div>
+            
+         <div>
+            <h3>Calorias</h3>
+
+            <div for="calories" class="d-flex flex-row ml-3">
+                <p th:text="${recipe.calories}"></p>
+            </div>
+
+        </div>
 
     </main>
     

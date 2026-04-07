@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.ucm.fdi.iw.LocalData;
+import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.Ingredient;
 import es.ucm.fdi.iw.model.IngredientInRecipe;
 import es.ucm.fdi.iw.model.Recipe;
@@ -60,7 +61,7 @@ public class RecipeController {
             HttpSession session) {
 
         if (recipe.getTitle().isBlank() || recipe.getDifficulty().isBlank() || 
-            recipe.getTime().isBlank()) {
+            recipe.getTime().isBlank() || recipe.getCalories().isBlank()){
             model.addAttribute("createError", true);
             log.info("ERROR AL INTENTAR CREAR RECETA");
             return "recipe/create";
@@ -115,6 +116,49 @@ public class RecipeController {
         log.info("New recipe created with description: {}", recipe.getSteps()[0]);
         return "redirect:/recipe";
         
+    }
+
+    @GetMapping("/addToCommunity/{id}")
+    public String showAddToCommunityPage(@PathVariable long id, Model model, HttpSession session) {
+        // Buscar la info de la receta en la base de datos usando el id que viene en la url
+        Recipe recipe = entityManager.find(Recipe.class, id);
+
+        // Si el id no existe, se redirige a eventos
+        if (recipe == null) {
+            return "redirect:/recipe";
+        }
+
+        User sessionUser = (User) session.getAttribute("u");
+
+        User user = entityManager.find(User.class, sessionUser.getId());
+
+        List<Community> communities = new ArrayList<>();
+
+        communities.addAll(user.getJoinedCommunities());
+        communities.addAll(user.getOwnedCommunities());
+
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("communities", communities);
+
+        return "recipe/addToCommunity";
+    }
+
+    @PostMapping("/addToCommunity")
+    @Transactional
+    public String addRecipe(@RequestParam Long communityId,
+                            @RequestParam Long recipeId){
+
+        Community community = entityManager.find(Community.class, communityId);
+        Recipe recipe = entityManager.find(Recipe.class, recipeId);
+
+        community.getRecipes().add(recipe);
+        recipe.getCommunities().add(community);
+
+        entityManager.persist(community);
+        entityManager.persist(recipe);
+        entityManager.flush();
+
+        return "redirect:/recipe";
     }
 
     // Cargar recetas
@@ -191,5 +235,21 @@ public class RecipeController {
         return "{\"status\":\"photo uploaded correctly\"}";
   
     }
+
+    // Borrar el evento en la base de datos
+    @Transactional
+    @PostMapping("/{id}/delete") 
+    public String deleteEvent(@PathVariable long id) {
+        // Buscar el evento en la base de datos pot su id
+        Recipe recipe = entityManager.find(Recipe.class, id);
+
+        if(recipe != null) {
+            // Eliminar de la base de datos
+            entityManager.remove(recipe);
+            log.info("El administrador ha borrado la receta: {}", recipe.getTitle());
+        }
+
+        return "redirect:/recipe";
+    } 
     
 }

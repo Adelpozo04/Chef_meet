@@ -8,7 +8,12 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -31,11 +36,22 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     private String difficulty;
 
     @Column(nullable = false)
+    private String calories;
+
+    @Column(nullable = false)
+    private boolean publicRecipe;
+
+    @Column(nullable = false)
     private String[] steps;
 
     // Conexiones entre las distintas tablas de la base de datos.
     @OneToMany(mappedBy = "recipeUsed", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<IngredientInRecipe> recipeIngredients = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "recipes")
+    @JsonIgnore
+    private List<Community> communities = new ArrayList<>();
 
     @ManyToOne
     private User author;
@@ -46,6 +62,8 @@ public class Recipe implements Transferable<Recipe.Transfer> {
         private String title;
         private String time;
         private String difficulty;
+        private String calories;
+        private boolean publicRecipe;
         private String[] steps;
         private String ingredients;
         long id;
@@ -60,12 +78,22 @@ public class Recipe implements Transferable<Recipe.Transfer> {
             ingr.append(i.getIngredientUsed().getName()).append(", ");
         } 
 
-        return new Transfer(title, time, difficulty, steps, ingr.toString(), id);
+        return new Transfer(title, time, difficulty, calories, publicRecipe, steps, ingr.toString(), id);
     }
 
     @Override
     public String toString() {
         return toTransfer().toString();
     }
+
+    public Set<String> getAllergens() {
+    Set<String> allergens = new HashSet<>();
+
+    for (IngredientInRecipe ri : recipeIngredients) {
+        allergens.addAll(Arrays.asList(ri.getIngredientUsed().getAllergens()));
+    }
+
+    return allergens;
+}
 
 }
