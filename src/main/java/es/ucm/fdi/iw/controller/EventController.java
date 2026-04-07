@@ -42,7 +42,7 @@ public class EventController {
     private EntityManager entityManager;
 
     // Obtener clave de google maps desde application.properties
-    @Value("${google.maps.key}")
+    @Value("${google.maps.key:}")
     private String googleMapsKey;
 
     // Cargar eventos
