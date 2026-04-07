@@ -77,6 +77,8 @@ public class RecipeController {
 
         // Set community owner and add it as member
         recipe.setAuthor(author);
+        recipe.setHasRating(false);
+        recipe.setAverageRating(0);
         entityManager.persist(recipe);
         entityManager.flush();
 
@@ -155,6 +157,29 @@ public class RecipeController {
         recipe.getCommunities().add(community);
 
         entityManager.persist(community);
+        entityManager.persist(recipe);
+        entityManager.flush();
+
+        return "redirect:/recipe";
+    }
+
+    @GetMapping("/addRating/{id}")
+    public String showAddRatingPage(@PathVariable long id, Model model){
+
+        Recipe recipe = entityManager.find(Recipe.class, id);
+
+        model.addAttribute("recipe", recipe);
+
+        return "recipe/addRating";
+    }
+
+    @PostMapping("/addRating/{id}")
+    @Transactional
+    public String addRating(@PathVariable long id, @RequestParam float rating){
+        
+        Recipe recipe = entityManager.find(Recipe.class, id);
+        recipe.addRating(rating);
+
         entityManager.persist(recipe);
         entityManager.flush();
 

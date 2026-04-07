@@ -108,6 +108,11 @@
                                 </button>
                             </form> 
 
+                            <a th:if="${session.u != null}"
+                                th:href="@{/recipe/addRating/{id}(id=${recip.id})}"
+                                class="category_item">
+                                Añadir valoración
+                            </a>
                             
                         </div>
                         

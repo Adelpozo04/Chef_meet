@@ -95,6 +95,15 @@
 
         </div>
 
+        <div>
+            <h3>Valoración</h3>
+
+            <div for="averageRating" class="d-flex flex-row ml-3">
+                <p th:text="${recipe.averageRating}"></p>
+            </div>
+
+        </div>
+
     </main>
     
     <th:block th:replace="~{fragments/footer.html :: footer}" />
