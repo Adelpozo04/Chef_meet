@@ -160,7 +160,7 @@ public class EventController {
                 }
 
                 // Restriccion de tamanyo
-                long maxBytes = 2 * 1024 * 1024; // 2 MB
+                long maxBytes = 5 * 1024 * 1024; // 5 MB
                 if (photo.getSize() > maxBytes) {
                     model.addAttribute("errorSize", true);
                     return "event/create";
