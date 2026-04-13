@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.Country;
 import es.ucm.fdi.iw.model.User;
+import es.ucm.fdi.iw.model.User.Role;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -75,6 +76,7 @@ public class CommunityController {
         boolean userIsOwner = community.getOwner().getId() == user.getId();
         boolean userIsMember = community.getMembers().stream().
                                 anyMatch(u -> u.getId() == user.getId());
+        boolean userIsAdmin = user.hasRole(Role.ADMIN);
 
         if(userIsOwner)
             log.info("El usuario {} es el creador de la comunidad {}", user.getUsername(), community.getTitle());
@@ -86,9 +88,11 @@ public class CommunityController {
         else
             log.info("El usuario {} NO pertence a la comunidad {}", user.getUsername(), community.getTitle());
 
+
         model.addAttribute("community", community);
         model.addAttribute("isOwner", userIsOwner);
         model.addAttribute("isMember", userIsMember);
+        model.addAttribute("isAdmin", userIsAdmin);
         model.addAttribute("owner", owner);
         model.addAttribute("members", community.getMembers());
 
@@ -105,7 +109,7 @@ public class CommunityController {
         Community community = entityManager.find(Community.class, id);
 
         
-        if(community.getOwner().getId() == user.getId())
+        if(user.hasRole(Role.ADMIN) || community.getOwner().getId() == user.getId())
             entityManager.remove(community);
 
         return "redirect:/communities";
