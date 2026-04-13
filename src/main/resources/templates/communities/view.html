@@ -28,7 +28,9 @@
                 </th:block>
                 
                 <th:block th:if="${isOwner}">
-                    <button type="button">Eliminar comunidad</button>
+                    <form th:action="@{/communities/{id}/delete(id=${community.id})}" method="post">
+                        <button type="submit">Eliminar comunidad</button>
+                    </form>
                 </th:block>
                 
             </div>
