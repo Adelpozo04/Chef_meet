@@ -191,6 +191,46 @@
         });
 
     </script>
+
+    <script>
+
+        var infoType = document.getElementById("admin-filters-value")
+        var value = infoType.value
+
+        function tableRefresh() {
+
+        }
+
+        infoType.onchange = function() {
+            value = this.value
+
+            if(value == 'recipes') {
+                console.log('Category recipes selected')
+
+                // Cargar DataTable de recetas
+            }
+            else if(value == 'communities') {
+                console.log('Category communities selected')
+
+                // Cargar DataTable de comunidades
+            }
+            else if(value == 'events') {
+                console.log('Category events selected')
+
+                // Cargar DataTable de eventos
+            }
+            else if(value == 'users') {
+                console.log('Category users selected')
+
+                // Cargar DataTable de usuarios
+            }
+            else {
+                console.log('Unknown category: ' + value)
+            }
+
+        }
+
+    </script>
 </body>
 
 <script th:src="@{/js/admin.js}"></script>
