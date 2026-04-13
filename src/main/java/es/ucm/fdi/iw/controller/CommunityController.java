@@ -109,6 +109,22 @@ public class CommunityController {
     }
 
     @Transactional
+    @PostMapping("/{id}/delete")
+    public String deleteCommunity(
+        @PathVariable long id,
+        HttpSession session) {
+
+        User user = (User) session.getAttribute("u");
+        Community community = entityManager.find(Community.class, id);
+
+        
+        if(community.getOwner().getId() == user.getId())
+            entityManager.remove(community);
+
+        return "redirect:/communities";
+    }
+
+    @Transactional
     @PostMapping("/{id}/add")
     public String addUserToCommunity(
         @PathVariable long id,
