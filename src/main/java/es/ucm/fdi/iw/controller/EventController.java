@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import es.ucm.fdi.iw.model.Event;
 import es.ucm.fdi.iw.model.Reserve;
 import es.ucm.fdi.iw.model.User;
+import es.ucm.fdi.iw.LocalData;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -29,6 +30,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.IOException;
+import java.io.File;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 
@@ -40,6 +45,9 @@ public class EventController {
 
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private LocalData localData;
 
     // Obtener clave de google maps desde application.properties
     @Value("${google.maps.key:}")
@@ -204,29 +212,23 @@ public class EventController {
             // Guardar la imagen si el usuario ha subido alguna
             if(!photo.isEmpty()) {
                 try {
-                    String contentType = photo.getContentType();
-                    // Asignar la extension correcta segun el tipo
-                    String extension = contentType.equals("image/png") ? ".png" : ".jpg";
-                    // Nombrar la foto usando el id del evento
-                    String fileName = "ev_" + event.getId() + extension;
+                    // Obtener el archivo donde se guarda la imagen dentro de la carpeta 'events' en 'iwdata'
+                    File f = localData.getFile("events", String.valueOf(event.getId()));
 
-                    // Asegurar de que la carpeta existe fisicamente, si no la crea
-                    Path directory = Paths.get("src/main/resources/static/img/events/");
-                    if(!Files.exists(directory)) {
-                        Files.createDirectories(directory);
+                    // Asegurar que la carpeta 'events' existe antes de guardar, si no, se crea
+                    f.getParentFile().mkdirs();
+
+                    try(BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(f))) {
+                        stream.write(photo.getBytes());
                     }
-                    // Ruta final
-                    Path path = directory.resolve(fileName);
 
-                    // Guardar el archivo
-                    Files.write(path, photo.getBytes());
-
-                    // Actualizar el evento con la ruta para que el HTML sepa donde buscarla
-                    event.setImagePath("/img/events/" + fileName);
+                    // Actualizar la imagen del evento con la ruta 
+                    event.setImagePath("/event/" + event.getId() + "/pic");
 
                     // Forzar a la base de datos a guardar esta actualizacion
                     entityManager.merge(event);
                     entityManager.flush();
+                    
                     // Al usar @Transactional, JPA guarda este cambio final en la base de datos automaticamente
                 } catch (IOException e) {
                     log.error("Error al guardar la imagen del evento", e);
@@ -269,5 +271,21 @@ public class EventController {
 
         // Convertir los eventos al formato JSON seguro Event.Transfer
         return events.stream().map(Event::toTransfer).collect(Collectors.toList());
+    }
+
+    // Endpoint para proporcionar la imagen del evento desde la carpeta externa iwdata
+    @GetMapping("/{id}/pic")
+    @ResponseBody
+    public void getEventPhoto(@PathVariable long id, HttpServletResponse response) throws IOException {
+        File f = localData.getFile("events", String.valueOf(id));
+        if (f.exists() && f.canRead()) {
+            // Si hay foto subida por el usuario, se proporciona al navegador
+            response.setContentType("image/jpeg");
+            Files.copy(f.toPath(), response.getOutputStream());
+        } else {
+            // Si no existe, se envia la imagen de por defecto
+            response.sendRedirect("/img/events/default.jpg");
+        }
+
     }
 }

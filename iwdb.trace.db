@@ -6,3 +6,11 @@ INSERT INTO community_memberse(community_id, user_id) VALUES (1275, 1) [42102-23
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "COMMUNITY_MEMBERSE" no encontrada
 Table "COMMUNITY_MEMBERSE" not found; SQL statement:
 INSERT INTO community_memberse(community_id, user_id) VALUES (1275, 2) [42102-232]
+2026-04-14 00:26:44.778067+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "COMMUNITY_MEMBERSE" no encontrada
+Table "COMMUNITY_MEMBERSE" not found; SQL statement:
+INSERT INTO community_memberse(community_id, user_id) VALUES (1275, 1) [42102-232]
+2026-04-14 00:26:44.784346+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "COMMUNITY_MEMBERSE" no encontrada
+Table "COMMUNITY_MEMBERSE" not found; SQL statement:
+INSERT INTO community_memberse(community_id, user_id) VALUES (1275, 2) [42102-232]

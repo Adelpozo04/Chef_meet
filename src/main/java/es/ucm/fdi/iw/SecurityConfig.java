@@ -63,11 +63,11 @@ public class SecurityConfig {
 						.requestMatchers("/admin/**").hasRole("ADMIN") // <-- administration
 						.requestMatchers("/user/**").hasRole("USER") // <-- logged-in users
 						.requestMatchers("/authors/**").permitAll()
-						.requestMatchers("/recipe/**").permitAll()
+						.requestMatchers("/recipe/**", "/recipe/*/pic").permitAll()
 						.requestMatchers("/recipe/create").hasRole("USER")
 						.requestMatchers("/communities").permitAll()
 						.requestMatchers("/communities/create").hasRole("USER")
-						.requestMatchers("/event").permitAll()
+						.requestMatchers("/event", "/event/*/pic").permitAll()
 						.requestMatchers("/event/create").hasRole("USER")
 						.requestMatchers("/account/**").permitAll()
 						.requestMatchers("/event/api/all").permitAll()
