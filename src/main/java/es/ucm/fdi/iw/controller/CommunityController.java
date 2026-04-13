@@ -108,7 +108,7 @@ public class CommunityController {
         if(community.getOwner().getId() == user.getId())
             entityManager.remove(community);
 
-        return "";
+        return "redirect:/communities";
     }
 
     @Transactional
