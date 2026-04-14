@@ -6,6 +6,7 @@
     <title>IW: Receta</title>
     <link rel="stylesheet" th:href="@{/css/custom.css}" href="/css/custom.css"
         type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -21,7 +22,17 @@
 
         <form method="post" th:action="@{/recipe/addRating/{id}(id=${recipe.id})}">
 
-            <input type="number" name="rating">
+            <div class="star-rating" id="star-rating">
+
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+
+            </div>
+
+            <input type="hidden" name="rating" id="rating" value="0">
 
             <button type="submit" class="category_item">Añadir reseña</button>
 
@@ -29,6 +40,7 @@
 
     </main>
 
+    <script th:src="@{/js/recipeAddRating.js}"></script>
     <th:block th:replace="~{fragments/footer.html :: footer}" />
 </body>
 

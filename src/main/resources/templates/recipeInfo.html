@@ -98,14 +98,25 @@
         <div>
             <h3>Valoración</h3>
 
-            <div for="averageRating" class="d-flex flex-row ml-3">
-                <p th:text="${recipe.averageRating}"></p>
+            <div for="averageRating" class="d-flex flex-row gap-3">
+                <p id="ratingNumber" th:text="${recipe.averageRating}"></p>
+
+                <div class="star-rating upElement" id="star-rating">
+
+                    <span class="star" data-value="1">★</span>
+                    <span class="star" data-value="2">★</span>
+                    <span class="star" data-value="3">★</span>
+                    <span class="star" data-value="4">★</span>
+                    <span class="star" data-value="5">★</span>
+
+                </div>
             </div>
 
         </div>
 
     </main>
     
+    <script th:src="@{/js/recipeInfo.js}"></script>
     <th:block th:replace="~{fragments/footer.html :: footer}" />
 </body>
 
