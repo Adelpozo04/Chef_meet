@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 });
 
 
-// FUNCIONALIDAD: Borrar eventos (solo Admin)
+// FUNCIONALIDAD: Borrar eventos
 document.addEventListener('DOMContentLoaded', ()=> {
     const deleteButtons = document.querySelectorAll('.btn_delete');
 
@@ -113,11 +113,13 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
                 // Mandar peticion al servidor antes de borrarlo visualmente
                 // Se usa fetch para enviar el post en segundo plano sin recargar la pagina
-                fetch(form.action, {
+                
+                // Funcion de AJAX en JavaScript, ir a la URL que pone en el action de este formulario (/event/id/delete)
+                fetch(form.action, { 
                     method: 'POST',
-                    body: new FormData(form) // Recoge el id del evento y el token de seguridad CRSF de Thymeleaf
+                    body: new FormData(form) // Empaqueta todo lo que hay dentro del form y lo manda al servidor
                 })
-                .then(response => {
+                .then(response => { // Cuando el servidor contesta, ejecuta este bloque
                     if(response.ok) {
                         // El servidor confima que ha borrado el evento de la base de datos
                         // Animacion transicion
@@ -125,6 +127,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
                         eventItem.style.transform = 'scale(0.3)';
 
                         // Eliminacion definitiva del elemento del DOM tras la animacion
+                        // Espera exactamente 400 ms
                         setTimeout(() => {
                             eventItem.remove();
                         }, 400);
@@ -151,9 +154,9 @@ function initMap() {
     // Herramienta para convertir textos a coordenadas
     const geocoder = new google.maps.Geocoder();
 
-    // Pedir los eventos al servidor java usando fetch
+    // Pedir todos los eventos al servidor java usando fetch
     fetch('/event/api/all')
-        .then(response => response.json())
+        .then(response => response.json()) // convertir a una lista de objetos de JavaScript
         .then(events => {
 
             // Comprobar si events es una lista
