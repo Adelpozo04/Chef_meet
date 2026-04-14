@@ -118,6 +118,40 @@ img.preview {
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
+/*UPDATE HTML*/
+/* Pie de la card */
+.card_footer {
+    display: block;
+    width: 100%;
+    padding: 8px 8px;
+    background: #1e354e;
+    text-align: center;
+    text-decoration: none;
+    color:white;
+    border-radius: 0 0 10px 10px;
+}
+
+/*UPDATE HTML*/
+/* Pie de la card */
+.card_footer_middle {
+    display: block;
+    width: 100%;
+    padding: 8px 8px;
+    background: #1e354e;
+    text-align: center;
+    text-decoration: none;
+    color:white;
+    border-radius: 0 0 0 0;
+}
+
+/*UPDATE HTML*/
+/* Boton de navegador de busqueda */
+.btn_search {
+    background-color: white;
+    color: #40b6f1;
+    border: 2px solid #40b6f1;
+}
+
 /* Altura tarjeta */
 .event-card::before {
     content: '';
@@ -379,6 +413,21 @@ img.preview {
     color: gray;
 }
 
+.star{
+    position:relative;
+    color:gray;
+    font-size: 25px;
+}
+
+.star.filled{
+    color:gold;
+    font-size: 25px;
+}
+
+.upElement {
+    transform: translateY(-10px);
+
+}
 
 /* Estilos de sección comunidades */
 .comunities-list {

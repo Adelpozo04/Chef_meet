@@ -42,6 +42,12 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     private boolean publicRecipe;
 
     @Column(nullable = false)
+    private boolean hasRating;
+
+    @Column(nullable = false)
+    private float averageRating;
+
+    @Column(nullable = false)
     private String[] steps;
 
     // Conexiones entre las distintas tablas de la base de datos.
@@ -64,6 +70,8 @@ public class Recipe implements Transferable<Recipe.Transfer> {
         private String difficulty;
         private String calories;
         private boolean publicRecipe;
+        private boolean hasRating;
+        private float averageRating;
         private String[] steps;
         private String ingredients;
         long id;
@@ -78,7 +86,7 @@ public class Recipe implements Transferable<Recipe.Transfer> {
             ingr.append(i.getIngredientUsed().getName()).append(", ");
         } 
 
-        return new Transfer(title, time, difficulty, calories, publicRecipe, steps, ingr.toString(), id);
+        return new Transfer(title, time, difficulty, calories, publicRecipe, hasRating, averageRating, steps, ingr.toString(), id);
     }
 
     @Override
@@ -87,13 +95,23 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     }
 
     public Set<String> getAllergens() {
-    Set<String> allergens = new HashSet<>();
+        Set<String> allergens = new HashSet<>();
 
-    for (IngredientInRecipe ri : recipeIngredients) {
-        allergens.addAll(Arrays.asList(ri.getIngredientUsed().getAllergens()));
+        for (IngredientInRecipe ri : recipeIngredients) {
+            allergens.addAll(Arrays.asList(ri.getIngredientUsed().getAllergens()));
+        }
+
+        return allergens;
     }
 
-    return allergens;
-}
+    public void addRating(float rating){
+        if(hasRating){
+            averageRating = (averageRating + rating) / 2;
+        }
+        else{
+            averageRating = rating;
+            hasRating = true;
+        }
+    }
 
 }

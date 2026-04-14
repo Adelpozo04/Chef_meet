@@ -48,7 +48,20 @@
                             <!--Enlace a la informacion de la receta-->
                             <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
                                 <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" alt="Imagen de la receta">
-                                <span class="card_footer" th:text="${recip.title}">Título</span>
+                                <span class="card_footer_middle" th:text="${recip.title}">Título</span>
+                                <div for="averageRating" class="d-flex flex-row gap-3 card_footer align-items-center justify-content-center">
+                                    <p id="ratingNumber" th:text="${recip.averageRating}"></p>
+
+                                    <div class="star-rating upElement" id="star-rating">
+
+                                        <span class="star" data-value="1">★</span>
+                                        <span class="star" data-value="2">★</span>
+                                        <span class="star" data-value="3">★</span>
+                                        <span class="star" data-value="4">★</span>
+                                        <span class="star" data-value="5">★</span>
+
+                                    </div>
+                                </div>
                             </a>
 
                             <!-- Botón de eliminar solo visible para el autor o admin -->
@@ -94,7 +107,20 @@
                             <!--Enlace a la informacion de la receta-->
                             <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
                                 <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" alt="Imagen de la receta">
-                                <span class="card_footer" th:text="${recip.title}">Título</span>
+                                <span class="card_footer_middle" th:text="${recip.title}">Título</span>
+                                <div for="averageRating" class="d-flex flex-row gap-3 card_footer align-items-center justify-content-center">
+                                    <p id="ratingNumber" th:text="${recip.averageRating}"></p>
+
+                                    <div class="star-rating upElement" id="star-rating">
+
+                                        <span class="star" data-value="1">★</span>
+                                        <span class="star" data-value="2">★</span>
+                                        <span class="star" data-value="3">★</span>
+                                        <span class="star" data-value="4">★</span>
+                                        <span class="star" data-value="5">★</span>
+
+                                    </div>
+                                </div>
                             </a>
 
                             <!-- Botón de eliminar solo visible para el autor o admin -->
@@ -108,6 +134,11 @@
                                 </button>
                             </form> 
 
+                            <a th:if="${session.u != null}"
+                                th:href="@{/recipe/addRating/{id}(id=${recip.id})}"
+                                class="category_item">
+                                Añadir valoración
+                            </a>
                             
                         </div>
                         
