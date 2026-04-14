@@ -82,6 +82,11 @@
     font-size: 0.9em;
     padding: 8px 12px;
     margin-bottom: 1rem;
+    text-transform: lowercase;
+}
+
+.theme-badge::first-letter {
+    text-transform: uppercase;
 }
 
 .left-panel, .right-panel{

@@ -20,12 +20,15 @@ import es.ucm.fdi.iw.model.Event;
 import es.ucm.fdi.iw.model.Reservation;
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.LocalData;
+import es.ucm.fdi.iw.controller.UserController.NoEsTuPerfilException;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,6 +52,10 @@ public class EventController {
     @Autowired
     private LocalData localData;
 
+    // Excepcion para denegar una accion a usuarios no autorizados
+    @ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "No tienes permisos para realizar esta acción")
+        public static class DontHavePermissionException extends RuntimeException {
+    } 
     // Obtener clave de google maps desde application.properties
     @Value("${google.maps.key:}")
     private String googleMapsKey;
@@ -244,15 +251,34 @@ public class EventController {
     // Borrar el evento en la base de datos
     @Transactional
     @PostMapping("/{id}/delete") 
-    public String deleteEvent(@PathVariable long id) {
-        // Buscar el evento en la base de datos pot su id
+    public String deleteEvent(@PathVariable long id, HttpSession session) {
+        // Obtener el evento en la base de datos por su id
         Event event = entityManager.find(Event.class, id);
 
-        if(event != null) {
-            // Eliminar de la base de datos
-            entityManager.remove(event);
-            log.info("El administrador ha borrado el evento: {}", event.getTitle());
+        if(event == null) {
+            return "redirect:/event";
         }
+
+        // Obtener el usuario que quiere realizar la accion
+        User requester = (User) session.getAttribute("u");
+        if(requester == null) {
+            throw new DontHavePermissionException(); // Si no esta logueado
+        }
+
+        // Comprobar permisos, ¿es admin o el creador del evento?
+        boolean isAdmin = requester.hasRole(User.Role.ADMIN);
+        boolean isOrganizer = event.getOrganizer() != null && event.getOrganizer().getId() == requester.getId();
+
+        if(!isAdmin && !isOrganizer)
+        {
+            log.warn("El usuario {} ha intentado eliminar el evento {} sin tener permisos.", requester.getUsername(), event.getTitle());
+            throw new DontHavePermissionException();
+        }
+
+        // Eliminar de la base de datos si tiene permisos
+        entityManager.remove(event);
+        log.info("El usuario {} ha borrado el evento: {}", requester.getUsername(), event.getTitle());
+        
 
         return "redirect:/event";
     } 
