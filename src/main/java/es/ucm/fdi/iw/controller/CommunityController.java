@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.Country;
 import es.ucm.fdi.iw.model.User;
+import es.ucm.fdi.iw.model.Event;
+import es.ucm.fdi.iw.model.User.Role;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -75,6 +77,7 @@ public class CommunityController {
         boolean userIsOwner = community.getOwner().getId() == user.getId();
         boolean userIsMember = community.getMembers().stream().
                                 anyMatch(u -> u.getId() == user.getId());
+        boolean userIsAdmin = user.hasRole(Role.ADMIN);
 
         if(userIsOwner)
             log.info("El usuario {} es el creador de la comunidad {}", user.getUsername(), community.getTitle());
@@ -86,13 +89,43 @@ public class CommunityController {
         else
             log.info("El usuario {} NO pertence a la comunidad {}", user.getUsername(), community.getTitle());
 
+        // Separar los eventos en proximos y pasados
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+        List<Event> upcomingEvents = community.getEvents().stream()
+                .filter(e -> e.getDate().isAfter(now))
+                .toList();
+        List<Event> pastEvents = community.getEvents().stream()
+                .filter(e -> e.getDate().isBefore(now))
+                .toList();
+        
+        model.addAttribute("upcomingEvents", upcomingEvents);
+        model.addAttribute("pastEvents", pastEvents);
+            
+
         model.addAttribute("community", community);
         model.addAttribute("isOwner", userIsOwner);
         model.addAttribute("isMember", userIsMember);
+        model.addAttribute("isAdmin", userIsAdmin);
         model.addAttribute("owner", owner);
         model.addAttribute("members", community.getMembers());
 
         return "communities/view";
+    }
+
+    @Transactional
+    @PostMapping("/{id}/delete")
+    public String deleteCommunity(
+        @PathVariable long id,
+        HttpSession session) {
+
+        User user = (User) session.getAttribute("u");
+        Community community = entityManager.find(Community.class, id);
+
+        
+        if(user.hasRole(Role.ADMIN) || community.getOwner().getId() == user.getId())
+            entityManager.remove(community);
+
+        return "redirect:/communities";
     }
 
     @Transactional

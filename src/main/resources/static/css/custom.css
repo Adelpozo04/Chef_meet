@@ -11,8 +11,9 @@
 /* Cabecera y titulo principal */
 main .container > h1 {
     color: #494B4D;
-    font-weight: 400;
+    font-weight: 600;
     text-align: center;
+    margin-top: 0;
     margin-bottom: 32px;
 }
 /*-----------------------------------*/
@@ -79,65 +80,42 @@ img.preview {
 /*----------------------------------*/
 
 /*Elementos eventos*/
-/* Grid de eventos mediante Flexbox */
+/* Grid de eventos mediante CSS Grid */
 .cards_list{
-    display: flex;
-    flex-wrap: wrap;
-    margin: 40px 0 0 0;
+    display: grid;
+    grid-template-columns: repeat(1,1fr);
+    gap: 24px;
+    margin: 40px auto 0 auto;
 }
-/*------------------*/
 
+@media(min-width: 540px){
+    .cards_list{
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+@media(min-width: 960px){
+    .cards_list{
+        grid-template-columns: repeat(3, 1fr); 
+    }
+}
 /*UPDATE HTML*/
-/* Formato basico para cartas de presentacion */
-.cards_list .card_item{
-    width: 30%;
-    margin-left: 3%;
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
+/* Contenedor del item */
+.card_item{
     /* Animacion transicion al mostrar y ocultar evento */
-    transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s;
-    transform: scale(1);
-    opacity: 1;
-    border-radius: 10px;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    position: relative;
 }
 
-/*UPDATE HTML*/
-/* Efecto hover*/
-.card_item:hover {
-    transform: translateY(-10px);
-}
-
-/*UPDATE HTML*/
-/* Enlace que hace clicable toda la tarjeta*/
-.card_link{
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-/*Sustitucion por background de comunidades*/
-.cards_list .card_item img{
-    width: 100%;
-    border-radius: 10px 10px 0 0;
-}
-
-/*UPDATE HTML*/
-/* Pie de la card */
-.card_footer {
+/* Tarjeta principal */
+.event-card {
     display: block;
+    position: relative;
     width: 100%;
-    padding: 8px 8px;
-    background: #1e354e;
-    text-align: center;
+    border-radius: 24px;
+    overflow: hidden;
     text-decoration: none;
-    color:white;
-    border-radius: 0 0  10px 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 /*UPDATE HTML*/
@@ -161,15 +139,84 @@ img.preview {
     border: 2px solid #40b6f1;
 }
 
-/*UPDATE HTML*/
-.btn_search:hover{
-    background-color: #40b6f1;
-    color: white;
-    border-color:#40b6f1;
+/* Altura tarjeta */
+.event-card::before {
+    content: '';
+    display: block;
+    padding-bottom: 80%;
+    width: 100%;
 }
 
-/*UPDATE HTML*/
-/* Boton de papelera */
+/* Imagen de fondo */
+.event-card_background {
+    background-size: cover;
+    background-position: center;
+    bottom: 0;
+    filter: brightness(0.65) saturate(1.2);
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform-origin: center;
+    transform: scale(1);
+    transition: filter 300ms ease, transform 300ms ease;
+}
+
+/* Hover */
+.event-card:hover .event-card_background {
+    transform: scale(1.05);
+    filter: brightness(0.5) saturate(1);
+}
+
+/* Contenedor del texto */
+.event-card_content {
+    left: 0;
+    padding: 24px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* Separa el titulo a la izquierda y detalles a la derecha */
+    align-items: flex-end;
+}
+
+/* Contenedor de detalles */
+.event-card_details {
+   display: flex;
+   flex-direction: column;
+   align-items: flex-end; /* Alinea los textos a la derecha */
+}
+
+/* Texto de tematica */
+.event-card_theme {
+    color: rgba(255,255,255, 0.9);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.9);
+}
+ 
+/* Texto de fecha */
+.event-card_date {
+    color: rgba(255,255,255, 0.9);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.9);
+}
+
+/* Titulo del evento */
+.event-card_title {
+    color: white;
+    font-size: 2rem;
+    text-shadow: 2px 2px 20px rgba(0,0,0,0.8);
+    line-height: 1.2;
+    margin: 0;
+    max-width: 65%;
+}
+
+/* Boton borrar */
 .btn_delete{
     display: inline-flex;
     align-items: center;
@@ -181,22 +228,87 @@ img.preview {
     padding: 0;
     text-decoration: none;
     color: #ff2b2b;
+    border: none;
+    transition: all 0.3s ease;
 }
 
-/*UPDATE HTML*/
 .btn_delete svg{
     width: 28px;
     height: 28px;
     color: white;
 }
 
-/*UPDATE HTML*/
 .btn_delete:hover{
    background-color: red;
-    border-color:red;
+   border-color:red;
    transform: scale(1.1);
 }
 
+.form-delete {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+}
+
+.form-delete .btn_delete{
+    margin-bottom: 0;
+    width: 40px;
+    height: 40px;
+}
+
+.form-delete .btn_delete svg{
+    width: 20px;
+    height: 20px;
+}
+
+/*UPDATE HTML*/
+/* Boton de navegador de busqueda */
+.btn_search {
+    background-color: white;
+    color: #40b6f1;
+    border: 2px solid #40b6f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*UPDATE HTML*/
+.btn_search:hover{
+    background-color: #40b6f1;
+    color: white;
+    border-color:#40b6f1;
+}
+
+/* Barra de busqueda*/
+
+/* Contenedor principal*/
+.search-bar-container {
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+    border-radius: 50px;
+    overflow: hidden;
+    border: 2px solid #40b6f1;
+}
+
+/* Lupa*/
+.search-icon {
+    background-color: white;
+    color:#40b6f1;
+    border: none;
+    padding-left: 20px;
+}
+
+/* Caja*/
+.search-input {
+    border: none;
+}
+
+/* Efecto al hacer clic para escribir*/
+.search-input:focus {
+    box-shadow: none; /*Quitar halo por defecto de bootsrap*/
+    outline: none; /*Quitar la linea negra de los navegadores*/
+}
+/*UPDATE HTML*/
 /*Boton de volver*/
 .btn-volver {
     display: inline-flex;
@@ -301,4 +413,108 @@ img.preview {
 
 .upElement {
     transform: translateY(-10px);
+
+}
+
+/* Estilos de sección comunidades */
+.comunities-list {
+    
+}
+
+/* Estilos de la seccion de eventos*/
+.events-list {
+    margin: 10px 0 10px 0;
+}
+
+.events-dropdown {
+    margin: 0 0 0 15%;
+    cursor: pointer;
+}
+
+.events-dropdown:hover {
+    color: #40b6f1
+}
+
+.no-events {
+    margin: 0 0 0 20%;
+}
+
+#map {
+    width: 100%;
+    height: 400px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    background-color: #eee;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.create-main {
+    margin-top: 3rem;
+}
+
+.create-form {
+    margin-top: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group-large {
+    margin-bottom: 1.5rem;
+}
+
+/* Fila generica de 2 columnas*/
+.form-row-2col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 1rem;
+}
+
+/* Fila generica de 3 columnas*/
+.form-row-3col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 1rem;
+}
+
+.photo-help-text {
+    margin-top: 0.25rem;
+    color: #6c757d;
+    font-size: 0.875em;
+}
+
+.community-privacy-box {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 1.5rem;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid #dee2de;
+}
+
+@media (min-width: 768px) {
+    .form-row-2col, 
+    .community-privacy-box {
+        grid-template-columns: 1fr 1fr; /* Divide en 2 columnas iguales */
+    }
+
+    .form-row-3col {
+        grid-template-columns: 1fr 1fr 1fr; /* Divide en 3 columnas iguales */
+    }
+}
+
+.highlight-label {
+    font-weight: bold;
+    color: #0d6efd;
+}
+
+.privacy-radio {
+    display: inline-block;
+    margin-right: 1rem;
+    margin-top: 0.5rem;
 }

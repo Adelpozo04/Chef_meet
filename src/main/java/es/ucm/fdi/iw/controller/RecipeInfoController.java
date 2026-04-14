@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import es.ucm.fdi.iw.model.Event;
 import es.ucm.fdi.iw.model.Recipe;
-import es.ucm.fdi.iw.model.Reserve;
+import es.ucm.fdi.iw.model.Reservation;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;

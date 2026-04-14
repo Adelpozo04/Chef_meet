@@ -80,7 +80,7 @@ public class RootController {
             // Consulta a la base de datos para obtener las reservas y eventos del usuario, ordenados alfabeticamente
             // En la tabla de reservas busca todas las que pertenezcan al usuario con este ID y obtiene el evento, devolviendo una lista de objetos Event
             List<Event> myEvents = entityManager.createQuery(
-                "SELECT r.event FROM Reserve r WHERE r.attendee.id = :userId ORDER BY r.event.title ASC", Event.class)
+                "SELECT r.event FROM Reservation r WHERE r.attendee.id = :userId ORDER BY r.event.title ASC", Event.class)
                 .setParameter("userId", u.getId())
                 .getResultList();
             
@@ -94,33 +94,4 @@ public class RootController {
     public String autores(Model model) {
         return "authors";
     }
-
-    /* 
-    @GetMapping("/reserve")
-    public String reserve(@RequestParam(name="nameString", required=false, defaultValue = "Evento") String nameString, Model model) {
-        String image;
-
-        // logica sencilla para asignar la imagen segun el nombre del evento recibido
-        switch (nameString.toLowerCase()) {
-            case "paella":
-                image = "/img/events/ev_espana.jpg";
-                nameString = "Evento Paella";
-                break;
-            case "pizza":
-                image = "/img/events/ev_italia.jpg";
-                nameString = "Evento Pizza";
-                break;
-            case "sushi":
-                image = "/img/events/ev_japon.jpg";
-                nameString = "Evento Sushi";
-                break;
-            default:
-                image = "/img/events/ev_espana.jpg";
-                nameString = "Evento";
-                break;
-        }
-        model.addAttribute("title", nameString);
-        model.addAttribute("rootImage", image);
-        return "reserve";
-    }*/
 }

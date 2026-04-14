@@ -22,15 +22,31 @@ INSERT INTO country (id, country_name, country_emoji) VALUES
 (8, 'Japón', '🇯🇵'),
 (9, 'Corea del Sur', '🇰🇷');
 
+-- Ejemplos para comunidades
+INSERT INTO community(country_id, id, owner_id, title, description) VALUES 
+(0, 1275, 2, 'Amantes de la comida valenciana', 'Comunidad dedicada a los amantes de la comida valenciana'),
+(1, 1276, 2, 'Sushi lovers', 'Solo admitimos a amantes del sushi'),
+(0, 1951, 1, 'Comunidad 1', 'Comunidad 1'),
+(1, 1952, 1, 'Comunidad 2', 'Comunidad 2'),
+(2, 1953, 1, 'Comunidad 3', 'Comunidad 3'),
+(3, 1954, 1, 'Comunidad 4', 'Comunidad 4'),
+(4, 1955, 1, 'Comunidad 5', 'Comunidad 5'),
+(4, 1956, 1, 'Comunidad 6', 'Comunidad 6'),
+(5, 1957, 1, 'Comunidad 7', 'Comunidad 7'),
+(6, 1958, 1, 'Comunidad 8', 'Comunidad 8');
+
+INSERT INTO community_memberse(community_id, user_id) VALUES (1275, 1);
+INSERT INTO community_memberse(community_id, user_id) VALUES (1275, 2);
+
 -- Ejemplos para Eventos
-INSERT INTO event(id, title, description, theme, date, location, price, capacity, is_private, organizer_id, image_path)
-VALUES (next value for gen, 'Evento paella', 'Aprende a cocinar la auténtica paella valenciana paso a paso.', 'España', '2026-03-02 18:00:00', 'FDI UCM Madrid', 5, 20, false, 1, '/img/events/ev_espana.jpg');
+INSERT INTO event(id, title, description, theme, date, location, price, capacity, is_private, organizer_id, image_path, community_id)
+VALUES (next value for gen, 'Evento paella', 'Aprende a cocinar la auténtica paella valenciana paso a paso.', 'España', '2026-03-02 18:00:00', 'FDI UCM Madrid', 5, 20, true, 1, '/img/events/ev_espana.jpg', 1275);
 
 INSERT INTO event(id, title, description, theme, date, location, price, capacity, is_private, organizer_id, image_path)
-VALUES (next value for gen, 'Evento pizza', 'Evento exclusivo para miembros de la comunidad italiana.', 'Italiana', '2026-03-14 14:30:00', 'Plaza de España, Madrid', 15, 1, true, 1, '/img/events/ev_italia.jpg');
+VALUES (next value for gen, 'Evento pizza', 'Evento exclusivo para miembros de la comunidad italiana.', 'Italiana', '2026-03-14 14:30:00', 'Plaza de España, Madrid', 15, 1, false, 1, '/img/events/ev_italia.jpg');
 
 INSERT INTO event(id, title, description, theme, date, location, price, capacity, is_private, organizer_id, image_path)
-VALUES (next value for gen, 'Evento sushi', 'Evento exclusivo para miembros de la comunidad japonesa.', 'Asiática', '2026-03-24 20:30:00', 'Callao, Madrid', 25, 10, true, 1, '/img/events/ev_japon.jpg');
+VALUES (next value for gen, 'Evento sushi', 'Evento exclusivo para miembros de la comunidad japonesa.', 'Asiática', '2026-03-24 20:30:00', 'Callao, Madrid', 25, 10, false, 1, '/img/events/ev_japon.jpg');
 
 --Ejemplos para recetas
 
@@ -153,10 +169,10 @@ INSERT INTO ingredient(id, name, allergens) VALUES (next value for gen, 'Curry',
 INSERT INTO ingredient(id, name, allergens) VALUES (next value for gen, 'Pimentón', '');
 
 -- Ejemplos para reservas
-INSERT INTO reserve(id, attendee_id, event_id)
+INSERT INTO reservation(id, attendee_id, event_id)
 VALUES (next value for gen, 1, (SELECT id FROM event WHERE title = 'Evento paella' LIMIT 1));
 
-INSERT INTO reserve(id, attendee_id, event_id)
+INSERT INTO reservation(id, attendee_id, event_id)
 VALUES (next value for gen, 2, (SELECT id FROM event WHERE title = 'Evento paella' LIMIT 1));
 
 -- Ejemplos para mensajes
@@ -171,16 +187,3 @@ VALUES (next value for gen, 2, 1, 'Este usuario está insultando en el chat de s
 -- Queja sobre una receta
 INSERT INTO message(id, sender_id, recipient_id, text, date_sent, complain_type, reference_id)
 VALUES (next value for gen, 1, 1, 'Esta receta contiene fotos inapropiadas.', '2026-02-28 19:00:00', 'RECIPE', 5);
-
--- Ejemplos para comunidades
-INSERT INTO community(country_id, id, owner_id, title, description) VALUES 
-(0, 1275, 2, 'Amantes de la comida valenciana', 'Comunidad dedicada a los amantes de la comida valenciana'),
-(1, 1276, 2, 'Sushi lovers', 'Solo admitimos a amantes del sushi'),
-(0, 1951, 1, 'Comunidad 1', 'Comunidad 1'),
-(1, 1952, 1, 'Comunidad 2', 'Comunidad 2'),
-(2, 1953, 1, 'Comunidad 3', 'Comunidad 3'),
-(3, 1954, 1, 'Comunidad 4', 'Comunidad 4'),
-(4, 1955, 1, 'Comunidad 5', 'Comunidad 5'),
-(4, 1956, 1, 'Comunidad 6', 'Comunidad 6'),
-(5, 1957, 1, 'Comunidad 7', 'Comunidad 7'),
-(6, 1958, 1, 'Comunidad 8', 'Comunidad 8');

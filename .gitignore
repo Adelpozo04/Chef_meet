@@ -32,3 +32,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignorar archivo de claves secretas
+src/main/resources/secrets.properties
