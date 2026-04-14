@@ -94,6 +94,19 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     List<String> topics = entityManager.createNamedQuery("User.topics", String.class)
         .setParameter("id", u.getId())
         .getResultList();
+
+    // Suscripcion a eventos
+    //Buscar en la Base de datos los ids de los eventos a los que asiste este usuario
+    List<Long> eventIds = entityManager.createQuery(
+      "SELECT r.event.id FROM Reservation r WHERE r.attendee.id = :uid", Long.class)
+      .setParameter("uid", u.getId())
+      .getResultList();
+
+    // Añadir cada evento a la lista con el prefijo "event-"
+    for(Long eventId: eventIds) {
+      topics.add("event-" + eventId);
+    }
+
     session.setAttribute("topics", String.join(",", topics));
 
     // redirects to 'admin' or 'user/{id}', depending on the user

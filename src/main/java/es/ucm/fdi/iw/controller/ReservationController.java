@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import es.ucm.fdi.iw.model.Event;
 import es.ucm.fdi.iw.model.Reservation;
@@ -17,11 +20,20 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 @Controller
 public class ReservationController {
     
+    private static final Logger log = LogManager.getLogger(ReservationController.class);
+
     @Autowired
     private EntityManager entityManager;
+
+    // Para los mensajes
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     // Obtener clave de google maps desde application.properties
     @Value("${google.maps.key:}")
@@ -100,6 +112,33 @@ public class ReservationController {
 
             entityManager.persist(reservation);
             entityManager.flush();
+
+            // Enviar notificacion websocket, broadcast a topic
+            try {
+                // Construir el JSON del mensaje usando Jackson
+                ObjectMapper mapper = new ObjectMapper();
+                ObjectNode rootNode = mapper.createObjectNode();
+                rootNode.put("type", "EVENT_JOIN");
+                rootNode.put("text", u.getUsername() + " se ha unido al evento " + event.getTitle());
+                String json = mapper.writeValueAsString(rootNode);
+
+                // Publicar en el canal del evento
+                messagingTemplate.convertAndSend("/topic/event-" + event.getId(), json);
+                
+            } catch (Exception e) {
+
+               log.error("Error al publicar en el canal del evento", e );
+            }
+
+            // Suscribir al usuario al canal de este evento
+            String topics = (String) session.getAttribute("topics");
+            if(topics != null && !topics.isEmpty()) {
+                session.setAttribute("topics", topics + ",event-" + event.getId());
+            }
+            else {
+                session.setAttribute("topics", "event-" + event.getId());
+            }
+            log.info("Usuario {} suscrito a event-{}", u.getUsername(), event.getId());
         }
 
         // Redirigir al perfil del usuario a la pestaña de mis eventos

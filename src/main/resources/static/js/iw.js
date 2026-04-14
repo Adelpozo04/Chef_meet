@@ -13,11 +13,30 @@ const ws = {
     /**
      * Default action when message is received. 
      */
-    receive: (text) => {
+   /* receive: (text) => {
         console.log(text);
         let p = document.querySelector("#nav-unread");
         if (p) {
             p.textContent = +p.textContent + 1;
+        }
+    },*/
+    receive: (msg) => {
+        // Si se recibe un string (JSON), se convierte a objeto
+        const data = (typeof msg === 'string') ? JSON.parse(msg) : msg;
+        console.log("Mensaje WS recibido: ", msg);
+
+        // Comprobar si el mensaje es la notificacion de evento
+        if(data.type === 'EVENT_JOIN') {
+            // Mostrar notificacion por pantalla
+            //alert("¡Nueva Notificación!\n" + msg.text);
+            showNotification(data.text);
+        }
+        else {
+            // Mensaje de chat normal, actualizar el contador rojo del nav
+            let p = document.querySelector("#nav-unread");
+            if (p) {
+                p.textContent = +p.textContent + 1;
+            }
         }
     },
 
@@ -214,3 +233,28 @@ document.addEventListener("DOMContentLoaded", () => {
     // 	 document.addEventListener("DOMContentLoaded", () => { /* your-code-here */ });
     //   (assuming you do not care about order-of-execution, all such handlers will be called correctly)
 });
+
+// Funcion para mostrar notificaciones en la esquina inferior izquierda
+function showNotification(message) {
+    // Crear contenedor si no existe
+    let container = document.getElementById("noti-container");
+    if(!container) {
+        container = document.createElement("div");
+        container.id = "noti-container";
+        document.body.appendChild(container);
+    }
+
+    // Crear la notificacion
+    const notification = document.createElement("div");
+    notification.className = "noti-message";
+    notification.innerText = message;
+
+    // Agregar al contenedor
+    container.appendChild(notification);
+
+    // Desaparecer tras 5 segundos
+    setTimeout(() => {
+        notification.classList.add("noti-fadeout");
+        setTimeout(() => notification.remove(), 500);
+    }, 5000);
+}

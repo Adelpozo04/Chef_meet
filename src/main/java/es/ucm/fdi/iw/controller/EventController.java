@@ -244,6 +244,14 @@ public class EventController {
 
             log.info("Nuevo evento creado por {}: {}", organizer.getUsername(), event.getTitle());
 
+            // Suscribir al creador al canal de su nuevo evento
+            String topics = (String) session.getAttribute("topics");
+            if(topics != null && !topics.isEmpty()) {
+                session.setAttribute("topics", topics + ",event-" + event.getId());
+            }
+            else {
+                session.setAttribute("topics", "event-" + event.getId());
+            }
             return "redirect:/event";
 
     }
