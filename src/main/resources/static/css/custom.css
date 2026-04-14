@@ -120,6 +120,19 @@ img.preview {
 
 /*UPDATE HTML*/
 /* Pie de la card */
+.card_footer {
+    display: block;
+    width: 100%;
+    padding: 8px 8px;
+    background: #1e354e;
+    text-align: center;
+    text-decoration: none;
+    color:white;
+    border-radius: 0 0 10px 10px;
+}
+
+/*UPDATE HTML*/
+/* Pie de la card */
 .card_footer_middle {
     display: block;
     width: 100%;
