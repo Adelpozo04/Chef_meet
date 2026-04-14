@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Reserve implements Transferable<Reserve.Transfer> {
+public class Reservation implements Transferable<Reservation.Transfer> {
 
     // Toda entidad JPA necesita un ID propio
     @Id
@@ -32,7 +32,7 @@ public class Reserve implements Transferable<Reserve.Transfer> {
         private long id;
         private String attendeeName;
         private String eventTitle;
-        /*public Transfer(Reserve r) {
+        /*public Transfer(Reservation r) {
             this.id = r.getId();
         }*/
     }

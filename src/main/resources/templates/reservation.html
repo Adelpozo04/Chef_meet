@@ -4,9 +4,9 @@
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
     <title>IW: Reserva de Evento</title>
-    <link rel="stylesheet" th:href="@{/css/reserve.css}" href="css/reserve.css"/>
-    <script th:src="@{/js/reserve.js}"></script>
-    <script async defer th:src="|https://maps.googleapis.com/maps/api/js?key=${googleMapsKey}&callback=initMapReserve&loading=async|"></script>
+    <link rel="stylesheet" th:href="@{/css/reservation.css}" href="css/reservation.css"/>
+    <script th:src="@{/js/reservation.js}"></script>
+    <script async defer th:src="|https://maps.googleapis.com/maps/api/js?key=${googleMapsKey}&callback=initMapReservation&loading=async|"></script>
 </head>
 
 <body class="d-flex flex-column h-100">     
@@ -20,7 +20,7 @@
                     <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
                 </svg>
             </a>
-            <div class="reserve-layout">
+            <div class="reservation-layout">
                 <div class="left-panel">
                     <!-- Imagen del evento -->
                     <img th:src="@{${event.imagePath != null ? event.imagePath : '/img/events/default.jpg'}}" class="img-evento mb-4" alt="Imagen del evento">
@@ -32,7 +32,7 @@
                                                   'Precio: ' + #numbers.formatDecimal(event.price, 1, 'COMMA', 2, 'POINT') + '€')}"></p>
                         <p th:text="'Disponibles: ' + ${reservedSpots} + '/' + ${event.capacity}"></p>
                         
-                        <div th:if="${isAlreadyAttending}" class="alert alert-info reserve-alert" role="alert">
+                        <div th:if="${isAlreadyAttending}" class="alert alert-info reservation-alert" role="alert">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill me-1" viewBox="0 0 16 16">
                                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                             </svg>
@@ -41,9 +41,9 @@
                         
                         
                         <!-- Boton para reservar -->
-                        <form th:if="${!isAlreadyAttending}" th:action="@{/reserve/confirm}" method="post" class="reserve-form">
+                        <form th:if="${!isAlreadyAttending}" th:action="@{/reservation/confirm}" method="post" class="reservation-form">
                             <input type="hidden" name="eventId" th:value="${event.id}">
-                            <button type="submit" class="btn btn-reservar" 
+                            <button type="submit" class="btn btn-reservation" 
                                     th:disabled="${availableSpots <= 0}"
                                     th:data-price="${event.price}">
                                 <span th:text="${availableSpots <= 0 ? 'Evento Completo' : 'Reservar'}"></span>
@@ -56,7 +56,7 @@
                 <div class="right-panel">
                     <div class="box-rounded description-box">
 
-                        <div id="map-reserve"></div>
+                        <div id="map-reservation"></div>
 
                         <h2 class="fw-bold" th:text="${event.title}"></h2>
                         <span class="badge theme-badge" th:text="${event.theme}"></span>

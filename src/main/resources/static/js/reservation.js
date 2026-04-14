@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () =>{
 
 
 // Funcion para cargar el mapa individual del evento
-function initMapReserve() {
+function initMapReservation() {
 
-    const mapDiv = document.getElementById("map-reserve");
+    const mapDiv = document.getElementById("map-reservation");
     const locationText = document.getElementById("event-location");
 
     // Parar si no hay mapa o no hay texto de ubicacion

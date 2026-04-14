@@ -64,7 +64,7 @@
                                  th:data-title="${ev.title}"
                                  th:data-theme="${ev.theme}">
                                 
-                                <a class="event-card" th:href="@{/reserve/{id}(id=${ev.id})}">
+                                <a class="event-card" th:href="@{/reservation/{id}(id=${ev.id})}">
                                     <div class="event-card_background"
                                          th:style="'background-image: url(' + @{${ev.imagePath != null ? ev.imagePath : '/img/events/default.jpg'}} + ')'"></div>
                                     <div class="event-card_content">
@@ -103,7 +103,7 @@
                                  th:data-title="${ev.title}"
                                  th:data-theme="${ev.theme}">
                                 
-                                <a class="event-card" th:href="@{/reserve/{id}(id=${ev.id})}">
+                                <a class="event-card" th:href="@{/reservation/{id}(id=${ev.id})}">
                                     <div class="event-card_background"
                                          th:style="'background-image: url(' + @{${ev.imagePath != null ? ev.imagePath : '/img/events/default.jpg'}} + ')'"></div>
                                     <div class="event-card_content">

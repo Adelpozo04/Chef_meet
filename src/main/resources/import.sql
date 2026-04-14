@@ -169,10 +169,10 @@ INSERT INTO ingredient(id, name, allergens) VALUES (next value for gen, 'Curry',
 INSERT INTO ingredient(id, name, allergens) VALUES (next value for gen, 'Pimentón', '');
 
 -- Ejemplos para reservas
-INSERT INTO reserve(id, attendee_id, event_id)
+INSERT INTO reservation(id, attendee_id, event_id)
 VALUES (next value for gen, 1, (SELECT id FROM event WHERE title = 'Evento paella' LIMIT 1));
 
-INSERT INTO reserve(id, attendee_id, event_id)
+INSERT INTO reservation(id, attendee_id, event_id)
 VALUES (next value for gen, 2, (SELECT id FROM event WHERE title = 'Evento paella' LIMIT 1));
 
 -- Ejemplos para mensajes

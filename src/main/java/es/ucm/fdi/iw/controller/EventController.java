@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import es.ucm.fdi.iw.model.Event;
-import es.ucm.fdi.iw.model.Reserve;
+import es.ucm.fdi.iw.model.Reservation;
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.LocalData;
 import jakarta.persistence.EntityManager;
@@ -195,18 +195,18 @@ public class EventController {
             entityManager.flush();
 
             // Autoreserva para el organizador
-            Reserve autoReserve = new Reserve();
-            autoReserve.setAttendee(organizer);
-            autoReserve.setEvent(event);
+            Reservation autoReservation = new Reservation();
+            autoReservation.setAttendee(organizer);
+            autoReservation.setEvent(event);
 
             // Si la lista de asistentes esta vacia, se inicia y se mete la reserva
             if (event.getAttendees() == null) {
                 event.setAttendees(new java.util.ArrayList<>());
             }
-            event.getAttendees().add(autoReserve);
+            event.getAttendees().add(autoReservation);
 
             // Guardar la reserva en la base de datos
-            entityManager.persist(autoReserve);
+            entityManager.persist(autoReservation);
             entityManager.flush();
 
             // Guardar la imagen si el usuario ha subido alguna

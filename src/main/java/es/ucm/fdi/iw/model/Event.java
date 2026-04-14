@@ -62,7 +62,7 @@ public class Event implements Transferable<Event.Transfer> {
 
     // Un evento tiene muchas reservas asociadas
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private List<Reserve> attendees = new ArrayList<>();
+    private List<Reservation> attendees = new ArrayList<>();
 
     // Objeto para persistir a/de JSON
     @Getter

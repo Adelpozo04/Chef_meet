@@ -1,4 +1,4 @@
-.container-reserva{
+.container-reservation{
     margin-top: 50px;
 }
 
@@ -17,7 +17,7 @@
     margin-bottom: 1.rem;
 }
 
-.btn-reservar {
+.btn-reservation {
     background: #2e69a8;
     text-align: center;
     text-decoration: none;
@@ -29,7 +29,7 @@
     transition: all 0.3s ease;
 }
 
-.btn-reservar:hover {
+.btn-reservation:hover {
     transform: translateY(-2px);
     background: #397fca;
     cursor: pointer;
@@ -64,7 +64,7 @@
     transform: scale(1.1);
 }
 
-#map-reserve {
+#map-reservation {
     width: 280px;
     height: 200px;
     border-radius: 10px;
@@ -105,14 +105,14 @@
     margin-bottom: 0.25rem;
 }
 
-.reserve-alert {
+.reservation-alert {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     margin-top: 1rem;
     margin-bottom: 0;
 }
 
-.reserve-form {
+.reservation-form {
     margin-top: 1rem;
 }
 
@@ -127,14 +127,14 @@
     margin-top: 1.5rem;
 }
 
-.reserve-layout {
+.reservation-layout {
     display: grid;
     grid-template-columns: 1fr;
     gap: 24px;
 }
 
 @media (min-width: 768px) {
-    .reserve-layout {
+    .reservation-layout {
         grid-template-columns: 1fr 2fr; 
     }
 }

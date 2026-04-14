@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import es.ucm.fdi.iw.model.Event;
-import es.ucm.fdi.iw.model.Reserve;
+import es.ucm.fdi.iw.model.Reservation;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
@@ -18,7 +18,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 
 @Controller
-public class ReserveController {
+public class ReservationController {
     
     @Autowired
     private EntityManager entityManager;
@@ -27,8 +27,8 @@ public class ReserveController {
     @Value("${google.maps.key:}")
     private String googleMapsKey;
 
-    @GetMapping("/reserve/{id}")
-    public String showReservePage(@PathVariable long id, Model model, HttpSession session) {
+    @GetMapping("/reservation/{id}")
+    public String showReservationPage(@PathVariable long id, Model model, HttpSession session) {
         // Buscar el evento en la base de datos usando el id que viene en la url
         Event event = entityManager.find(Event.class, id);
 
@@ -56,12 +56,12 @@ public class ReserveController {
         model.addAttribute("isAlreadyAttending", isAlreadyAttending);
         // Pasar la API key al HTML
         model.addAttribute("googleMapsKey", googleMapsKey);
-        return "reserve";
+        return "reservation";
     }
 
     @Transactional
-    @PostMapping("/reserve/confirm")
-    public String confirmReserve(@RequestParam long eventId, HttpSession session) {
+    @PostMapping("/reservation/confirm")
+    public String confirmReservation(@RequestParam long eventId, HttpSession session) {
         // Obtener el usuario logueado de la sesion
         //User u = (User) session.getAttribute("u");
         //u = entityManager.find(User.class, u.getId());
@@ -91,14 +91,14 @@ public class ReserveController {
             }
 
             // Si pasa las validaciones de seguridad, se lleva a cabo la reserva
-            Reserve reserve = new Reserve();
-            reserve.setAttendee(u);
-            reserve.setEvent(event);
+            Reservation reservation = new Reservation();
+            reservation.setAttendee(u);
+            reservation.setEvent(event);
 
             // Comunicar al evento que agregue la reserva a su lista
-            event.getAttendees().add(reserve);
+            event.getAttendees().add(reservation);
 
-            entityManager.persist(reserve);
+            entityManager.persist(reservation);
             entityManager.flush();
         }
 
