@@ -99,6 +99,7 @@ img.preview {
         grid-template-columns: repeat(3, 1fr); 
     }
 }
+
 /*UPDATE HTML*/
 /* Contenedor del item */
 .card_item{
@@ -106,6 +107,80 @@ img.preview {
     transition: opacity 0.4s ease, transform 0.4s ease;
     position: relative;
 }
+
+/*UPDATE HTML*/
+/* Efecto hover*/
+.card_item:hover {
+    transform: translateY(-10px);
+}
+
+/*UPDATE HTML*/
+/* Enlace que hace clicable toda la tarjeta*/
+.card_link{
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+
+/*------------------*/
+
+/*UPDATE HTML*/
+/* Formato basico para cartas de presentacion */
+.cards_list .card_item{
+    width: 30%;
+    margin-left: 3%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* Animacion transicion al mostrar y ocultar evento */
+    transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s;
+    transform: scale(1);
+    opacity: 1;
+    border-radius: 10px;
+}
+
+/*Sustitucion por background de comunidades*/
+.cards_list .card_item img{
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+}
+
+/*UPDATE HTML*/
+/* Pie de la card */
+.card_footer {
+    width: 100%;
+    padding: 8px;
+    background: #1e354e;
+    text-align: center;
+    color: white;
+    border-radius: 0 0 10px 10px;
+}
+
+/*UPDATE HTML*/
+/* Pie de la card */
+.card_footer_middle {
+    width: 100%;
+    padding: 8px;
+    background: #1e354e;
+    text-align: center;
+    color: white;
+    border-radius: 0 0 0 0;
+}
+
+/*UPDATE HTML*/
+/* Boton de navegador de busqueda */
+.btn_search {
+    background-color: white;
+    color: #40b6f1;
+    border: 2px solid #40b6f1;
+}
+
 
 /* Tarjeta principal */
 .event-card {
@@ -116,40 +191,6 @@ img.preview {
     overflow: hidden;
     text-decoration: none;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-/*UPDATE HTML*/
-/* Pie de la card */
-.card_footer {
-    display: block;
-    width: 100%;
-    padding: 8px 8px;
-    background: #1e354e;
-    text-align: center;
-    text-decoration: none;
-    color:white;
-    border-radius: 0 0 10px 10px;
-}
-
-/*UPDATE HTML*/
-/* Pie de la card */
-.card_footer_middle {
-    display: block;
-    width: 100%;
-    padding: 8px 8px;
-    background: #1e354e;
-    text-align: center;
-    text-decoration: none;
-    color:white;
-    border-radius: 0 0 0 0;
-}
-
-/*UPDATE HTML*/
-/* Boton de navegador de busqueda */
-.btn_search {
-    background-color: white;
-    color: #40b6f1;
-    border: 2px solid #40b6f1;
 }
 
 /* Altura tarjeta */
