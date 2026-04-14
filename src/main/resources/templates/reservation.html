@@ -66,13 +66,13 @@
                         </span>
 
                         <div class="event-details">
-                            <p><i class="fa-regular fa-calendar"></i>Fecha: 
+                            <p></i><b>Fecha: </b>
                                 <span th:text="${#temporals.format(event.date, 'dd/MM/yyyy')}"></span>
                             </p>
-                            <p><i class="fa-regular fa-clock"></i>Hora: 
+                            <p></i><b>Hora:</b>
                                 <span th:text="${#temporals.format(event.date, 'HH:mm')}"></span>
                             </p>
-                            <p><i class="fa-solid fa-location-dot"></i>Lugar: 
+                            <p></i><b>Lugar:</b>
                                 <span id="event-location" th:text="${event.location}"></span>
                             </p>
                         </div>
