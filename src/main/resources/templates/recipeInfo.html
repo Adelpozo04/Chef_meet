@@ -25,24 +25,72 @@
             <!-- Titulo -->
             <h1 th:text="${recipe.title}" class="title_xxl border-0 text-center"></h1>
 
-            <!-- Imagen de vista previa -->
-            <div>
-                <img class="main_image" th:src="@{/img/recipes/{id}_cover.jpg(id=${recipe.id})}" alt="Imagen de la receta">
-            </div>        
+            <div class="d-flex flex-row align-items-center gap-5">
+                <!-- Imagen de vista previa -->
+                <div>
+                    <img class="main_image" th:src="@{/img/recipes/{id}_cover.jpg(id=${recipe.id})}" alt="Imagen de la receta">
+                </div> 
+
+                <div class="d-flex flex-column align-items-start justify-content-center gap-2 ml-5">
+
+                    <!--Datos generales-->
+                    <div>
+                        <h3>Datos Generales</h3>
+                        <div for="time">
+                            <p th:text="'Tiempo de preparación: ' + ${recipe.time}"></p>
+                        </div>
+
+                        <div for="difficulty">
+                            <p th:text="'Nivel de dificultad: ' + ${recipe.difficulty}"></p>
+                        </div>
+                    </div>
+
+                    <!--Datos de alergenos-->
+                    <div>
+                        <h3>Alergias</h3>
+
+                        <p th:each="allergen : ${recipe.allergens}"
+                            th:text="${allergen}">
+                        </p>
+
+                    </div>
+                       
+                    <!--Datos caloricos-->
+                    <div>
+                        <h3>Calorias</h3>
+
+                        <div for="calories" class="d-flex flex-row ml-3">
+                            <p th:text="${recipe.calories}"></p>
+                        </div>
+
+                    </div>
+
+                    <!--Datos de valoración-->
+                    <div>
+                        <h3>Valoración</h3>
+
+                        <div for="averageRating" class="d-flex flex-row gap-3">
+                            <p id="ratingNumber" th:text="${recipe.averageRating}"></p>
+
+                            <div class="star-rating upElement" id="star-rating">
+
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                </div>
+
+            </div>
+
+                   
             
-        </div>
-
-        <div>
-            <h3>Datos Generales</h3>
-
-            <div for="time" class="d-flex flex-row ml-3">
-                <p th:text="'Tiempo de preparación: ' + ${recipe.time}"></p>
-            </div>
-
-            <div for="difficulty" class="d-flex flex-row">
-                <p th:text="'Nivel de dificultad: ' + ${recipe.difficulty}"></p>
-            </div>
-
         </div>
 
         <!--Ingredientes de la receta-->
@@ -77,42 +125,7 @@
 
             </div>
 
-        <div>
-            <h3>Alergias</h3>
-
-            <p th:each="allergen : ${recipe.allergens}"
-                th:text="${allergen}">
-            </p>
-
-        </div>
-            
-         <div>
-            <h3>Calorias</h3>
-
-            <div for="calories" class="d-flex flex-row ml-3">
-                <p th:text="${recipe.calories}"></p>
-            </div>
-
-        </div>
-
-        <div>
-            <h3>Valoración</h3>
-
-            <div for="averageRating" class="d-flex flex-row gap-3">
-                <p id="ratingNumber" th:text="${recipe.averageRating}"></p>
-
-                <div class="star-rating upElement" id="star-rating">
-
-                    <span class="star" data-value="1">★</span>
-                    <span class="star" data-value="2">★</span>
-                    <span class="star" data-value="3">★</span>
-                    <span class="star" data-value="4">★</span>
-                    <span class="star" data-value="5">★</span>
-
-                </div>
-            </div>
-
-        </div>
+        
 
     </main>
     
