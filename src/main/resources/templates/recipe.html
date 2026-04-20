@@ -47,8 +47,14 @@
 
                             <!--Enlace a la informacion de la receta-->
                             <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
-                                <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" alt="Imagen de la receta">
+
+                                <div style="width: 360px; height: 250px; overflow: hidden;">
+                                    <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" 
+                                    alt="Imagen de la receta" class="w-100 h-100" style="object-fit: cover;">
+                                </div>
+
                                 <span class="card_footer_middle" th:text="${recip.title}">Título</span>
+                                
                                 <div for="averageRating" class="d-flex flex-row gap-3 card_footer align-items-center justify-content-center">
                                     <p id="ratingNumber" th:text="${recip.averageRating}"></p>
 
@@ -65,21 +71,26 @@
                             </a>
 
                             <!-- Botón de eliminar solo visible para el autor o admin -->
-                            <form
-                                    th:action="@{/recipe/{id}/delete(id=${recip.id})}" method="post">
-                                <button type="submit" onclick="return confirm('¿Seguro que quieres borrar esta receta?')"
-                                    class="btn btn-danger btn-sm mt-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                                    </svg>
-                                </button>
-                            </form>
+                            
+                            <div class="d-flex flex-row gap-3 align-items-center">
 
-                            <a th:if="${session.u != null}"
-                                th:href="@{/recipe/addToCommunity/{id}(id=${recip.id})}"
-                                class="category_item">
-                                Añadir a comunidad
-                            </a>
+                                <form th:action="@{/recipe/{id}/delete(id=${recip.id})}" method="post">
+                                    <button type="submit" onclick="return confirm('¿Seguro que quieres borrar esta receta?')"
+                                        class="btn btn-danger btn-sm mt-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                        </svg>
+                                    </button>
+                                </form>
+
+                                <a th:if="${session.u != null}"
+                                    th:href="@{/recipe/addToCommunity/{id}(id=${recip.id})}"
+                                    class="category_item">
+                                    +
+                                </a>
+
+                            </div>
+                            
 
                         </div>
                         
@@ -106,7 +117,11 @@
                         <div class="card_wrapper">
                             <!--Enlace a la informacion de la receta-->
                             <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
-                                <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" alt="Imagen de la receta">
+                                <div style="width: 360px; height: 250px; overflow: hidden;">
+                                    <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" 
+                                    alt="Imagen de la receta" class="w-100 h-100" style="object-fit: cover;">
+                                </div>
+                               
                                 <span class="card_footer_middle" th:text="${recip.title}">Título</span>
                                 <div for="averageRating" class="d-flex flex-row gap-3 card_footer align-items-center justify-content-center">
                                     <p id="ratingNumber" th:text="${recip.averageRating}"></p>
@@ -123,22 +138,26 @@
                                 </div>
                             </a>
 
-                            <!-- Botón de eliminar solo visible para el autor o admin -->
-                            <form th:if="${session.u != null && session.u.hasRole('ADMIN')}"
-                                    th:action="@{/recipe/{id}/delete(id=${recip.id})}" method="post">
-                                <button type="submit" onclick="return confirm('¿Seguro que quieres borrar esta receta?')"
-                                    class="btn btn-danger btn-sm mt-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                                    </svg>
-                                </button>
-                            </form> 
+                            <div class="d-flex flex-row gap-3 align-items-center">
 
-                            <a th:if="${session.u != null}"
-                                th:href="@{/recipe/addRating/{id}(id=${recip.id})}"
-                                class="category_item">
-                                Añadir valoración
-                            </a>
+                                <!-- Botón de eliminar solo visible para el autor o admin -->
+                                <form th:if="${session.u != null && session.u.hasRole('ADMIN')}"
+                                        th:action="@{/recipe/{id}/delete(id=${recip.id})}" method="post">
+                                    <button type="submit" onclick="return confirm('¿Seguro que quieres borrar esta receta?')"
+                                        class="btn btn-danger btn-sm mt-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                        </svg>
+                                    </button>
+                                </form> 
+
+                                <a th:if="${session.u != null}"
+                                    th:href="@{/recipe/addRating/{id}(id=${recip.id})}"
+                                    class="category_item">
+                                    +
+                                </a>
+
+                            </div>                    
                             
                         </div>
                         
