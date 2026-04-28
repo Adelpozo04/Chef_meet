@@ -6,9 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import jakarta.transaction.Transactional;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.persistence.EntityManager;
@@ -69,6 +72,49 @@ public class RootController {
     @Autowired
     private EntityManager entityManager;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    // Mostrar formulario de registro
+    @GetMapping("/register")
+    public String register(Model model) {
+        model.addAttribute("user", new User());
+        return "register";
+    }
+
+    // Procesar los datos del registro
+    @Transactional
+    @PostMapping("/register")
+    public String postRegister(@ModelAttribute User newUser, @RequestParam String pass2, Model model) {
+        
+        // Comprobar si las contraseñas coinciden
+        if (!newUser.getPassword().equals(pass2)) {
+            model.addAttribute("error", "Las contraseñas no coinciden.");
+            return "register";
+        }
+
+        // Comprobar si el nombre de usuario ya existe en la base de datos
+        long count = entityManager.createNamedQuery("User.hasUsername", Long.class)
+                .setParameter("username", newUser.getUsername())
+                .getSingleResult();
+        
+        if (count > 0) {
+            model.addAttribute("error", "Ese nombre de usuario no está disponible");
+            return "register";
+        }
+    
+        // Configurar al nuevo usuario
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword())); // Hashear la contraseña
+        newUser.setRoles(User.Role.USER.toString()); // Darle el rol basico
+        newUser.setEnabled(true); // Activar la cuenta
+
+        // Guardar el nuevo usuario en la base de datos
+        entityManager.persist(newUser);
+        log.info("Nuevo usuario registrado: {}", newUser.getUsername());
+
+        // Redirigir al login con un mensaje de exito
+        return "redirect:/login?registerd=true";
+    }
     @GetMapping("/account")
     public String account(Model model, HttpSession session, HttpServletRequest request) {
         boolean error = request.getQueryString() != null && request.getQueryString().indexOf("error") != -1;
