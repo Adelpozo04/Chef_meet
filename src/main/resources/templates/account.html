@@ -26,10 +26,11 @@
                     <a href="#" class="option_item" option="recipes">Mis recetas</a>
                     <a href="#" class="option_item" option="communities">Mis comunidades</a>
                     <a href="#" class="option_item" option="events">Mis eventos</a>
-                    <a href="#" class="option_item" option="customize">Personalización</a>
                     <a href="#" class="option_item" option="report">Reportar</a>
-                    <a href="#" class="option_item" option="log_out">Log out</a>
+                    <form id="logoutForm" th:action="@{/logout}" method="post"></form>
+                    <a href="#" class="option_item" id="logoutButton"> Cerrar sesión</a>
                 </div>
+
                 <div class="option_view">
                     <div id="data" class="view_content">
                         <th:block th:replace="~{fragments/profile_data :: data}" />
@@ -43,8 +44,6 @@
                     <div id="events" class="view_content d-none">
                         <th:block th:replace="~{fragments/profile_events :: events}" />
                     </div>
-                    <div id="customize" class="view_content d-none">
-                        <h2>Personalización</h2>
                     </div>
                     <div id="report" class="view_content d-none">
                         <th:block th:replace="~{fragments/profile_report :: report}" />

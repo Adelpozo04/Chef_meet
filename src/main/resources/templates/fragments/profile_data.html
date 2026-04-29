@@ -2,7 +2,32 @@
 <html class="h-100" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
     <div th:fragment="data">
-    <h2>Datos personales</h2>
+        <h2>Datos personales</h2>
+        
+        <div class="profile-summary-container">
+            <div class="profile-summary-card">
+                <img th:src="@{/user/{id}/pic(id=${session.u.id})}" class="card-img-profile" id="profile-avatar" alt="Foto de perfil">
+                
+                <div class="profile-summary-body">
+                    <h5 class="card-name" th:text="${session.u.firstName + ' ' + session.u.lastName}">
+                        Nombre Apellidos
+                    </h5>
+                    <p class="card-username" th:text="'@' + ${session.u.username}">
+                        @username
+                    </p>
 
+                    <div class="profile-photo-controls">
+                        <input type="file" id="f_avatar" accept="image/jpeg,image/png" class="d-none">
+
+                        <label for="f_avatar" class="btn-select-photo">Cambiar foto</label>
+
+                        <button id="postAvatar" class="btn-save-photo d-none" th:data-url="@{/user/{id}/pic(id=${session.u.id})}">
+                            Guardar foto
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
+</html>

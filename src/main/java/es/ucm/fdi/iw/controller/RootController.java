@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import jakarta.transaction.Transactional;
@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.model.Event;
-
+import java.io.File;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 /**
  * Non-authenticated requests only.
  */
@@ -73,6 +75,9 @@ public class RootController {
     private EntityManager entityManager;
 
     @Autowired
+    private es.ucm.fdi.iw.LocalData localData; // Clase que gestiona el guardado de archivos del proyecto
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     // Mostrar formulario de registro
@@ -83,9 +88,10 @@ public class RootController {
     }
 
     // Procesar los datos del registro
+    // Puede recibir el parametro photo
     @Transactional
     @PostMapping("/register")
-    public String postRegister(@ModelAttribute User newUser, @RequestParam String pass2, Model model) {
+    public String postRegister(@ModelAttribute User newUser, @RequestParam String pass2, @RequestParam("photo") MultipartFile photo, Model model) {
         
         // Comprobar si las contraseñas coinciden
         if (!newUser.getPassword().equals(pass2)) {
@@ -108,10 +114,27 @@ public class RootController {
         newUser.setRoles(User.Role.USER.toString()); // Darle el rol basico
         newUser.setEnabled(true); // Activar la cuenta
 
-        // Guardar el nuevo usuario en la base de datos
+        // Guardar el nuevo usuario en la base de datos para generar su ID
         entityManager.persist(newUser);
-        log.info("Nuevo usuario registrado: {}", newUser.getUsername());
+        entityManager.flush(); // Para obligar a la base de datos a generar el ID inmediatamente
 
+        log.info("Nuevo usuario registrado: {} con ID {}", newUser.getUsername(), newUser.getId());
+
+        // Guardar la foto para el avatar si se ha subido alguna
+        if(!photo.isEmpty()) {
+            try {
+                // Obtener la ruta del archivo
+                File f = localData.getFile("user", "" + newUser.getId() + ".jpg");
+                f.getParentFile().mkdirs(); // Crear la carpeta si no existe
+
+                try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(f))) {
+                    stream.write(photo.getBytes());
+                }
+                log.info("Foto de perfil guardada correctamente para el usuario: {}", newUser.getId());
+            } catch (Exception e) {
+                log.warn("Error al guardar la foto de perfil para el usuario " + newUser.getId(), e);
+            }
+        }
         // Redirigir al login con un mensaje de exito
         return "redirect:/login?registerd=true";
     }

@@ -57,11 +57,95 @@ main .container > h1 {
 
 /* Clase de Bootstrap para ocultar elementos por defecto */
 .d-none{
-    display: none I !important;
+    display: none !important;
 }
 
 /* Titulos dentro de las vistas de opciones */
 .view_content h2 {
     color: #494B4D;
     margin-bottom: 20px;
+}
+
+/* Contenedor para centrar la tarjeta*/
+.profile-summary-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Tarjeta principal*/
+.profile-summary-card {
+    background-color: #f0eeee;
+    width: 280px;
+    margin: 20px auto;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Foto de perfil circular*/
+.card-img-profile {
+    width: 150px;
+    height: 150px;
+    display: block;
+    margin: 20px auto 5px auto;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Contenedor para los textos*/
+.profile-summary-body {
+    text-align: center;
+    padding: 15px;
+}
+
+/* Textos de la tarjeta*/
+.card-name {
+    font-weight: 600;
+    color: #333
+}
+
+/* Controles de foto de perfil*/
+.profile-photo-controls {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-select-photo {
+    background-color: white;
+    color: #40b6f1;
+    border: 2px solid #40b6f1;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    width: 90%;
+}
+
+.btn-select-photo:hover {
+    background-color: #40b6f1;
+    color: white;
+}
+
+.btn-save-photo {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    width: 90%;
+}
+
+.btn-save-photo:hover {
+    background-color: #218838;
 }
