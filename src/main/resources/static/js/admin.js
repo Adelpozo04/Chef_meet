@@ -48,6 +48,23 @@ document.addEventListener('DOMContentLoaded', () => {
         inputs.forEach(input => {
             form.insertBefore(input, button)
         });
+
+        // Logica para mostrar/ocultar las tablas
+        const tableContainers = ['users', 'recipes', 'communities', 'events'];
+
+        // Ocultar todas las tablas
+        tableContainers.forEach(containerName => {
+            const container = document.getElementById('container-' + containerName);
+            if(container) {
+                container.classList.add('d-none');
+            }
+        });
+
+        // Mostrar solo la tabla que coincide con el select actual
+        const selectedContainer = document.getElementById('container-' + select.value);
+        if(selectedContainer) {
+            selectedContainer.classList.remove('d-none');
+        }
     }
 
     // Funcion auxiliar para crear inputs

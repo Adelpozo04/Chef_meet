@@ -45,10 +45,10 @@
                 </form>
             </div>
 
-            <div class="admin-filters">
-                <label for="filters">Filtrar por: </label>
+            <div class="admin-filters d-flex align-items-center ms-4">
+                <label for="filters" class="me-2 text-muted fw-bold mb-0">Filtrar por: </label>
 
-                <select name="filters" id="admin-filters-value">
+                <select name="filters" id="admin-filters-value" class="form-select border-primary text-primary fw-semibold shadow-sm" style="cursor: pointer; width: auto; border-radius: 8px;">
                     <option value="users">Usuario</option>
                     <option value="recipes">Receta</option>
                     <option value="communities">Comunidad</option>
@@ -58,16 +58,17 @@
 
         </div>
 
-        <div class="container">
+        <div class="container" id="container-users">
 
-            <h1 class="mt-5">Usuarios</h1>
-            <table id="tabla-usuarios">
+            <h2 class="mt-5 text-center fw-bold">Usuarios</h2>
+            <table id="tabla-usuarios" class="table table-striped table-hover text-center align-middle">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Nombre y Apellidos</th>
-                        <th>Roles</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Usuario</th>
+                        <th class="text-center">Nombre y Apellidos</th>
+                        <th class="text-center">Roles</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
 
@@ -76,13 +77,13 @@
 
                         <td th:text="${user.id}"></td>
                         <td th:text="${user.username}"></td>
-                        <td th:text="${user.firstName + ' ' + user.lastName}"></td>
-
                         <td>
-                            <ul>
-                                <li th:text="${user.roles}"></li>
-                            </ul>
+                            <span th:if="${user.firstName != null}" th:text="${user.firstName}"></span>
+                            <span th:if="${user.lastName != null}" th:text="${user.lastName}"></span>
+                            <span th:if="${user.firstName == null and user.lastName == null}" class="text-muted fst-italic">Sin especificar</span>
                         </td>
+                        
+                        <td th:text="${user.roles}"></td>
 
                         <td>
                             <form th:action="@{'/admin/toggle/' + ${user.id}}" th:method="post">
@@ -96,18 +97,20 @@
                     </tr>
                 </tbody>
             </table>
+            <!--
             <button type="button" id="truco" class="btn btn-danger">Hacer demo trucada</button>
+            !-->
         </div>
 
-        <div class="container">
-            <h2>Recetas</h2>
-            <table id="tabla-recetas-dt">
+        <div class="container" id="container-recipes">
+            <h2 class="mt-5 text-center fw-bold">Recetas</h2>
+            <table id="tabla-recetas-dt" class="table table-striped table-hover text-center align-middle">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Título</th>
-                        <th>Creador</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Título</th>
+                        <th class="text-center">Creador</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -125,16 +128,16 @@
             </table>
         </div>
 
-        <div class="container">
-            <h2>Comunidades</h2>
-            <table id="tabla-comunidades-dt">
+        <div class="container" id="container-communities">
+            <h2 class="mt-5 text-center fw-bold">Comunidades</h2>
+            <table id="tabla-comunidades-dt" class="table table-striped table-hover text-center align-middle">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Creador</th>
-                        <th>Miembros</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Creador</th>
+                        <th class="text-center">Miembros</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -153,16 +156,16 @@
             </table>
         </div>
 
-        <div class="container">
-            <h2>Eventos</h2>
-            <table id="tabla-eventos-dt">
+        <div class="container" id="container-events">
+            <h2 class="mt-5 text-center fw-bold">Eventos</h2>
+            <table id="tabla-eventos-dt" class="table table-striped table-hover text-center align-middle">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Localización</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Localización</th>
+                        <th class="text-center">Fecha</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -181,13 +184,15 @@
             </table>
         </div>
 
+        <!--
         <div class="container">
 
             <h2>Últimos 5 mensajes del sistema</h2>
-            <table id="messages"></table> <!-- will be filled with JSON data-->
+            <table id="messages"></table> 
             <button id="refresh" class="btn btn-primary">Actualizar vía AJAX</button>
 
         </div>
+        !-->
 
     </main>
 
@@ -219,10 +224,22 @@
     <script type="module">
         import { DataTable } from "../js/simple-datatables-10.js"
 
-        const tableUsuarios = new DataTable('#tabla-usuarios', {searchable: true, paging: true});
-        const tableRecetas = new DataTable('#tabla-recetas-dt', {searchable: true, paging: true});
-        const tableComunidades = new DataTable('#tabla-comunidades-dt', {searchable: true, paging: true});
-        const tableEventos = new DataTable('#tabla-eventos-dt', {searchable: true, paging: true});
+        // Para configurar el estilo de las tablas
+        const dtConfig = {
+            searchable: true,
+            paging: true,
+            labels: {
+                placeholder: "Buscar",
+                perPage: "entradas por página",
+                noRows: "No hay datos para mostrar",
+                info: "Mostrando {start} a {end} de {rows} entradas",
+            }
+        };
+
+        const tableUsuarios = new DataTable('#tabla-usuarios', dtConfig);
+        const tableRecetas = new DataTable('#tabla-recetas-dt', dtConfig);
+        const tableComunidades = new DataTable('#tabla-comunidades-dt', dtConfig);
+        const tableEventos = new DataTable('#tabla-eventos-dt', dtConfig);
 
         let dt = null;
         function refreshMessages() {

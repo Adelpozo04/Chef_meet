@@ -265,3 +265,30 @@ table.datatable-table:focus {
 .admin-filters > button {
 	margin: 0 4px 0 4px;
 }
+
+.datatable-input {
+	border: 2px solid #40b6f1;
+	border-radius: 8px;
+	padding: 8px 12px;
+	color: #0d6efd;
+	box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+	outline: none;
+}
+        
+.datatable-input:focus {
+	box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+}
+
+.datatable-selector {
+	border: 1px solid #40b6f1;
+	border-radius: 8px;
+	padding: 6px;
+	color: #0d6efd;
+	font-weight: 600;
+	box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+	cursor: pointer;
+}
+
+.datatable-top {
+	margin-bottom: 15px;
+}
