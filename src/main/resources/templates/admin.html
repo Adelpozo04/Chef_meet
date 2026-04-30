@@ -61,17 +61,17 @@
         <div class="container">
 
             <h1 class="mt-5">Usuarios</h1>
-            <table>
+            <table id="tabla-usuarios">
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Nombre & Apellidos</th>
+                        <th>Nombre y Apellidos</th>
                         <th>Roles</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
 
-                <tbody id="tabla-usuarios">
+                <tbody>
                     <tr th:each="user : ${users}">
 
                         <td th:text="${user.id}"></td>
@@ -97,6 +97,88 @@
                 </tbody>
             </table>
             <button type="button" id="truco" class="btn btn-danger">Hacer demo trucada</button>
+        </div>
+
+        <div class="container">
+            <h2>Recetas</h2>
+            <table id="tabla-recetas-dt">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Título</th>
+                        <th>Creador</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="recipe : ${recipes}">
+                        <td th:text="${recipe.id}"></td>
+                        <td th:text="${recipe.title}"></td>
+                        <td th:text="${recipe.author.username}"></td>
+                        <td>
+                            <form th:action="@{'/admin/recipe/' + ${recipe.id} + '/delete'}" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container">
+            <h2>Comunidades</h2>
+            <table id="tabla-comunidades-dt">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Creador</th>
+                        <th>Miembros</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="community : ${communities}">
+                        <td th:text="${community.id}"></td>
+                        <td th:text="${community.title}"></td>
+                        <td th:text="${community.owner.username}"></td>
+                        <td th:text="${community.members.size()}"></td>
+                        <td>
+                            <form th:action="@{'/admin/community/' + ${community.id} + '/delete'}" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container">
+            <h2>Eventos</h2>
+            <table id="tabla-eventos-dt">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Localización</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="event : ${events}">
+                        <td th:text="${event.id}"></td>
+                        <td th:text="${event.title}"></td>
+                        <td th:text="${event.location}"></td>
+                        <td th:text="${event.date}"></td>
+                        <td>
+                            <form th:action="@{'/admin/event/' + ${event.id} + '/delete'}" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancelar evento</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <div class="container">
@@ -136,6 +218,12 @@
 
     <script type="module">
         import { DataTable } from "../js/simple-datatables-10.js"
+
+        const tableUsuarios = new DataTable('#tabla-usuarios', {searchable: true, paging: true});
+        const tableRecetas = new DataTable('#tabla-recetas-dt', {searchable: true, paging: true});
+        const tableComunidades = new DataTable('#tabla-comunidades-dt', {searchable: true, paging: true});
+        const tableEventos = new DataTable('#tabla-eventos-dt', {searchable: true, paging: true});
+
         let dt = null;
         function refreshMessages() {
             go('/admin/all-messages', 'GET').then((d) => {

@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import es.ucm.fdi.iw.model.Topic;
+import es.ucm.fdi.iw.model.Community;
+import es.ucm.fdi.iw.model.Event;
 import es.ucm.fdi.iw.model.Lorem;
 import es.ucm.fdi.iw.model.Message;
+import es.ucm.fdi.iw.model.Recipe;
 import es.ucm.fdi.iw.model.Transferable;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
@@ -55,8 +58,24 @@ public class AdminController {
   @GetMapping("/")
   public String index(Model model) {
     log.info("Admin acaba de entrar");
+
+    // Cargar usuarios
     model.addAttribute("users",
-        entityManager.createQuery("select u from User u").getResultList());
+        entityManager.createQuery("SELECT u FROM User u", User.class).getResultList());
+    
+    // Cargar recetas
+    model.addAttribute("recipes", 
+      entityManager.createQuery("SELECT r FROM Recipe r", Recipe.class).getResultList());
+    
+    // Cargar comunidades
+    model.addAttribute("communities", 
+      entityManager.createQuery("SELECT c FROM Community c", Community.class).getResultList());
+
+    // Cargar eventos
+    model.addAttribute("events", 
+      entityManager.createQuery("SELECT e FROM Event e", Event.class).getResultList());
+    
+    // Cargar reports o messages aqui 
     return "admin";
   }
 

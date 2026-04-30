@@ -4,43 +4,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('search-form');
     const button = document.getElementById('search-button');
 
-    defaultValue(form, button)
-    select.addEventListener('change', function () {
-
+    // Funcion que crea los inputs segun la opcion elegida
+    function updateInputs() {
         const oldInputs = form.querySelectorAll('.dynamic-input');
         oldInputs.forEach(input => input.remove());
 
         let inputs = [];
-        switch (this.value) {
+        switch (select.value) {
             case 'users':
-                inputs.push( createInput('number', 'user-id', 'ID de usuario') )
-                inputs.push( createInput('text', 'user-name', 'Nombre de usuario') )
-                inputs.push( createInput('email', 'user-email', 'Correo de usuario') )
+                inputs.push( createInput('number', 'user-id', 'ID usuario') )
+                inputs.push( createInput('text', 'user-name', 'Nombre usuario') )
                 break;
 
             case 'recipes':
-                inputs.push( createInput('number', 'recipe-id', 'ID de receta') )
-                inputs.push( createInput('text', 'recipe-title', 'Título receta') )
+                inputs.push( createInput('number', 'recipe-id', 'ID receta') )
+                inputs.push( createInput('text', 'recipe-title', 'Título') )
                 inputs.push( createInput('text', 'recipe-ingredient', 'Ingredientes') )
-                inputs.push( createInput('number', 'recipe-creator-id', 'ID del creador') )
-                inputs.push( createInput('text', 'recipe-creator-name', 'Nombre del creador') )
+                inputs.push( createInput('number', 'recipe-creator-id', 'ID creador') )
+                inputs.push( createInput('text', 'recipe-creator-name', 'Creador') )
                 break;
 
             case 'communities':
-                inputs.push( createInput('number', 'community-id', 'ID de comunidad') )
-                inputs.push( createInput('text', 'community-name', 'Nombre comunidad') )
-                inputs.push( createInput('number', 'community-creator-id', 'ID del creador') )
-                inputs.push( createInput('text', 'community-creator-name', 'Nombre del creador') )
+                inputs.push( createInput('number', 'community-id', 'ID comunidad') )
+                inputs.push( createInput('text', 'community-name', 'Nombre') )
+                inputs.push( createInput('number', 'community-creator-id', 'ID creador') )
+                inputs.push( createInput('text', 'community-creator-name', 'Creador') )
                 inputs.push( createInput('number', 'community-min', 'Min miembros') )
                 inputs.push( createInput('number', 'community-max', 'Max miembros') )
                 inputs.push( createInput('date', 'community-date', '') )
-                inputs.push( createInput('text', 'community-country', 'Pais de comunidad') )
+                inputs.push( createInput('text', 'community-country', 'País') )
                 break;
 
             case 'events':
-                inputs.push( createInput('number', 'event-id', 'ID de evento') )
-                inputs.push( createInput('text', 'event-name', 'Nombre del evento') )
-                inputs.push( createInput('text', 'event-country', 'Pais del evento') )
+                inputs.push( createInput('number', 'event-id', 'ID evento') )
+                inputs.push( createInput('text', 'event-title', 'Nombre') )
+                inputs.push( createInput('text', 'event-location', 'Localización') )
+                inputs.push( createInput('number', 'event-organizer-id', 'ID creador') )
+                inputs.push( createInput('text', 'event-organizer-name', 'Creador') )
                 inputs.push( createInput('date', 'event-date', '') )
                 break;
         }
@@ -48,14 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
         inputs.forEach(input => {
             form.insertBefore(input, button)
         });
-    });
-
-    function defaultValue(form, button){
-        form.insertBefore(createInput('number', 'user-id', 'ID de usuario'), button)
-        form.insertBefore(createInput('text', 'user-name', 'Nombre de usuario'), button)
-        form.insertBefore(createInput('email', 'user-email', 'Correo de usuario'), button)
     }
 
+    // Funcion auxiliar para crear inputs
     function createInput(type, name, placeholder) {
         const input = document.createElement('input')
         input.type = type
@@ -64,5 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
         input.classList.add('form-control', 'me-2', 'dynamic-input')
         return input
     }
+
+    // Evento para cuando el usuario cambia el despliegue
+    select.addEventListener('change', updateInputs);
+
+    // Ejecutar la funcion una vez al cargar para generar los inputs iniciales
+    updateInputs();
 
 })
