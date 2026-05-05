@@ -35,7 +35,7 @@ import java.util.List;
 		),
 		@NamedQuery(
 			name = "User.joinedCommunities", 
-			query = "SELECT c FROM Community c WHERE c.members.id = :id"
+			query = "SELECT c FROM Community c JOIN c.members m WHERE m.id = :id"
 		)
 })
 @Table(name = "IWUser")
