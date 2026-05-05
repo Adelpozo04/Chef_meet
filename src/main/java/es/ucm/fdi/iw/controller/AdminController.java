@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import es.ucm.fdi.iw.model.Topic;
+import es.ucm.fdi.iw.controller.EventController.DontHavePermissionException;
 import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.Event;
 import es.ucm.fdi.iw.model.Lorem;
@@ -141,5 +142,57 @@ public class AdminController {
     }
     return "{\"admin\": \"populated\"}";
   }
+
+  // Borrar el evento en la base de datos
+  @PostMapping("/event/{id}/delete") 
+  @Transactional
+  public String deleteEvent(@PathVariable long id) {
+
+    log.info("Admin intentando borrar el evento con id: " + id);
+    // Obtener el evento en la base de datos por su id
+    Event event = entityManager.find(Event.class, id);
+
+    if(event != null) {
+      entityManager.remove(event);
+      log.info("Evento borrado con exito.");
+    }
+
+    return "redirect:/admin/";
+  } 
+
+  // Borrar la comunidad en la base de datos
+  @PostMapping("/community/{id}/delete")
+  @Transactional
+  public String deleteCommunity(
+    @PathVariable long id) {
+
+    log.info("Admin intentando borrar la comunidad con id: " + id);
+
+    Community community = entityManager.find(Community.class, id);
+
+    if(community != null) {
+      entityManager.remove(community);
+      log.info("Comunidad borrada con exito.");
+    }
+    
+    return "redirect:/admin/";
+  }
+
+  // Borrar el evento en la base de datos
+  @PostMapping("/recipe/{id}/delete") 
+  @Transactional
+  public String deleteRecipe(@PathVariable long id) {
+
+    log.info("Admin intentando borrar la receta con id: " + id);
+    Recipe recipe = entityManager.find(Recipe.class, id);
+
+    if(recipe != null) {
+        // Eliminar de la base de datos
+        entityManager.remove(recipe);
+        log.info("Receta borrada con exito.");
+    }
+
+    return "redirect:/admin/";
+  } 
 
 }

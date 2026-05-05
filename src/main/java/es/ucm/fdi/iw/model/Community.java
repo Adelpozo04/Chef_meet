@@ -2,6 +2,8 @@ package es.ucm.fdi.iw.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -57,7 +59,7 @@ public class Community {
     )
     private List<User> members = new ArrayList<>();
 
-    @OneToMany(mappedBy = "community")
+    @OneToMany(mappedBy = "community", cascade = CascadeType.REMOVE)
     private List<Event> events = new ArrayList<>();
 
     @ManyToMany

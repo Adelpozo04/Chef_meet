@@ -8,23 +8,6 @@
         type="text/css" />
 </head>
 
-
-<!--
-    La vista de administrador debe permitir:
-    - Ver:
-        - Usuarios
-        - Comunidades
-        - Eventos
-    
-    Filtrar por:
-        - Nombre de usuario
-        - ID usuario
-        - Nombre comunidad
-        - ID comunidad
-        - Nombre evento
-        - ID evento
-
--->
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
@@ -37,6 +20,7 @@
         <!-- Barra de busqueda de bootstrap -->
         <div class="row justify-content-center mb-4" id="search-community-bar">
 
+            <!--
             <div id="search-inputs">
                 <form class="d-flex" role="search" id="search-form">
                     <button class="btn btn-busqueda" type="submit" id="search-button">
@@ -44,7 +28,7 @@
                     </button>
                 </form>
             </div>
-
+            -->
             <div class="admin-filters d-flex align-items-center ms-4">
                 <label for="filters" class="me-2 text-muted fw-bold mb-0">Filtrar por: </label>
 
@@ -86,7 +70,7 @@
                         <td th:text="${user.roles}"></td>
 
                         <td>
-                            <form th:action="@{'/admin/toggle/' + ${user.id}}" th:method="post">
+                            <form th:if="${user.id != u.id}" th:action="@{'/admin/toggle/' + ${user.id}}" th:method="post">
                                 <button th:if="${user.enabled}" type="submit"
                                     class="toggle btn btn-danger">Deshabilitar</button>
                                 <button th:unless="${user.enabled}" type="submit"
@@ -135,6 +119,7 @@
                     <tr>
                         <th class="text-center">Id</th>
                         <th class="text-center">Nombre</th>
+                        <th class="text-center">Temática</th>
                         <th class="text-center">Creador</th>
                         <th class="text-center">Miembros</th>
                         <th class="text-center">Acciones</th>
@@ -144,6 +129,7 @@
                     <tr th:each="community : ${communities}">
                         <td th:text="${community.id}"></td>
                         <td th:text="${community.title}"></td>
+                        <td th:text="${community.country.countryName}"></td>
                         <td th:text="${community.owner.username}"></td>
                         <td th:text="${community.members.size()}"></td>
                         <td>
@@ -163,6 +149,7 @@
                     <tr>
                         <th class="text-center">Id</th>
                         <th class="text-center">Nombre</th>
+                        <th class="text-center">Creador</th>
                         <th class="text-center">Localización</th>
                         <th class="text-center">Fecha</th>
                         <th class="text-center">Acciones</th>
@@ -172,11 +159,12 @@
                     <tr th:each="event : ${events}">
                         <td th:text="${event.id}"></td>
                         <td th:text="${event.title}"></td>
+                        <td th:text="${event.organizer.username}"></td>
                         <td th:text="${event.location}"></td>
-                        <td th:text="${event.date}"></td>
+                        <td th:text="${#temporals.format(event.date, 'dd/MM/yyyy HH:mm')}"></td>
                         <td>
                             <form th:action="@{'/admin/event/' + ${event.id} + '/delete'}" method="post">
-                                <button type="submit" class="btn btn-danger btn-sm">Cancelar evento</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
                             </form>
                         </td>
                     </tr>
@@ -198,27 +186,29 @@
 
     <th:block th:replace="~{fragments/footer.html :: footer}" />
     <script>
-        const toggles = document.querySelectorAll('.toggle');
-        toggles.forEach(toggle => {
-            toggle.addEventListener('click', (e) => {
+        document.addEventListener('submit', (e) => {
+           
+            if(e.submitter && e.submitter.classList.contains('toggle')) {
+                
                 e.preventDefault();
-                const form = e.target.parentElement;
+
+                const form = e.target;
+                const button = e.submitter;
+
                 go(form.action, 'POST').then((d) => {
                     if (d.enabled) {
-                        e.target.classList.remove('btn-primary');
-                        e.target.classList.add('btn-danger');
-                        e.target.textContent = 'Deshabilitar';
+                        button.className = 'toggle btn btn-danger';
+                        button.textContent = 'Deshabilitar';
                     } else {
-                        e.target.classList.remove('btn-danger');
-                        e.target.classList.add('btn-primary');
-                        e.target.textContent = 'Habilitar';
+                        button.className = 'toggle btn btn-primary';
+                        button.textContent = 'Habilitar';
                     }
                     console.log(d);
+                }).catch(error => {
+                    console.error("Error al cambiar el estado:", error);
                 });
-            });
+            }
         });
-
-
     </script>
 
     <script type="module">

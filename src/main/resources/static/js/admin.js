@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     const select = document.getElementById('admin-filters-value');
-    const form = document.getElementById('search-form');
-    const button = document.getElementById('search-button');
+    //const form = document.getElementById('search-form');
+    //const button = document.getElementById('search-button');
 
     // Funcion que crea los inputs segun la opcion elegida
     function updateInputs() {
-        const oldInputs = form.querySelectorAll('.dynamic-input');
+        /*const oldInputs = form.querySelectorAll('.dynamic-input');
         oldInputs.forEach(input => input.remove());
 
         let inputs = [];
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         inputs.forEach(input => {
             form.insertBefore(input, button)
-        });
+        });*/
 
         // Logica para mostrar/ocultar las tablas
         const tableContainers = ['users', 'recipes', 'communities', 'events'];
@@ -68,14 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Funcion auxiliar para crear inputs
-    function createInput(type, name, placeholder) {
+    /*function createInput(type, name, placeholder) {
         const input = document.createElement('input')
         input.type = type
         input.name = name
         input.placeholder = placeholder
         input.classList.add('form-control', 'me-2', 'dynamic-input')
         return input
-    }
+    }*/
 
     // Evento para cuando el usuario cambia el despliegue
     select.addEventListener('change', updateInputs);
