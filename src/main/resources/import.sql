@@ -35,8 +35,8 @@ INSERT INTO community(country_id, id, owner_id, title, description) VALUES
 (5, 1957, 1, 'Comunidad 7', 'Comunidad 7'),
 (6, 1958, 1, 'Comunidad 8', 'Comunidad 8');
 
-INSERT INTO community_memberse(community_id, user_id) VALUES (1275, 1);
-INSERT INTO community_memberse(community_id, user_id) VALUES (1275, 2);
+INSERT INTO community_members(community_id, user_id) VALUES (1275, 1);
+INSERT INTO community_members(community_id, user_id) VALUES (1275, 2);
 
 -- Ejemplos para Eventos
 INSERT INTO event(id, title, description, theme, date, location, price, capacity, is_private, organizer_id, image_path, community_id)

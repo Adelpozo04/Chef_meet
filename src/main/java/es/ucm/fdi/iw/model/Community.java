@@ -28,9 +28,26 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @NamedQueries({
-    @NamedQuery(name = "Community.selectAll", query = "SELECT c FROM Community c"),
-    @NamedQuery(name = "Community.selectWhereMeMember", query = "SELECT DISTINCT c FROM Community c LEFT JOIN c.members m WHERE c.owner.id = :userId OR m.id = :userId"),
-    @NamedQuery(name = "Community.delete", query = "DELETE FROM Community c WHERE c.id = :id")
+    @NamedQuery(
+        name = "Community.selectAll", 
+        query = "SELECT c FROM Community c"
+    ),
+    @NamedQuery(
+        name = "Community.selectWhereMeMember", 
+        query = "SELECT c FROM Community c WHERE c.owner.id = :userId"
+    ),
+    @NamedQuery(
+        name = "Community.delete", 
+        query = "DELETE FROM Community c WHERE c.id = :id"
+    ),
+    @NamedQuery(
+        name = "Community.ownedCommunities", 
+        query = "SELECT c FROM Community c WHERE c.owner.id = :id"
+    ),
+    @NamedQuery(
+        name = "Community.joinedCommunities",
+        query = "SELECT c FROM Community c JOIN c.members m WHERE m.id = :id"
+    )
 })
 public class Community {
 

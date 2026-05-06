@@ -18,6 +18,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import es.ucm.fdi.iw.model.User;
+import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.Event;
 import java.io.File;
 import java.io.BufferedOutputStream;
@@ -146,15 +147,32 @@ public class RootController {
         // Obtener el usuario de la sesion
         User u = (User) session.getAttribute("u");
         if(u != null) {
-            // Consulta a la base de datos para obtener las reservas y eventos del usuario, ordenados alfabeticamente
-            // En la tabla de reservas busca todas las que pertenezcan al usuario con este ID y obtiene el evento, devolviendo una lista de objetos Event
+
             List<Event> myEvents = entityManager.createQuery(
                 "SELECT r.event FROM Reservation r WHERE r.attendee.id = :userId ORDER BY r.event.title ASC", Event.class)
                 .setParameter("userId", u.getId())
                 .getResultList();
             
-                // Pasar la lista ordenada al HTML
-                model.addAttribute("myEvents", myEvents);
+            List<Community> myCreatedCommunities = entityManager.createNamedQuery("Community.ownedCommunities", Community.class)
+                                                    .setParameter("id", u.getId())
+                                                    .getResultList();
+
+            List<Community> myJoinedCommunities = entityManager.createNamedQuery("Community.joinedCommunities", Community.class)
+                                                    .setParameter("id", u.getId())
+                                                    .getResultList();
+
+            
+            for(Community c : myCreatedCommunities) {
+                log.debug("Community {} created by user {}", c.getTitle(), u.getUsername());
+            }
+            for(Community c : myJoinedCommunities) {
+                log.debug("Community {} has user {} joined", c.getTitle(), u.getUsername());
+            }
+
+            // Pasar la lista ordenada al HTML
+            model.addAttribute("myEvents", myEvents);
+            model.addAttribute("myCreatedCommunities", myCreatedCommunities);
+            model.addAttribute("myJoinedCommunities", myJoinedCommunities);
         }
         return "account";
     }
