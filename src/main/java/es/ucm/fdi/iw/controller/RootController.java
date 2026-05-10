@@ -162,6 +162,9 @@ public class RootController {
                                                     .getResultList();
 
             
+            // Eliminar duplicados, si ya eres creador, eliminar de la lista de miembros
+            myJoinedCommunities.removeAll(myCreatedCommunities);
+
             for(Community c : myCreatedCommunities) {
                 log.debug("Community {} created by user {}", c.getTitle(), u.getUsername());
             }

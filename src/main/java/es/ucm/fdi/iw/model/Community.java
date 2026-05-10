@@ -34,7 +34,7 @@ import lombok.NoArgsConstructor;
     ),
     @NamedQuery(
         name = "Community.selectWhereMeMember", 
-        query = "SELECT c FROM Community c WHERE c.owner.id = :userId"
+        query = "SELECT DISTINCT c FROM Community c LEFT JOIN c.members m WHERE c.owner.id = :userId OR m.id = :userId"
     ),
     @NamedQuery(
         name = "Community.delete", 
