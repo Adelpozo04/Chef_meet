@@ -195,7 +195,7 @@ En base a los filtros seleccionados, deberán poder verse todos los datos que sa
 ![Base de datos](/bd.jpg)
 
 ## Nombres de usuarios y contraseñas
-Lista de usuarios y contraseñas para poder probar la aplicación. (Comprobar que en el archivo application.properties: spring.jpa.hibernate.ddl-auto=update, spring.datasource.url=jdbc:h2:mem:iwdb)
+Lista de usuarios y contraseñas para poder probar la aplicación. (Comprobar que en el archivo application.properties: spring.jpa.hibernate.ddl-auto=update, spring.datasource.url=jdbc:h2:file:./iwdb)
 
 
 - <strong>Usuario:</strong> a , <strong>contraseña:</strong> aa (admin)
