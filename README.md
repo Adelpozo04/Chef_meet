@@ -193,3 +193,16 @@ En base a los filtros seleccionados, deberán poder verse todos los datos que sa
 
 ## Estructura base de datos
 ![Base de datos](/bd.jpg)
+
+## Nombres de usuarios y contraseñas
+Lista de usuarios y contraseñas para poder probar la aplicación. (Comprobar que en el archivo application.properties: spring.jpa.hibernate.ddl-auto=update, spring.datasource.url=jdbc:h2:mem:iwdb)
+
+
+- <strong>Usuario:</strong> a , <strong>contraseña:</strong> aa (admin)
+- <strong>Usuario:</strong> b , <strong>contraseña:</strong> aa
+- <strong>Usuario:</strong> xtina , <strong>contraseña:</strong> huevofrito
+- <strong>Usuario:</strong> toby , <strong>contraseña:</strong> perroperro
+- <strong>Usuario:</strong> tobi , <strong>contraseña:</strong> perroperro
+- <strong>Usuario:</strong> toby24 , <strong>contraseña:</strong> perroperro
+- <strong>Usuario:</strong> emcavero , <strong>contraseña:</strong> papapapa
+- <strong>Usuario:</strong> elo , <strong>contraseña:</strong> mamamama
