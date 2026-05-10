@@ -1,7 +1,7 @@
 # Chef Meet
 ¿Te apasiona la cocina pero no tienes con quién compartir tus creaciones? Chef Meet es la plataforma definitiva para encontrar la receta que deseas aprender, poder compartir las tuyas propias y encontrar eventos donde podrás asistir para conocer a otros entusiastas de la cocina y poder adquirir nuevos conocimientos además de pasar un buen rato cocinando. ¡No te quedes sin cocinar y disfruta con Chef Meet!
 
-Podrás ser partícipe de comunidades tanto públicas como privadas donde podrás valorar las recetas de los otros integrantes del grupo y además contarás con un chat en tiempo real para poder comunicarte con el resto. Aparte, cada usuario tendrá una valoración global (estrellas Michelin) visible por el resto que indica la reputación del usuario basada en reseñas que otros dejan sobre él tras asistir a un evento o probar su receta.
+Podrás ser partícipe de comunidades tanto públicas como privadas donde podrás valorar las recetas de los otros integrantes del grupo y además contarás con un chat en tiempo real para poder comunicarte con el resto.
 
 Y, por último, la creación de eventos gastronómicos, que pueden ser públicos o privados dentro de una comunidad, donde se debe informar de la fecha, hora, localización, temática, número máximo de participantes e incluso un precio.
 
@@ -9,10 +9,10 @@ Y, por último, la creación de eventos gastronómicos, que pueden ser públicos
 En la plataforma existen los siguientes roles:
 
 - <strong>Administrador:</strong>
-Gestiona el alta de los usuarios y supervisa los reportes de comportamiento inapropiado. Modera las comunidades públicas y tiene capacidad de banear usuarios o eliminar contenido ofensivo para garantizar una plataforma segura. 
+Gestiona el alta de los usuarios y supervisa los reportes de comportamiento inapropiado. Modera las comunidades y eventos, y tiene capacidad de banear usuarios o eliminar contenido ofensivo para garantizar una plataforma segura. 
 
 - <strong>Usuario estándar:</strong>
-Debe estar registrado y dado de alta. Gestiona su perfil público con nickname, foto y una pequeña descripción. Crea o se une a comunidades y eventos, y comparte y valora otras recetas y usuarios.
+Debe estar registrado y dado de alta. Gestiona su perfil público con nickname y foto. Crea o se une a comunidades y eventos, y comparte y valora otras recetas.
 
 - <strong>Usuario inivitado:</strong>
 Su acceso es solo de lectura. Pueden navegar por la plataforma y visualizar recetas, grupos y eventos públicos sin poder interactuar con ellos.
@@ -133,33 +133,24 @@ Por último en la pestaña de eventos, se muestran las tarjetas (diseño aún po
 Cuando se hace un evento asociado a una comunidad este se puede crear de forma pública para gente que pertenezca o no a esta, o privados únicamente para los participantes de esa comunidad.
 
 ## Vista de eventos
-![Eventos](/imgReadMe/eventos2.png)
+![Eventos](/imgReadMe/eventos_mapa.png)
 
 La vista de eventos, igual que la de comunidades, cuenta con una barra de búsqueda para buscar por el nombre un evento. Se muestran todos los eventos públicos que estén asociados o no a una comunidad, y se puede filtrar para que se muestren todos los eventos o sólo aquellos a los que ya se ha apuntado el usuario.
 
-Potencialmente, se quiere agregar un mapa interactivo de España que se pueda ampliar y que muestre las localizaciones de los eventos de manera que sea más visual y fácil para el usuario encontrar eventos cercanos.
+Se ha agregado un mapa interactivo de España que se puede ampliar y  muestra las localizaciones de los eventos, de manera que sea más visual y fácil para el usuario encontrar eventos cercanos.
 
-Los eventos están representados con tarjetas (diseño aún por definir)
-que incluyen información cómo el nombre, temática, fecha, localización, precio, número máximo de participantes y una imagen.
-También está el botón para crear un evento, donde aparecerá una pestaña con la información a rellenar, que es la misma que aparece en las tarjetas.
+Los eventos están representados con tarjetas que incluyen información cómo el nombre, temática, fecha y una imagen. También está el botón para crear un evento, donde aparecerá una pestaña con la información a rellenar (título, imagen, fecha, hora, precio, ubicación, aforo, temática y descripción).
 
 > [Cosas funcionales]
-> Actualmente las siguientes caracteristicas ya están implementadas y funcionales:
 > - Vista de eventos pudiendo filtrar todos o los que ya está apuntado el usuario.
 > - Posibilidad de crear una evento mediante la introduccion de TITULO, IMAGEN COVER, FECHA, HORA, PRECIO, UBICACION, AFORO, TEMATICA y DESCRIPCION.
-
-> [Cosas que faltan]
-> Actualmente faltan las siguientes implementaciones de la vista de eventos:
 > - Barra de búsqueda funcional.
 > - El mapa interactivo con la ubicación de los eventos.
-> - Diseño definitivo de las tarjetas.
 > - La conexión de eventos asociados a comunidades.
-> - Añadir tags a los eventos.
-
 
 ### Vista de reserva y pago de evento
-![Eventos](/imgReadMe/pagos.png)
-Cuando el usuario interactúe con una de estas tarjetas, se le lleva a otra ventana donde aparece la información del evento más detallada y donde el usuario puede reservar una plaza y, si se debe, realizar el pago para asistir.
+![Eventos](/imgReadMe/reserva.png)
+Cuando el usuario interactúa con una de estas tarjetas, se le lleva a otra ventana donde aparece la información del evento más detallada y donde el usuario puede reservar una plaza y, si se debe, realizar el pago para asistir.
 
 Tras pulsar el botón de reservar, se abre una simulación de una pasarela de pago cifrada. Una vez validado el pago, se muestra un mensaje de éxito, el evento se incluye a "Mis eventos" y se redirige al usuario a la pestaña de mis eventos dentro del perfil.
 
@@ -167,12 +158,10 @@ Tras pulsar el botón de reservar, se abre una simulación de una pasarela de pa
 > - Vista completa mostrando toda la información del evento y con un botón con la capacidad de reservar una plaza y simular la pasarela de pago.
 
 ## Vista de perfil
-![Perfil](/imgReadMe/perfil.png)
+![Perfil](/imgReadMe/miperfil.png)
 La vista de perfil está estructurada mediante un selector lateral. Dependiendo de la opción que elija el usuario, el contenido en el área principal cambia. 
 
-- <strong>Datos personales:</strong> Contiene información del usuario como el nombre, la foto del perfil, una breve presentación y las Estrellas Michelin.
-
-> Pendiente de implementar.
+- <strong>Datos personales:</strong> Contiene la información del usuario en una tarjeta con el nickname, nombre y la foto del perfil.
 
 - <strong>Mis recetas:</strong> Contiene todas las recetas que el usuario haya compartido en la plataforma, con posibilidad de organizarlas como considere.
 
@@ -180,31 +169,27 @@ La vista de perfil está estructurada mediante un selector lateral. Dependiendo 
 
 - <strong>Mis comunidades:</strong> Contiene las comunidades a las que pertenece el usuario para poder acceder a ellas más rápidamente.
 
-> Pendiente de implementar.
-
 - <strong>Mis eventos:</strong> Contiene las entradas de los eventos a los que se ha apuntado el usuario.
-> Implementada.
 
 - <strong>Reportar:</strong> Permite enviar quejas y reportes directamente al administrador.
 > Pendiente de implementar.
 
 - <strong>Log out:</strong> Para cerrar sesión.
-> Pendiente de implementar.
 
 ## Vista de administrador
-![Vista administrador](/imgReadMe/admin.png)
-La vista de adminstrador solo deberá proporcionar a los usuarios <strong>administradores</strong> una vista sencilla y rápida para gestionar a todos los usuarios, recetas, comunidades y eventos de la aplicación <strong> de cualquier forma</strong>.
-Es decir, el administrador debe poder consultar, modificar, eliminar, reportar a cualquier usuario, receta, comunidad y evento.
+![Vista administrador](/imgReadMe/administrador.png)
+La vista de adminstrador solo deberá proporcionar a los usuarios <strong>administradores</strong> una vista sencilla y rápida para gestionar a todos los usuarios, recetas, comunidades y eventos de la aplicación.
+Es decir, el administrador debe poder deshabilitar a cualquier usuario, eliminar recetas o comunidades y cancelar eventos.
 
-Para gestionar todos estos tipo de datos el administrador podrá desplegar un _dropdown_ mediante el botón _filtros_ para seleccionar qué tipo de datos desea buscar. Cada selección de este _dropdown_ modificará todas las barras de búsqueda para filtrar los datos.
+Para gestionar todos estos tipo de datos el administrador podrá desplegar un _dropdown_  para filtrar qué tipo de datos desea buscar. Cada selección de este _dropdown_ modificará todas las entradas de las tablas de búsqueda para filtrar los datos.
 En base a los filtros seleccionados, deberán poder verse todos los datos que satisfagan esos filtros y que ofrezcan controladores para manipular estos datos.
 
-- <strong>Usuarios:</strong> Permitirá al administrador buscar a usuarios mediante su identificador único, nombre de usuario o correo electrónico.
-- <strong>Recetas:</strong> Permitirá al administrador buscar recetas mediante su identificador único, nombre de receta o ingredientes. Para este último deberían poder seleccionarse varios ingredientes, de tal forma que la búsqueda permita filtrar por recetas que contengan el ingrediente 1, ingrediente 2... Y así, sucesivamente.
-- <strong>Comunidades:</strong> Permitirá al administrador buscar comunidades según su identificador único, nombre de comunidad, nombre de usuario o identificador del creador, tamaño mínimo y máximo de usuarios asociados a esta y país de esta comunidad.
-- <strong>Eventos:</strong> Permitirá al administrador buscar eventos por su identificador único, nombre de evento, país en el que tiene lugar y su fecha de comienzo.
+- <strong>Usuarios:</strong> Permitirá al administrador buscar a usuarios mediante su identificador único, nombre de usuario o nombre y apellidos.
+- <strong>Recetas:</strong> Permitirá al administrador buscar recetas mediante su identificador único, título de la receta o nombre del creador.
+- <strong>Comunidades:</strong> Permitirá al administrador buscar comunidades según su identificador único, nombre de la comunidad, temática, nombre del creador o número de miembros.
+- <strong>Eventos:</strong> Permitirá al administrador buscar eventos por su identificador único, nombre del evento, localización o fecha.
 
-> Pendiente de implementar.
+> Implementado.
 
 ## Estructura base de datos
 ![Base de datos](/bd.jpg)
