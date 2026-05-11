@@ -20,6 +20,8 @@ import java.util.List;
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.Event;
+import es.ucm.fdi.iw.model.Recipe;
+
 import java.io.File;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
@@ -152,6 +154,11 @@ public class RootController {
                 "SELECT r.event FROM Reservation r WHERE r.attendee.id = :userId ORDER BY r.event.title ASC", Event.class)
                 .setParameter("userId", u.getId())
                 .getResultList();
+
+            List<Recipe> myRecipes = entityManager.createQuery(
+                "SELECT r FROM Recipe r WHERE r.author.id = :userId ORDER BY r.title ASC", Recipe.class)
+                .setParameter("userId", u.getId())
+                .getResultList();
             
             List<Community> myCreatedCommunities = entityManager.createNamedQuery("Community.ownedCommunities", Community.class)
                                                     .setParameter("id", u.getId())
@@ -174,6 +181,7 @@ public class RootController {
 
             // Pasar la lista ordenada al HTML
             model.addAttribute("myEvents", myEvents);
+            model.addAttribute("myRecipes", myRecipes);
             model.addAttribute("myCreatedCommunities", myCreatedCommunities);
             model.addAttribute("myJoinedCommunities", myJoinedCommunities);
         }

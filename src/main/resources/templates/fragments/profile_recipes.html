@@ -3,6 +3,45 @@
 <body>
     <div th:fragment="recipes">
     <h2>Mis recetas</h2>
-    <p>Aún no has publicado ninguna receta. ¡Anímate a cocinar!</p>
+    
+    <p th:if="${#lists.isEmpty(myRecipes)}">Aún no has creado ninguna receta.</p>
+
+    <section class="cards_list" th:unless="${#lists.isEmpty(myRecipes)}">
+        <div class="card_item" th:each="recip: ${myRecipes}">
+
+            <!--Criba de recetas para que solo sean las propias-->
+                <div class="card_wrapper">
+
+                    <!--Enlace a la informacion de la receta-->
+                    <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
+
+                        <div style="width: 360px; height: 250px; overflow: hidden;">
+                            <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" 
+                            alt="Imagen de la receta" class="w-100 h-100" style="object-fit: cover;">
+                        </div>
+
+                        <span class="card_footer_middle" th:text="${recip.title}">Título</span>
+                        
+                        <div for="averageRating" class="d-flex flex-row gap-3 card_footer align-items-center justify-content-center">
+                            <p id="ratingNumber" th:text="${recip.averageRating}"></p>
+
+                            <div class="star-rating upElement" id="star-rating">
+
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+
+                            </div>
+                        </div>
+                    </a>                            
+
+                </div>
+            
+        </div>
+
+    </section>
+
     </div>
 </body>
