@@ -145,6 +145,11 @@ public class CommunityController {
         User user = entityManager.find(User.class, ((User) session.getAttribute("u")).getId() );
         Community community = entityManager.find(Community.class, id);
 
+        // Actualizar topics
+        List<String> topics = new ArrayList<>();
+        topics.add("community-" + community.getId());
+        session.setAttribute("topics", String.join(",", topics));
+
         if ( !community.getMembers().contains(user) )
             community.getMembers().add(user);
 
@@ -230,18 +235,10 @@ public class CommunityController {
         entityManager.persist(community);
         entityManager.flush();
 
-        // Crear topic de la comunidad(Para suscribir al WebSocket) y almacenar en BBDD
-        Topic communityTopic = new Topic();
-        communityTopic.getMembers().add(owner);
-        communityTopic.setKey( String.valueOf(community.getId()) );
-        communityTopic.setName(
-            String.format("\'%s\'[%d]",
-                community.getTitle(),
-                community.getId()
-            )
-        );
-        entityManager.persist(communityTopic);
-        owner.getTopics().add(communityTopic);    // Incluir topic al usuario -> IMPORTANTE!!
+        // Actualizar topics
+        List<String> topics = new ArrayList<>();
+        topics.add("community-" + community.getId());
+        session.setAttribute("topics", String.join(",", topics));
 
         // Guardar la imagen si el usuario ha subido alguna
         if(!photo.isEmpty()) {
