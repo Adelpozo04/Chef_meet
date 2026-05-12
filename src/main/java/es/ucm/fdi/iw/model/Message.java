@@ -43,11 +43,10 @@ public class Message implements Transferable<Message.Transfer> {
 
 	@ManyToOne(targetEntity = User.class)
 	private User sender;	// El que envia el mensaje
+
 	@ManyToOne(targetEntity = User.class)
-	private User recipient;	// Null para chat de la comunidad. Si es queja, puede ser el admin.
-	@ManyToOne(targetEntity = Community.class )
-	private Community community;	// Un chat agrupa todos los mensajes de una comunidad
-	
+	private User recipient;	// Null para chat de la comunidad. Si es queja, puede ser el admin
+
 	@ManyToOne
 	private Topic topic; // Chat de la comunidad al que pertenece
 
@@ -72,6 +71,7 @@ public class Message implements Transferable<Message.Transfer> {
 	@Getter
 	@AllArgsConstructor
 	public static class Transfer {
+		
 		private String from;
 		private String to;
 		private String community;
@@ -81,19 +81,21 @@ public class Message implements Transferable<Message.Transfer> {
 		private String text;
 		private String complainType;
 		private Long referenceId;
-		long id;
+
+		private long id;
+		private long communityId;
+
 
 		public Transfer(Message m) {
 			this.from = m.getSender() != null ? m.getSender().getUsername() : "Desconocido";
 			this.to = m.getRecipient() == null ? "null" : m.getRecipient().getUsername();
-			this.community = m.getCommunity() == null ? "null" : m.getCommunity().getTitle();
 			this.topic = m.getTopic() == null ? "null" : m.getTopic().getName();
 			this.sent = m.getDateSent() == null ? null : DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(m.getDateSent());
-			this.received = m.getDateRead() == null ? null
-					: DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(m.getDateRead());
+			this.received = m.getDateRead() == null ? null : DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(m.getDateRead());
 			this.text = m.getText();
 			this.complainType = m.getComplainType() != null ? m.getComplainType().toString() : "NONE";
 			this.referenceId = m.getReferenceId();
+
 			this.id = m.getId();
 		}
 	}
@@ -102,4 +104,5 @@ public class Message implements Transferable<Message.Transfer> {
 	public Transfer toTransfer() {
 		return new Transfer(this);
 	}
+
 }

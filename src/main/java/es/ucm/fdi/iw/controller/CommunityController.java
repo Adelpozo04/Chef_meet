@@ -19,6 +19,7 @@ import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.Country;
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.model.Event;
+import es.ucm.fdi.iw.model.Topic;
 import es.ucm.fdi.iw.model.User.Role;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
@@ -64,30 +65,23 @@ public class CommunityController {
         return "communities";
     }
 
-
     @GetMapping("/{id}")
     public String showOneCommunity(
         @PathVariable long id, 
         Model model,
-        HttpSession session) {
+        HttpSession session
+    ) {
 
-        User user = (User) session.getAttribute("u");
+        User user = entityManager.find(User.class, ((User) session.getAttribute("u")).getId() );
         Community community = entityManager.find(Community.class, id);
         User owner = community.getOwner();
+        List<Topic> userTopics = user.getTopics();
         boolean userIsOwner = community.getOwner().getId() == user.getId();
-        boolean userIsMember = community.getMembers().stream().
-                                anyMatch(u -> u.getId() == user.getId());
+        boolean userIsMember = community.getMembers()
+                                        .stream()
+                                        .anyMatch(u -> u.getId() == user.getId());
         boolean userIsAdmin = user.hasRole(Role.ADMIN);
 
-        if(userIsOwner)
-            log.info("El usuario {} es el creador de la comunidad {}", user.getUsername(), community.getTitle());
-        else
-            log.info("El usuario {} NO es el creador de la comunidad {}", user.getUsername(), community.getTitle());
-
-        if(userIsMember)
-            log.info("El usuario {} pertence a la comunidad {}", user.getUsername(), community.getTitle());
-        else
-            log.info("El usuario {} NO pertence a la comunidad {}", user.getUsername(), community.getTitle());
 
         // Separar los eventos en proximos y pasados
         java.time.LocalDateTime now = java.time.LocalDateTime.now();
@@ -132,9 +126,10 @@ public class CommunityController {
     @PostMapping("/{id}/add")
     public String addUserToCommunity(
         @PathVariable long id,
-        HttpSession session){
+        HttpSession session
+    ){
 
-        User user = (User) session.getAttribute("u");
+        User user = entityManager.find(User.class, ((User) session.getAttribute("u")).getId() );
         Community community = entityManager.find(Community.class, id);
 
         if ( !community.getMembers().contains(user) )
@@ -149,9 +144,10 @@ public class CommunityController {
     @PostMapping("/{id}/remove")
     public String removeUserFromCommunity(
         @PathVariable long id,
-        HttpSession session){
+        HttpSession session
+    ){
 
-        User user = (User) session.getAttribute("u");
+        User user = entityManager.find(User.class, ((User) session.getAttribute("u")).getId() );
         Community community = entityManager.find(Community.class, id);
 
         community.getMembers().removeIf( u -> u.getId() == user.getId() );
@@ -175,10 +171,11 @@ public class CommunityController {
     @Transactional
     @PostMapping("/create")
     public String createCommunity(
-            @ModelAttribute Community community,
-            Model model,
-            @RequestParam(value = "countryID") Long countryId,
-            HttpSession session) {
+        @ModelAttribute Community community,
+        Model model,
+        @RequestParam(value = "countryID") Long countryId,
+        HttpSession session
+    ) {
 
         if (community.getTitle().isBlank() || community.getDescription().isBlank()) {
             model.addAttribute("createError", true);
@@ -187,23 +184,36 @@ public class CommunityController {
         }
 
         // Usuario logueado que ejecuta esta query -> creador de la comunidad
-        User owner = (User) session.getAttribute("u");
-        owner = entityManager.find(User.class, owner.getId());
+        User owner = entityManager.find(User.class, ((User)session.getAttribute("u")).getId() );
         if (community.getMembers().isEmpty())
             owner.getOwnedCommunities().add(community);
 
+
+        // Crear comunidad y almacenar en BBDD
         community.setOwner(owner);
         community.getMembers().add(owner);
         community.setCountry(entityManager.find(Country.class, countryId));
-
         entityManager.persist(community);
         entityManager.flush();
+
+        // Crear topic de la comunidad(Para suscribir al WebSocket) y almacenar en BBDD
+        Topic communityTopic = new Topic();
+        communityTopic.getMembers().add(owner);
+        communityTopic.setKey( String.valueOf(community.getId()) );
+        communityTopic.setName(
+            String.format("\'%s\'[%d]",
+                community.getTitle(),
+                community.getId()
+            )
+        );
+        entityManager.persist(communityTopic);
+        owner.getTopics().add(communityTopic);    // Incluir topic al usuario -> IMPORTANTE!!
 
         model.addAttribute("createError", false);
         log.info("New community created by: {}", community.getOwner().getUsername());
         log.info("New community created with title: {}", community.getTitle());
         log.info("New community created with description: {}", community.getDescription());
-        return "redirect:/communities";
+        return "redirect:/communities/" + String.valueOf(community.getId());
     }
 
 

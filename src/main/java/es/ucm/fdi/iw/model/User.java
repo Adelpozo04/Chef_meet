@@ -66,7 +66,7 @@ public class User implements Transferable<User.Transfer> {
 	@OneToMany(mappedBy = "owner")
 	private List<Community> ownedCommunities = new ArrayList<>();
 
-	@ManyToMany(mappedBy = "members")
+	@ManyToMany(targetEntity = Community.class, mappedBy = "members")
 	private List<Community> joinedCommunities = new ArrayList<>();
 
 	@OneToMany
@@ -81,6 +81,11 @@ public class User implements Transferable<User.Transfer> {
 	@JoinColumn(name = "author")
 	private List<Recipe> recipes = new ArrayList<>();
 
+	@ManyToMany(targetEntity = Topic.class, mappedBy = "members")
+	private List<Topic> topics = new ArrayList<>();
+
+
+
 	/*
 	 * // Eventos que ha creado el usuario
 	 * 
@@ -92,7 +97,6 @@ public class User implements Transferable<User.Transfer> {
 	 * @OneToMany(mappedBy = "attendee")
 	 * private List<Reserve> myReserves = new ArrayList<>();
 	 */
-
 	@Getter
 	@AllArgsConstructor
 	public static class Transfer {
