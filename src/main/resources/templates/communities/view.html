@@ -10,7 +10,9 @@
 
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <div class="community-header">
+    <div class="community-header" 
+        th:style="|background-image: url('${community.imagePath != null ? community.imagePath : '/img/communities/default.png'}')|">
+
         <div class="community-controls-title">
             <div class="community-buttons">
                 
@@ -38,7 +40,6 @@
                         <button type="submit">Eliminar comunidad</button>
                     </form>
                 </th:block>
-
                 
             </div>
 
@@ -51,6 +52,7 @@
         <div class="community-desc">
             <p th:text="${community.description}">Descripción de la comunidad</p>
         </div>
+
     </div>
 
     <main class="community-info">
@@ -73,13 +75,13 @@
         </div>
 
         <div class="community-posts">
-            <h2>Publicaciones</h2>
+            <h2>Recetas</h2>
             <ul class="community-posts-list">
                 <li>
-                    <p> Una publicación </p>
+                    <p> Una receta </p>
                 </li>
                 <li>
-                    <p> Otra publicación </p>
+                    <p> Otra receta </p>
                 </li>
             </ul>
         </div>
@@ -112,7 +114,46 @@
         </div>
 
     </main>
-    
+
+
+    <!-- Panel lateral del chat -->
+    <div class="community-chat-panel" id="communityChat" th:if="${isMember or isOwner}">
+
+        <!-- Botón para abrir/cerrar el chat -->
+        <div class="chat-toggle" onclick="toggleChat()">Chat de comunidad</div>
+
+        <div class="chat-header">
+            <h3>Chat</h3>
+            <button class="close-chat" onclick="toggleChat()">✕</button>
+        </div>
+
+        <div class="chat-body" id="chat-messages">
+
+            <div class="chat-message" th:each="m : ${lastMessages}">
+                <p>
+                    <strong th:text="|[${m.from}]: |">[Usuario]: </strong>
+                    <span th:text="${m.text}">Mensaje</span>
+                </p>
+            </div>
+
+        </div>
+
+        <div class="chat-footer">
+            <input id="chatInput" type="text" placeholder="Escribe un mensaje...">
+            <button id="chatSendButton">Enviar</button>
+        </div>
+
+    </div>
+
     <th:block th:replace="~{fragments/footer.html :: footer}" />
 </body>
+
+<script>
+    // Boton para mostrar/ocultar el panel del chat
+    function toggleChat() {
+        const chat = document.getElementById("communityChat");
+        chat.classList.toggle("open");
+    }
+</script>
+
 </html>

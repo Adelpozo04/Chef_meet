@@ -59,20 +59,16 @@ Para subir la receta es necesario pulsar un botón al final de esta. Dicho botó
 > - Posibilidad de crear una receta mediante la introduccion de TITULO, IMAGEN COVER, DESCRIPCION, INGREDIENTES, PASOS E IMAGENES DE LOS PASOS.
 > - Creacion de una base de datos con distintos ingredientes los cuales marcan tambien las alergias que estos introducen.
 > - Creacion de un paso intermedio entre ingredientes y receta que establezca las medidas de cada ingrediente para esa receta en especifico.
-
-
-> [Cosas que faltan]
-> Actualmente faltan las siguientes implementaciones de la vista de la receta:
-> - Poner buscador en dropdown ingredientes
 > - Cambiar botón de añadir peso para que sea más visible
 > - Añadir opción para introducir calorias de la receta
 > - Borrar receta
-> - Poder editar una receta
 > - Barra de búsqueda de tus recetas
 > - Tags de recetas para la exploracion
 > - Poner las alergias al ver las recetas 
 > - Establecer recetas publicas o privadas
 > - Creacion de clase de valoracion
+> - Nuevo layout de las ventanas de recetas
+
 
 ### Ver receta
 El _layout_ es igual tan solo quitando todos los botones y opciones de personalización. Tambien en la parte de arriba aparecera una media de la valoracion que le han dado los usuarios a la receta.
@@ -93,7 +89,12 @@ También está el botón para crear una comunidad, donde aparecerá una pestaña
 Cuando el usuario pulsa la tarjeta de una comunidad entra en esta vista.
 Contiene un título con un fondo de una imagen personalizada como fondo. Dicho texto se esconde cada vez que el usuario haga scroll hacia abajo y aparece cuando hace scroll hacia arriba.
 
-Dentro de esta vista existen tres pestañas con funcionalidades distintas: recetas, miembros y eventos.
+Dentro de esta vista existen cuatro funcionalidades distintas: recetas, miembros, eventos y el chat de la comunidad.
+
+En el apartado de miembros se pueden ver todos los miembros y el creador de la comunidad
+En el apartado de recetas se pueden ver las recetas asociadas a una comunidad.
+En el apartado de eventos se pueden ver todos los eventos pasados y futuros de una comunidad. Ademas de acceder a su información.
+Con el boton inferior derecho el usuario puede desplegar el chat de la comunidad y ver en tiempo real los ultimos 50 mensajes enviados y qué usuario lo envió. De esta forma todos los usuarios conectados pueden interactuar entre ellos. 
  
 > [!NOTE]\
 > Implementado:
@@ -102,17 +103,18 @@ Dentro de esta vista existen tres pestañas con funcionalidades distintas: recet
 > - Acceder a la vista de una comunidad concreta
 > - Ver los usuarios que formand parte de una comunidad
 > - Unirse y salirse de una comunidad
+> - Eliminar comunidades como administrador
+> - Crear/Consultar/Eliminar/Modificar eventos asociados a una comunidad como creador de estas 
+> - Crear/Consultar/Eliminar/Modificar eventos asociados a una comunidad como administrador
+> - Ver e interactuar con el chat de comunidad
 
 > [!NOTE]\
 > Por implementar:
 > - Eliminar comunidades como creador de estas. Además de todos los usuarios, recetas, eventos y mensajes asociados a esta
-> - Eliminar comunidades como administrador
-> - Crear/Consultar/Eliminar/Modificar eventos asociados a una comunidad como creador de estas 
-> - Crear/Consultar/Eliminar/Modificar eventos asociados a una comunidad como administrador
 > - Crear/Consultar/Eliminar/Modificar recetas asociadas a una comunidad como miembro 
 > - Crear/Consultar/Eliminar/Modificar recetas asociadas a una comunidad como administrador
 > - Filtrar por comunidades en base al titulo, tipo de gastronomia, pais u otros parámetros
-> - Ver e interactuar con el chat de comunidad
+
 
 #### Pestaña recetas
 ![Receta](/imgReadMe/comunidad.png)
@@ -165,16 +167,16 @@ La vista de perfil está estructurada mediante un selector lateral. Dependiendo 
 
 - <strong>Mis recetas:</strong> Contiene todas las recetas que el usuario haya compartido en la plataforma, con posibilidad de organizarlas como considere.
 
-> Pendiente de implementar.
+
 
 - <strong>Mis comunidades:</strong> Contiene las comunidades a las que pertenece el usuario para poder acceder a ellas más rápidamente.
 
 - <strong>Mis eventos:</strong> Contiene las entradas de los eventos a los que se ha apuntado el usuario.
 
-- <strong>Reportar:</strong> Permite enviar quejas y reportes directamente al administrador.
-> Pendiente de implementar.
-
 - <strong>Log out:</strong> Para cerrar sesión.
+
+> Pendiente de implementar.
+- <strong>Reportar:</strong> Permite enviar quejas y reportes directamente al administrador.
 
 ## Vista de administrador
 ![Vista administrador](/imgReadMe/administrador.png)

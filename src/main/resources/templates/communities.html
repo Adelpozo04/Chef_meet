@@ -46,7 +46,9 @@
                     th:id="'community-' + ${community.id}">
 
                     <div class="card__background" 
-                    th:style="'background-image: url(' + @{/img/communities/default-image.png} + ')'"></div>
+                        th:style="|background-image: url('${community.imagePath != null ? community.imagePath : '/img/communities/default.png'}')|">
+                    </div>
+                    
                     <div class="card__content">
                         <p class="card__category" th:utext="|${community.country.countryName} ${community.country.emoji}|"></p>
                         <h3 class="card__heading" th:text="${community.title}"></h3>
@@ -75,6 +77,7 @@
             <div th:if="${#lists.isEmpty(otherCommunities)}" class="no-communities">
                 <p>No estás en ninguna comunidad. ¡Únete a una o crea la tuya propia!</p>
             </div>
+
             <div class="card-grid" th:if="${!#lists.isEmpty(otherCommunities)}">
                 <a class="card"
                     th:each="community : ${otherCommunities}"
@@ -82,7 +85,9 @@
                     th:id="'community-' + ${community.id}">
 
                     <div class="card__background" 
-                    th:style="'background-image: url(' + @{/img/communities/default-image.png} + ')'"></div>
+                        th:style="|background-image: url('${community.imagePath != null ? community.imagePath : '/img/communities/default.png'}')|">
+                    </div>
+
                     <div class="card__content">
                         <p class="card__category" th:utext="|${community.country.countryName} ${community.country.emoji}|"></p>
                         <h3 class="card__heading" th:text="${community.title}"></h3>
@@ -99,6 +104,7 @@
                 </a>
                 
             </div>
+            
         </details>        
 
     </section>

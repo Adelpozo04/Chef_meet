@@ -12,13 +12,16 @@
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
     <main class="flex-shrink-0 container create-main">
-         <!-- Boton para volver -->
+
+        <!-- Boton para volver -->
         <a href="javascript:history.back()" class="btn-volver"> 
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
             </svg>
         </a>
+
         <h2>Crear nuevo evento</h2>
+        
         <!-- Alerta de error de imagen -->
         <div th:if="${errorImage}" class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>¡Formato no válido!</strong> Solo se permiten imágenes en formato JPG, JPEG o PNG.
