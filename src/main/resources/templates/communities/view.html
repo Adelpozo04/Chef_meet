@@ -111,11 +111,11 @@
             </ul>
         </div>
 
-        <div class="topic-list" th:if="${not #lists.isEmpty(topics)}">
+        <div class="topic-list" th:if="${topics != null and !#lists.isEmpty(topics)}">
             <div th:each="topic : ${topics}"
                 class="topic-item"
                 style="display:none;"
-                th:data-topic-key="${topic.key}">
+                th:data-topic-key="${topic}">
             </div>
         </div>
 
@@ -155,86 +155,11 @@
 </body>
 
 <script>
-    let stompClient = null;
-
     // Boton para mostrar/ocultar el panel del chat
     function toggleChat() {
         const chat = document.getElementById("communityChat");
         chat.classList.toggle("open");
     }
-
-    // Conectar al websocket
-    function connect() {
-
-        const socket = new SockJS('/chat');
-        stompClient = Stomp.over(socket);
-
-        stompClient.connect({}, function(frame) {
-
-            console.log('Conectado: ' + frame);
-
-            // Suscribirse al topic
-            stompClient.subscribe('/topic/messages', function(response) {
-
-                const data = JSON.parse(response.body);
-
-                addMessage(data.user, data.message);
-            });
-        });
-    }
-
-    // Enviar mensaje
-    function sendMessage() {
-
-        const input = document.getElementById("messageInput");
-
-        const message = input.value.trim();
-
-        if (message === "") return;
-
-        stompClient.send("/app/sendMessage", {}, JSON.stringify({
-            user: "Usuario1",
-            message: message
-        }));
-
-        input.value = "";
-    }
-
-    // Mostrar mensaje
-    function addMessage(user, message) {
-
-        const chatBody = document.getElementById("chatBody");
-
-        const div = document.createElement("div");
-
-        div.classList.add("chat-message");
-
-        div.innerHTML = `
-            <strong>${user}:</strong>
-            <p>${message}</p>
-        `;
-
-        chatBody.appendChild(div);
-
-        chatBody.scrollTop = chatBody.scrollHeight;
-    }
-
-    // Click botón
-    document.getElementById("sendButton")
-        .addEventListener("click", sendMessage);
-
-    // Enter
-    document.getElementById("messageInput")
-        .addEventListener("keypress", function(event) {
-
-            if (event.key === "Enter") {
-                sendMessage();
-            }
-        });
-
-    // Conectar al cargar
-    connect();
-
 </script>
 
 </html>
