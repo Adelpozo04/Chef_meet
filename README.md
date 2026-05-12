@@ -59,20 +59,16 @@ Para subir la receta es necesario pulsar un botón al final de esta. Dicho botó
 > - Posibilidad de crear una receta mediante la introduccion de TITULO, IMAGEN COVER, DESCRIPCION, INGREDIENTES, PASOS E IMAGENES DE LOS PASOS.
 > - Creacion de una base de datos con distintos ingredientes los cuales marcan tambien las alergias que estos introducen.
 > - Creacion de un paso intermedio entre ingredientes y receta que establezca las medidas de cada ingrediente para esa receta en especifico.
-
-
-> [Cosas que faltan]
-> Actualmente faltan las siguientes implementaciones de la vista de la receta:
-> - Poner buscador en dropdown ingredientes
 > - Cambiar botón de añadir peso para que sea más visible
 > - Añadir opción para introducir calorias de la receta
 > - Borrar receta
-> - Poder editar una receta
 > - Barra de búsqueda de tus recetas
 > - Tags de recetas para la exploracion
 > - Poner las alergias al ver las recetas 
 > - Establecer recetas publicas o privadas
 > - Creacion de clase de valoracion
+> - Nuevo layout de las ventanas de recetas
+
 
 ### Ver receta
 El _layout_ es igual tan solo quitando todos los botones y opciones de personalización. Tambien en la parte de arriba aparecera una media de la valoracion que le han dado los usuarios a la receta.
@@ -165,16 +161,16 @@ La vista de perfil está estructurada mediante un selector lateral. Dependiendo 
 
 - <strong>Mis recetas:</strong> Contiene todas las recetas que el usuario haya compartido en la plataforma, con posibilidad de organizarlas como considere.
 
-> Pendiente de implementar.
+
 
 - <strong>Mis comunidades:</strong> Contiene las comunidades a las que pertenece el usuario para poder acceder a ellas más rápidamente.
 
 - <strong>Mis eventos:</strong> Contiene las entradas de los eventos a los que se ha apuntado el usuario.
 
-- <strong>Reportar:</strong> Permite enviar quejas y reportes directamente al administrador.
-> Pendiente de implementar.
-
 - <strong>Log out:</strong> Para cerrar sesión.
+
+> Pendiente de implementar.
+- <strong>Reportar:</strong> Permite enviar quejas y reportes directamente al administrador.
 
 ## Vista de administrador
 ![Vista administrador](/imgReadMe/administrador.png)
