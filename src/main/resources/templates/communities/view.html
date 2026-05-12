@@ -113,14 +113,6 @@
             </ul>
         </div>
 
-        <div class="topic-list" th:if="${topics != null and !#lists.isEmpty(topics)}">
-            <div th:each="topic : ${topics}"
-                class="topic-item"
-                style="display:none;"
-                th:data-topic-key="${topic}">
-            </div>
-        </div>
-
     </main>
 
 
