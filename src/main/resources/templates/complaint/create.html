@@ -38,9 +38,9 @@
                 <option value=3>Evento</option>
             </select>
 
-            <section class="cards_list">
+            <section>
 
-                <div id="recipes_block" class="reference_block d-none">
+                <div id="recipes_block" class="reference_block cards_list d-none">
                     <label class="card_item"
                         th:each="recip : ${AllRecipes}"
                         style="cursor:pointer;">
@@ -68,16 +68,89 @@
                     </label>
                 </div>
 
-                <div id="users_block" class="reference_block d-none">
-                    <!-- Bloque de usuarios -->
+                <div id="users_block" class="reference_block cards_list d-none">
+
+                    <label class="card_item"
+                        th:each="user : ${AllUsers}"
+                        style="cursor:pointer;">
+
+                        <!-- ID usuario -->
+                        <input type="radio"
+                            th:field="*{referenceId}"
+                            th:value="${user.id}"
+                            hidden>
+
+                        <div class="card_wrapper">
+
+                            <div style="width: 360px; height: 250px; overflow: hidden;">
+                                <img th:src="@{/user/{id}/pic(id=${user.id})}"
+                                    class="w-100 h-100"
+                                    style="object-fit: cover;">
+                            </div>
+
+                            <span class="card_footer_middle"
+                                th:text="${user.username}">
+                            </span>
+
+                        </div>
+
+                    </label>
                 </div>
 
-                <div id="communities_block" class="reference_block d-none">
-                    <!-- Bloque de comunidades -->
+                <div id="communities_block" class="reference_block cards_list d-none">
+                    <label class="card_item"
+                        th:each="comm: ${AllCommunities}"
+                        style="cursor:pointer;">
+
+                        <!-- ID comunidad -->
+                        <input type="radio"
+                            th:field="*{referenceId}"
+                            th:value="${comm.id}"
+                            hidden>
+
+                        <div class="card_wrapper">
+
+                            <div style="width: 360px; height: 250px; overflow: hidden;">
+                                <img src="/img/communities/default-image.png"
+                                    class="w-100 h-100"
+                                    style="object-fit: cover;">
+                            </div>
+
+                            <span class="card_footer_middle"
+                                th:text="${comm.title}">
+                            </span>
+
+                        </div>
+                    </label>
                 </div>
 
-                <div id="events_block" class="reference_block d-none">
-                    <!-- Bloque de eventos -->
+                <div id="events_block" class="reference_block cards_list d-none">
+                    <div class="card_item"
+                        th:each="ev : ${AllEvents}"
+                        style="cursor:pointer;">
+
+                        <!-- ID evento -->
+                        <input type="radio"
+                            th:field="*{referenceId}"
+                            th:value="${ev.id}"
+                            hidden>
+                        
+                         <div class="card_wrapper">
+
+                            <div style="width: 360px; height: 250px; overflow: hidden;">
+                                <img th:src="@{${ev.imagePath != null ? ev.imagePath : '/img/events/default.jpg'}}"
+                                    class="w-100 h-100"
+                                    style="object-fit: cover;">
+                            </div>
+
+                            <span class="card_footer_middle"
+                                th:text="${ev.title}">
+                            </span>
+
+                        </div>
+                        
+                    </div>
+                    
                 </div>
 
             </section>
