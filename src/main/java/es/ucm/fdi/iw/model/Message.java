@@ -18,8 +18,14 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @NamedQueries({
-		@NamedQuery(name = "Message.countUnread", query = "SELECT COUNT(m) FROM Message m "
-				+ "WHERE m.recipient.id = :userId AND m.dateRead = null")
+	@NamedQuery(
+		name = "Message.countUnread", 
+		query = "SELECT COUNT(m) FROM Message m WHERE m.recipient.id = :userId AND m.dateRead = null"
+	),
+	@NamedQuery(
+		name = "Message.withReferencedId",
+		query = "SELECT m FROM Message m WHERE m.referenceId = :rID AND m.dateSent <= CURRENT_TIMESTAMP ORDER BY m.dateSent ASC"
+	)
 })
 @Data
 @NoArgsConstructor
@@ -30,6 +36,7 @@ public class Message implements Transferable<Message.Transfer> {
 	// Enum para identificar el tipo de queja
 	public enum ComplainType {
 		NONE,		// Mensaje normal 
+		CHAT,		// Mensaje de chat
 		USER,		// Queja hacia un usuario
 		RECIPE,		// Queja hacia una receta
 		COMMENT,	// Queja hacia un comentario

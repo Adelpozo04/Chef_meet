@@ -136,10 +136,14 @@
         </div>
 
         <div class="chat-body" id="chat-messages">
-            <div class="chat-message">
-                <strong></strong>
-                <p></p>
+
+            <div class="chat-message" th:each="m : ${lastMessages}">
+                <p>
+                    <strong th:text="|[${m.from}]: |">[Usuario]: </strong>
+                    <span th:text="${m.text}">Mensaje</span>
+                </p>
             </div>
+
         </div>
 
         <div class="chat-footer">

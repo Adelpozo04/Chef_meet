@@ -5,12 +5,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.messaging.access.intercept.MessageAuthorizationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +31,8 @@ import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.Country;
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.model.Event;
-import es.ucm.fdi.iw.model.Topic;
+import es.ucm.fdi.iw.model.Message;
+import es.ucm.fdi.iw.model.Message.Transfer;
 import es.ucm.fdi.iw.model.User.Role;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletResponse;
@@ -88,16 +92,27 @@ public class CommunityController {
         User user = entityManager.find(User.class, ((User) session.getAttribute("u")).getId() );
         Community community = entityManager.find(Community.class, id);
         User owner = community.getOwner();
-        List<Topic> userTopics = user.getTopics();
+        List<Message> messages = entityManager
+                                        .createNamedQuery("Message.withReferencedId", Message.class)
+                                        .setParameter("rID", id)
+                                        .setMaxResults(50)
+                                        .getResultList();
+
+        List<Message.Transfer> lastMessages = new ArrayList<>();
+        for(Message m : messages) {
+            lastMessages.add( new Transfer(m.getSender().getUsername(), m.getText()) );
+        }
+
         boolean userIsOwner = community.getOwner().getId() == user.getId();
-        boolean userIsMember = community.getMembers()
-                                        .stream()
-                                        .anyMatch(u -> u.getId() == user.getId());
         boolean userIsAdmin = user.hasRole(Role.ADMIN);
+        boolean userIsMember = community
+                                .getMembers()
+                                .stream()
+                                .anyMatch(u -> u.getId() == user.getId());
 
 
         // Separar los eventos en proximos y pasados
-        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
         List<Event> upcomingEvents = community.getEvents().stream()
                 .filter(e -> e.getDate().isAfter(now))
                 .toList();
@@ -115,6 +130,7 @@ public class CommunityController {
         model.addAttribute("isAdmin", userIsAdmin);
         model.addAttribute("owner", owner);
         model.addAttribute("members", community.getMembers());
+        model.addAttribute("lastMessages", lastMessages);
 
         return "communities/view";
     }
@@ -128,9 +144,16 @@ public class CommunityController {
         User user = (User) session.getAttribute("u");
         Community community = entityManager.find(Community.class, id);
 
-        
+        // Eliminar comunidad de la base de datos
         if(user.hasRole(Role.ADMIN) || community.getOwner().getId() == user.getId())
             entityManager.remove(community);
+
+        // Eliminar canal de la comunidad
+        List<String> topics = new ArrayList<>(
+            Arrays.asList(((String) session.getAttribute("topics")).split(","))
+        );
+        topics.removeIf( t -> t.equals(String.format("community-%d", community.getId())) );
+        session.setAttribute("topics", topics);
 
         return "redirect:/communities";
     }
@@ -168,7 +191,15 @@ public class CommunityController {
         User user = entityManager.find(User.class, ((User) session.getAttribute("u")).getId() );
         Community community = entityManager.find(Community.class, id);
 
+        // Eliminar de la base de datos
         community.getMembers().removeIf( u -> u.getId() == user.getId() );
+
+        // Eliminar canal de la comunidad
+        List<String> topics = new ArrayList<>(
+            Arrays.asList(((String) session.getAttribute("topics")).split(","))
+        );
+        topics.removeIf( t -> t.equals(String.format("community-%d", community.getId())) );
+        session.setAttribute("topics", topics);
 
         log.info("Usuario {} quiere salirse de la comunidad con ID {}", user.getUsername(), community.getId());
         return "redirect:/communities/" + id;
