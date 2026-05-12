@@ -93,7 +93,12 @@ También está el botón para crear una comunidad, donde aparecerá una pestaña
 Cuando el usuario pulsa la tarjeta de una comunidad entra en esta vista.
 Contiene un título con un fondo de una imagen personalizada como fondo. Dicho texto se esconde cada vez que el usuario haga scroll hacia abajo y aparece cuando hace scroll hacia arriba.
 
-Dentro de esta vista existen tres pestañas con funcionalidades distintas: recetas, miembros y eventos.
+Dentro de esta vista existen cuatro funcionalidades distintas: recetas, miembros, eventos y el chat de la comunidad.
+
+En el apartado de miembros se pueden ver todos los miembros y el creador de la comunidad
+En el apartado de recetas se pueden ver las recetas asociadas a una comunidad.
+En el apartado de eventos se pueden ver todos los eventos pasados y futuros de una comunidad. Ademas de acceder a su información.
+Con el boton inferior derecho el usuario puede desplegar el chat de la comunidad y ver en tiempo real los ultimos 50 mensajes enviados y qué usuario lo envió. De esta forma todos los usuarios conectados pueden interactuar entre ellos. 
  
 > [!NOTE]\
 > Implementado:
@@ -102,17 +107,18 @@ Dentro de esta vista existen tres pestañas con funcionalidades distintas: recet
 > - Acceder a la vista de una comunidad concreta
 > - Ver los usuarios que formand parte de una comunidad
 > - Unirse y salirse de una comunidad
+> - Eliminar comunidades como administrador
+> - Crear/Consultar/Eliminar/Modificar eventos asociados a una comunidad como creador de estas 
+> - Crear/Consultar/Eliminar/Modificar eventos asociados a una comunidad como administrador
+> - Ver e interactuar con el chat de comunidad
 
 > [!NOTE]\
 > Por implementar:
 > - Eliminar comunidades como creador de estas. Además de todos los usuarios, recetas, eventos y mensajes asociados a esta
-> - Eliminar comunidades como administrador
-> - Crear/Consultar/Eliminar/Modificar eventos asociados a una comunidad como creador de estas 
-> - Crear/Consultar/Eliminar/Modificar eventos asociados a una comunidad como administrador
 > - Crear/Consultar/Eliminar/Modificar recetas asociadas a una comunidad como miembro 
 > - Crear/Consultar/Eliminar/Modificar recetas asociadas a una comunidad como administrador
 > - Filtrar por comunidades en base al titulo, tipo de gastronomia, pais u otros parámetros
-> - Ver e interactuar con el chat de comunidad
+
 
 #### Pestaña recetas
 ![Receta](/imgReadMe/comunidad.png)
