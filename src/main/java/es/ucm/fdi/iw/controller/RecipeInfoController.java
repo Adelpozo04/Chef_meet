@@ -4,18 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import es.ucm.fdi.iw.model.Event;
+
 import es.ucm.fdi.iw.model.Recipe;
-import es.ucm.fdi.iw.model.Reservation;
-import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
-import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
+
 
 @Controller
 public class RecipeInfoController {

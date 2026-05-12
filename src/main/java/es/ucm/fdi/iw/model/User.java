@@ -81,6 +81,9 @@ public class User implements Transferable<User.Transfer> {
 	@JoinColumn(name = "author")
 	private List<Recipe> recipes = new ArrayList<>();
 
+	@OneToMany(mappedBy = "owner")
+	private List<Complaint> complaints = new ArrayList<>();
+
 	/*
 	 * // Eventos que ha creado el usuario
 	 * 
@@ -101,6 +104,7 @@ public class User implements Transferable<User.Transfer> {
 		private int totalReceived;
 		private int totalSent;
 		private String recipes;
+		private String complaints;
 	}
 
 	@Override
@@ -111,7 +115,12 @@ public class User implements Transferable<User.Transfer> {
 			recips.append(r.getTitle()).append(", ");
 		}
 
-		return new Transfer(id, username, received.size(), sent.size(), recips.toString());
+		StringBuilder comp = new StringBuilder();
+		for (Complaint c : complaints) {
+			comp.append(c.getTitle()).append(", ");
+		}
+
+		return new Transfer(id, username, received.size(), sent.size(), recips.toString(), comp.toString());
 	}
 
 	/**

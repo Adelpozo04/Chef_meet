@@ -2,7 +2,22 @@
 <html class="h-100" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
     <div th:fragment="report">
-    <h2>Reportar</h2>
-    <p>Envía tus quejas y reportes al administrador.</p>
+        <h2>Reportar</h2>
+        <p>Envía tus quejas y reportes al administrador.</p>
+
+        <th:block th:if="${u}">
+            <div class="explorer_wrapper">
+                <div class="category_list">
+                    <a th:href="@{/complaint/create}" class="category_item" category="own" id="create-recipe">Crear Queja</a>
+                </div>
+            </div>
+        </th:block>
+
+
+        <section class="cards_list" th:unless="${#lists.isEmpty(myComplaints)}">
+            
+
+        </section>
+
     </div>
 </body>

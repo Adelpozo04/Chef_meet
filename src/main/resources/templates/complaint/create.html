@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{fragments/head :: header}" />
+    <title>IW: Queja</title>
+    <link rel="stylesheet" th:href="@{/css/custom.css}" href="/css/custom.css"
+        type="text/css" />
+</head>
+
+<body class="d-flex flex-column h-100">
+    <header th:replace="~{fragments/nav.html :: nav}"></header>
+
+    <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
+        
+        <form th:action="@{/complaint/create}" th:object="${complaint}" enctype="multipart/form-data" method="post" 
+        class="mt-4 gap-5
+         d-flex flex-column align-items-center">
+
+            <!-- Titulo -->
+            <input th:field="*{title}" class="title_l border-0 text-center">
+             
+            <div class="d-flex flex-row align-items-start">
+                <p class="me-2">Descripción:</p>
+
+                <!-- Descripción -->
+                <textarea 
+                    th:field="*{description}"
+                    class="title_m border-0 text-left description_box">
+                </textarea>
+            </div>
+
+            <select id="referenceType" class="form-select">
+                <option value="" disabled selected>Selecciona el tipo de queja</option>
+                <option value=0>Usuario</option>
+                <option value=1>Receta</option>
+                <option value=2>Comunidad</option>
+                <option value=3>Evento</option>
+            </select>
+
+            <section class="cards_list">
+
+                <div id="recipes_block" class="reference_block d-none">
+                    <label class="card_item"
+                        th:each="recip : ${AllRecipes}"
+                        style="cursor:pointer;">
+
+                        <!-- ID receta -->
+                        <input type="radio"
+                            th:field="*{referenceId}"
+                            th:value="${recip.id}"
+                            hidden>
+
+                        <div class="card_wrapper">
+
+                            <div style="width: 360px; height: 250px; overflow: hidden;">
+                                <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}"
+                                    class="w-100 h-100"
+                                    style="object-fit: cover;">
+                            </div>
+
+                            <span class="card_footer_middle"
+                                th:text="${recip.title}">
+                            </span>
+
+                        </div>
+
+                    </label>
+                </div>
+
+                <div id="users_block" class="reference_block d-none">
+                    <!-- Bloque de usuarios -->
+                </div>
+
+                <div id="communities_block" class="reference_block d-none">
+                    <!-- Bloque de comunidades -->
+                </div>
+
+                <div id="events_block" class="reference_block d-none">
+                    <!-- Bloque de eventos -->
+                </div>
+
+            </section>
+            
+
+            <button type="submit" class="category_item" id="create-button">Crear Queja</button>
+        </form>
+
+    </main>
+    
+    <script th:src="@{/js/complaint.js}"></script>
+    <th:block th:replace="~{fragments/footer.html :: footer}" />
+</body>
+
+</html>

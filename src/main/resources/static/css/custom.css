@@ -396,6 +396,12 @@ img.preview {
     text-transform: capitalize;
 }
 
+.title_l{
+    font-size: 35px;
+    color: black;
+    text-transform: capitalize;
+}
+
 .title_m{
     font-size: 15px;
     color: black;
@@ -436,6 +442,13 @@ img.preview {
     max-width: 500px;
     object-fit: contain;
     border-radius: 5%;
+}
+
+.description_box{
+    width: 400px;
+    height: 150px;
+    overflow-y: auto;
+    resize: none; /* opcional */
 }
 
 .list_disc{

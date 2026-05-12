@@ -8,7 +8,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Complaint {
+public class Complaint implements Transferable<Complaint.Transfer> {
 
     private static Map<Integer, String> typeMap = Map.of(
         0, "USER",
@@ -38,9 +40,38 @@ public class Complaint {
     @Column(name = "title", length = 300, nullable = false)
     private String title;
 
+    @Column(name = "description", length = 300, nullable = false)
+    private String description;
+
     @Column(name = "type")
     private int type;
 
+    @Column(name = "resolved")
+    private boolean resolved;
+
     @Column(name = "reference_id")
     private long referenceId;   // ID del objeto al que se refiere -> Si type="USER" y ID=5 : la queja se refiere al usuario con ID 5
+
+    @Getter
+    @AllArgsConstructor
+    public static class Transfer {
+        private long id;
+        private String title;
+        private String description;
+        private int type;
+        private boolean resolved;
+        private long referenceId;
+    }
+    
+    @Override
+    public Transfer toTransfer() {
+
+        return new Transfer(id, title, description, type, resolved, referenceId);
+    }
+
+    @Override
+    public String toString() {
+        return toTransfer().toString();
+    }
+
 }
