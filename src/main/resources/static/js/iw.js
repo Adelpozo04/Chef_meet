@@ -10,17 +10,13 @@ const ws = {
      */
     retries: 3,
 
+    headers: { 'X-CSRF-TOKEN': config.csrf.value },
+
     /**
      * Default action when message is received. 
      */
-   /* receive: (text) => {
-        console.log(text);
-        let p = document.querySelector("#nav-unread");
-        if (p) {
-            p.textContent = +p.textContent + 1;
-        }
-    },*/
     receive: (msg) => {
+
         // Si se recibe un string (JSON), se convierte a objeto
         const data = (typeof msg === 'string') ? JSON.parse(msg) : msg;
         console.log("Mensaje WS recibido: ", msg);
@@ -31,6 +27,21 @@ const ws = {
             //alert("¡Nueva Notificación!\n" + msg.text);
             showNotification(data.text);
         }
+        else if(document.getElementById('chat-messages')) {
+
+            const chatLog = document.getElementById('chat-messages');
+            const div = document.createElement("div");
+            div.className = "chat-message";
+
+            div.innerHTML = `
+                <p> <strong>[${data.from}]:</strong> ${data.text}</p>
+            `;
+
+            chatLog.appendChild(div);
+            chatLog.scrollTop = chatLog.scrollHeight;
+
+            console.log(data)
+        }
         else {
             // Mensaje de chat normal, actualizar el contador rojo del nav
             let p = document.querySelector("#nav-unread");
@@ -40,7 +51,24 @@ const ws = {
         }
     },
 
-    headers: { 'X-CSRF-TOKEN': config.csrf.value },
+    /**
+     * Message to be sent to the destination
+     * @param {*} destination 
+     * @param {*} body 
+     */
+    send: (destination, body) => {
+        try {
+            ws.stompClient.send(
+                destination,
+                ws.headers,
+                JSON.stringify(body)
+            );
+            console.log("Mensaje enviado:", body);
+        }
+        catch(e) {
+            console.log("Error enviando mensaje:", e);
+        }
+    },
 
     /**
      * Attempts to establish communication with the specified
@@ -62,20 +90,28 @@ const ws = {
                 }
             });
             console.log("Connected to WS '" + endpoint + "'")
-        } catch (e) {
+        }
+        catch (e) {
             console.log("Error, connection to WS '" + endpoint + "' FAILED: ", e);
         }
     },
 
+    /**
+     * Subscribe to the channel
+     * @param {*} sub 
+     */
     subscribe: (sub) => {
+
         try {
             ws.stompClient.subscribe(sub,
                 (m) => ws.receive(JSON.parse(m.body))); // fails if non-json received!
             console.log("Hopefully subscribed to " + sub);
-        } catch (e) {
+        }
+        catch (e) {
             console.log("Error, could not subscribe to " + sub, e);
         }
     }
+
 }
 
 /**
@@ -214,6 +250,7 @@ function postImage(img, endpoint, name, filename) {
  * Actions to perform once the page is fully loaded
  */
 document.addEventListener("DOMContentLoaded", () => {
+
     if (config.socketUrl) {
         let subs = config.admin ? ["/topic/admin", "/user/queue/updates"] : ["/user/queue/updates"]
         if (config.topics && config.topics.length > 0) {
@@ -225,9 +262,37 @@ document.addEventListener("DOMContentLoaded", () => {
         if (p) {
             go(`${config.rootUrl}/user/unread`, "GET").then(d => p.textContent = d.unread);
         }
-    } else {
+    }
+    else {
         console.log("Not opening websocket: missing config", config)
     }
+
+
+    /* Send information via community chat */
+    const chatInput = document.getElementById("chatInput")      // Where the message is written
+    const sendBtn = document.getElementById("chatSendButton")   // Button to send the message written
+
+    // Obtener ID de la comunidad de la ruta del navegador -> communities/{id}
+    const path = window.location.pathname;
+    const id = path ? path.split("/").pop() : null;
+
+    if(sendBtn) {
+        sendBtn.addEventListener("click", () => {
+
+            const text = chatInput.value.trim();
+            if(text === "")
+                return;
+
+
+            const path = "/app/community/" + id;    // From '/topic/community-{id}'
+            ws.send(path, {
+                text: text
+            });
+
+            chatInput.value = "";
+        });
+    }   
+    
 
     // add your after-page-loaded JS code here; or even better, call 
     // 	 document.addEventListener("DOMContentLoaded", () => { /* your-code-here */ });
@@ -236,6 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Funcion para mostrar notificaciones en la esquina inferior izquierda
 function showNotification(message) {
+
     // Crear contenedor si no existe
     let container = document.getElementById("noti-container");
     if(!container) {

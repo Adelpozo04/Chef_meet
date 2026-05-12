@@ -28,23 +28,27 @@ import lombok.Data;
 })
 public class Topic {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
-  @SequenceGenerator(name = "gen", sequenceName = "gen")
-  private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gen")
+	@SequenceGenerator(name = "gen", sequenceName = "gen")
+	private long id;
 
-  @ManyToMany
-  private List<User> members = new ArrayList<>();
-  private String name;
-  @Column(nullable = false, unique = true, name="topic_key") // key is reserved
-  private String key;
+	@ManyToMany
+	private List<User> members = new ArrayList<>();
 
-  @OneToMany
-  @JoinColumn(name = "topic_id")
-  private List<Message> messages = new ArrayList<>();
+	private String name;
 
-  @Override
-  public String toString() {
-    return name + " (" + key + ")";
-  }
+	@Column(nullable = false, unique = true, name="topic_key") // key is reserved
+	private String key;
+
+	@OneToMany
+	@JoinColumn(name = "topic_id")
+	private List<Message> messages = new ArrayList<>();
+
+	
+	@Override
+	public String toString() {
+		return name + " (" + key + ")";
+	}
+	
 }
