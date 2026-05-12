@@ -72,6 +72,8 @@ public class Message implements Transferable<Message.Transfer> {
 	@AllArgsConstructor
 	public static class Transfer {
 		
+		private long id;
+		
 		private String from;
 		private String to;
 		private String community;
@@ -82,22 +84,25 @@ public class Message implements Transferable<Message.Transfer> {
 		private String complainType;
 		private Long referenceId;
 
-		private long id;
-		private long communityId;
-
 
 		public Transfer(Message m) {
-			this.from = m.getSender() != null ? m.getSender().getUsername() : "Desconocido";
+			this.from = m.getSender() == null ? "Desconocido" : m.getSender().getUsername();
 			this.to = m.getRecipient() == null ? "null" : m.getRecipient().getUsername();
 			this.topic = m.getTopic() == null ? "null" : m.getTopic().getName();
 			this.sent = m.getDateSent() == null ? null : DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(m.getDateSent());
 			this.received = m.getDateRead() == null ? null : DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(m.getDateRead());
 			this.text = m.getText();
-			this.complainType = m.getComplainType() != null ? m.getComplainType().toString() : "NONE";
+			this.complainType = m.getComplainType() == null ? "NONE" : m.getComplainType().toString();
 			this.referenceId = m.getReferenceId();
 
 			this.id = m.getId();
 		}
+
+		public Transfer(String from, String msg) {
+			this.from = from;
+			this.text = msg;
+		}
+
 	}
 
 	@Override

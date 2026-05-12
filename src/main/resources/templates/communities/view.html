@@ -123,32 +123,28 @@
 
     </main>
 
-    <!-- Botón para abrir/cerrar el chat -->
-    <div class="chat-toggle" onclick="toggleChat()">Chat de comunidad</div>
 
     <!-- Panel lateral del chat -->
-    <div class="community-chat-panel" id="communityChat">
+    <div class="community-chat-panel" id="communityChat" th:if="${isMember or isOwner}">
+
+        <!-- Botón para abrir/cerrar el chat -->
+        <div class="chat-toggle" onclick="toggleChat()">Chat de comunidad</div>
 
         <div class="chat-header">
-            <h3>Chat en tiempo real</h3>
+            <h3>Chat</h3>
             <button class="close-chat" onclick="toggleChat()">✕</button>
         </div>
 
-        <div class="chat-body">
+        <div class="chat-body" id="chat-messages">
             <div class="chat-message">
-                <strong>Usuario1:</strong>
-                <p>Hola</p>
-            </div>
-
-            <div class="chat-message">
-                <strong>Usuario2:</strong>
-                <p>Bienvenido al chat</p>
+                <strong></strong>
+                <p></p>
             </div>
         </div>
 
         <div class="chat-footer">
-            <input type="text" placeholder="Escribe un mensaje...">
-            <button>Enviar</button>
+            <input id="chatInput" type="text" placeholder="Escribe un mensaje...">
+            <button id="chatSendButton">Enviar</button>
         </div>
 
     </div>

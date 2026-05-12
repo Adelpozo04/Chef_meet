@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * An authorized user of the system.
  */
@@ -127,11 +129,6 @@ public class User implements Transferable<User.Transfer> {
 	public boolean hasRole(Role role) {
 		String roleName = role.name();
 		return Arrays.asList(roles.split(",")).contains(roleName);
-	}
-
-	@Override
-	public String toString() {
-		return toTransfer().toString();
 	}
 
 }
