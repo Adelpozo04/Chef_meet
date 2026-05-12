@@ -10,7 +10,9 @@
 
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <div class="community-header">
+    <div class="community-header" 
+        th:style="|background-image: url('${community.imagePath != null ? community.imagePath : '/img/communities/default.png'}')|">
+
         <div class="community-controls-title">
             <div class="community-buttons">
                 
@@ -38,7 +40,6 @@
                         <button type="submit">Eliminar comunidad</button>
                     </form>
                 </th:block>
-
                 
             </div>
 
@@ -51,6 +52,7 @@
         <div class="community-desc">
             <p th:text="${community.description}">Descripción de la comunidad</p>
         </div>
+
     </div>
 
     <main class="community-info">

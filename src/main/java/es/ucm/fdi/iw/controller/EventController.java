@@ -163,6 +163,7 @@ public class EventController {
                 log.warn("Errores de validacion en el evento: {}", result.getAllErrors());
                 return "event/create";
             }
+
             // Validar imagen
             if(!photo.isEmpty()) {
                 // Verificar el tipo de archivo
@@ -181,6 +182,7 @@ public class EventController {
                     return "event/create";
                 }
             }
+
             // Obtener el usuario logueado de la sesion
             User organizer = (User) session.getAttribute("u");
             organizer = entityManager.find(User.class, organizer.getId());
@@ -230,14 +232,15 @@ public class EventController {
                     }
 
                     // Actualizar la imagen del evento con la ruta 
-                    event.setImagePath("/event/" + event.getId() + "/pic");
+                    event.setImagePath("/events/" + event.getId() + "/pic");
 
                     // Forzar a la base de datos a guardar esta actualizacion
                     entityManager.merge(event);
                     entityManager.flush();
                     
                     // Al usar @Transactional, JPA guarda este cambio final en la base de datos automaticamente
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     log.error("Error al guardar la imagen del evento", e);
                 }
             }

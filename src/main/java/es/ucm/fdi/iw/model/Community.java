@@ -62,6 +62,9 @@ public class Community {
     @Column(name = "description", length = 200)
     private String description;
 
+    @Column(name = "image", length = 50)
+    private String imagePath;
+
     @ManyToOne
     private User owner;
     

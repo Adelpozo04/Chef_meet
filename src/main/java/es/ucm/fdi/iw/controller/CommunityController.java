@@ -1,5 +1,10 @@
 package es.ucm.fdi.iw.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +19,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import es.ucm.fdi.iw.LocalData;
 import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.Country;
 import es.ucm.fdi.iw.model.User;
@@ -22,6 +31,7 @@ import es.ucm.fdi.iw.model.Event;
 import es.ucm.fdi.iw.model.Topic;
 import es.ucm.fdi.iw.model.User.Role;
 import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
@@ -35,6 +45,9 @@ public class CommunityController {
     @Autowired
     private EntityManager entityManager;
 
+    @Autowired
+    private LocalData localData;
+    
 
     @GetMapping
     public String showCommunities(Model model, HttpSession session) {
@@ -173,21 +186,42 @@ public class CommunityController {
     public String createCommunity(
         @ModelAttribute Community community,
         Model model,
-        @RequestParam(value = "countryID") Long countryId,
+        RedirectAttributes redirectAttributes,  // Usado para mantener atributos de error
+        @RequestParam(value = "countryID", required = false) Long countryId,
+        @RequestParam("photo") MultipartFile photo,
         HttpSession session
     ) {
 
-        if (community.getTitle().isBlank() || community.getDescription().isBlank()) {
-            model.addAttribute("createError", true);
+        // Validar titulo de comunidad, descripcion y pais -> Deben proporcionarse
+        if (community.getTitle().isBlank() || community.getDescription().isBlank() || countryId == null) {
+            redirectAttributes.addFlashAttribute("errorIncomplete", true);
             log.error("Intentando crear comunidad: Campos vacios");
             return "redirect:/communities/create";
+        }
+
+        // Validar imagen -> Maximo de 5MB y formato permitido
+        if(!photo.isEmpty()) {
+            // Verificar el tipo de archivo
+            String contentType = photo.getContentType();
+
+            if(contentType == null ||  (!contentType.equals("image/jpeg") && !contentType.equals("image/png"))){
+                // Mandar señal de error al HTML y recargar formulario
+                redirectAttributes.addFlashAttribute("errorImage", true);
+                return "redirect:/communities/create";
+            }
+
+            // Restriccion de tamanyo
+            long maxBytes = 5 * 1024 * 1024; // 5 MB
+            if (photo.getSize() > maxBytes) {
+                redirectAttributes.addFlashAttribute("errorSize", true);
+                return "redirect:/communities/create";
+            }
         }
 
         // Usuario logueado que ejecuta esta query -> creador de la comunidad
         User owner = entityManager.find(User.class, ((User)session.getAttribute("u")).getId() );
         if (community.getMembers().isEmpty())
             owner.getOwnedCommunities().add(community);
-
 
         // Crear comunidad y almacenar en BBDD
         community.setOwner(owner);
@@ -209,12 +243,57 @@ public class CommunityController {
         entityManager.persist(communityTopic);
         owner.getTopics().add(communityTopic);    // Incluir topic al usuario -> IMPORTANTE!!
 
-        model.addAttribute("createError", false);
+        // Guardar la imagen si el usuario ha subido alguna
+        if(!photo.isEmpty()) {
+            try {
+                // Obtener el archivo donde se guarda la imagen dentro de la carpeta 'events' en 'iwdata'
+                File f = localData.getFile("communities", String.valueOf(community.getId()));
+
+                // Asegurar que la carpeta 'events' existe antes de guardar, si no, se crea
+                f.getParentFile().mkdirs();
+
+                try(BufferedOutputStream stream = new BufferedOutputStream( new FileOutputStream(f) )) {
+                    stream.write(photo.getBytes());
+                }
+
+                // Actualizar la imagen del evento con la ruta 
+                community.setImagePath("/communities/" + community.getId() + "/pic");
+
+                // Forzar a la base de datos a guardar esta actualizacion
+                entityManager.merge(community);
+                entityManager.flush();
+            }
+            catch (IOException e) {
+                log.error("Error al guardar la imagen de la comunidad: ", e);
+            }
+        }
+
+        model.addAttribute("errorIncomplete", false);
         log.info("New community created by: {}", community.getOwner().getUsername());
         log.info("New community created with title: {}", community.getTitle());
         log.info("New community created with description: {}", community.getDescription());
         return "redirect:/communities/" + String.valueOf(community.getId());
     }
 
+
+    @GetMapping("/{id}/pic")
+    @ResponseBody
+    public void getCommunityPhoto(
+        @PathVariable long id, 
+        HttpServletResponse response
+    ) throws IOException {
+
+        File f = localData.getFile("communities", String.valueOf(id));
+        if (f.exists() && f.canRead()) {
+            // Si hay foto subida por el usuario, se proporciona al navegador
+            response.setContentType("image/jpeg");
+            Files.copy(f.toPath(), response.getOutputStream());
+        }
+        else {
+            // Si no existe, se envia la imagen de por defecto
+            response.sendRedirect("/img/communities/default.png");
+        }
+
+    }
 
 }
