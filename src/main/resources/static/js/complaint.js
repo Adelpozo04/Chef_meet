@@ -2,6 +2,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     const selector = document.getElementById("referenceType");
 
+    const selectedType = selector.dataset.selected;
+
+    console.log("Valor seleccionado al cargar: " + selectedType);
+
     const blocks = {
         0: document.getElementById("users_block"),
         1: document.getElementById("recipes_block"),
@@ -9,20 +13,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
         3: document.getElementById("events_block")
     };
 
-    selector.addEventListener("change", function () {
-
-        // ocultar todos
-        Object.values(blocks).forEach(block => {
-            console.log(block);
-            block.classList.add("d-none");
-        });
-
-        console.log("Valor seleccionado: " + this.value);
-        console.log("Valor seleccionado en bloque: " + blocks[this.value]);
-
+    if(selectedType && blocks[selectedType]) {
         // mostrar seleccionado
-        blocks[this.value].classList.remove("d-none");
-
-    });
+        blocks[selectedType].classList.remove("d-none");
+    }
 
 });

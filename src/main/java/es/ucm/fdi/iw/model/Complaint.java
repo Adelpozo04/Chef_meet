@@ -22,11 +22,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Complaint implements Transferable<Complaint.Transfer> {
 
-    private static Map<Integer, String> typeMap = Map.of(
-        0, "USER",
-        1, "RECIPE",
-        2, "COMMUNITY",
-        3, "EVENT"
+    public static Map<String, Integer> typeMap = Map.of(
+        "USER", 0,
+        "RECIPE", 1,
+        "COMMUNITY", 2,
+        "EVENT", 3
     );
 
     @Id
@@ -73,5 +73,4 @@ public class Complaint implements Transferable<Complaint.Transfer> {
     public String toString() {
         return toTransfer().toString();
     }
-
 }

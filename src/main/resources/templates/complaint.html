@@ -3,7 +3,7 @@
 
 <head>
     <th:block th:replace="~{fragments/head :: header}" />
-    <title>IW: Informacion de Receta</title>
+    <title>IW: Información de la Queja</title>
     <link rel="stylesheet" th:href="@{/css/custom.css}" href="/css/custom.css"
         type="text/css" />
 </head>
@@ -19,52 +19,128 @@
             </svg>
         </a>
 
-        <!--Apartado principal principal de la receta-->
+        <!--Apartado principal principal de la queja-->
         <div class="d-flex flex-column align-items-center">
 
             <!-- Titulo -->
-            <h1 th:text="${recipe.title}" class="title_xxl border-0 text-center"></h1>
+            <h1 th:text="${complaint.title}" class="title_xxl border-0 text-center"></h1>
 
         </div>
 
-        <!--Ingredientes de la receta-->
+        <!--Descripción queja-->
         <div>
 
             <h3>Descripción</h3>
 
             <textarea 
-                th:text="${recipe.description}"
+                th:text="${complaint.description}"
                 class="title_m border-0 text-left description_box">
             </textarea>
 
 
         </div>
 
+        <div id="referenceType"
+            th:data-selected="${complaint.type}">
+        </div>
+
         <section>
 
-                <div id="recipes_block" class="reference_block cards_list d-none">
-                    
+            <div id="recipes_block" class="reference_block cards_list d-none" th:if="${recipe != null}">
+                <div class="card_wrapper">
+
+                    <div style="width: 360px; height: 250px; overflow: hidden;">
+                        <img th:src="@{/img/recipes/{id}_cover.jpg(id=${complaint.referenceId})}"
+                            class="w-100 h-100"
+                            style="object-fit: cover;">
+                    </div>
+
+                    <span class="card_footer_middle"
+                        th:text="${recipe.title}">
+                    </span>
+
                 </div>
+            </div>
 
-                <div id="users_block" class="reference_block cards_list d-none">
-                    
+            <div id="users_block" class="reference_block cards_list d-none" th:if="${user != null}">
+                <div class="card_wrapper">
+
+                    <div style="width: 360px; height: 250px; overflow: hidden;">
+                        <img th:src="@{/user/{id}/pic(id=${complaint.referenceId})}"
+                            class="w-100 h-100"
+                            style="object-fit: cover;">
+                    </div>
+
+                    <span class="card_footer_middle"
+                        th:text="${user.username}">
+                    </span>
+
                 </div>
+            </div>
 
-                <div id="communities_block" class="reference_block cards_list d-none">
-                    
+            <div id="communities_block" class="reference_block cards_list d-none" th:if="${community != null}">
+                <div class="card_wrapper">
+
+                    <div style="width: 360px; height: 250px; overflow: hidden;">
+                        <img src="/img/communities/default-image.png"
+                            class="w-100 h-100"
+                            style="object-fit: cover;">
+                    </div>
+
+                    <span class="card_footer_middle"
+                        th:text="${community.title}">
+                    </span>
+
                 </div>
+            </div>
 
-                <div id="events_block" class="reference_block cards_list d-none">
-                    
+            <div id="events_block" class="reference_block cards_list d-none" th:if="${event != null}">
+                <div class="card_wrapper">
+
+                    <div style="width: 360px; height: 250px; overflow: hidden;">
+                        <img th:src="@{${event.imagePath != null ? event.imagePath : '/img/events/default.jpg'}}"
+                            class="w-100 h-100"
+                            style="object-fit: cover;">
+                    </div>
+
+                    <span class="card_footer_middle"
+                        th:text="${event.title}">
+                    </span>
+
                 </div>
+            </div>
 
-            </section>
+        </section>
 
-        
+        <div class="d-flex flex-row align-items-center gap-5">
+            <form th:if="${!complaint.resolved}"
+                th:action="@{/complaint/{id}(id=${complaint.id})}"
+                method="post">
+
+                <button type="submit" class="category_item gap-5 mt-3">
+                    Marcar como resuelta
+                </button>
+
+            </form>
+
+            <!-- Botón de eliminar solo visible para el autor o admin -->                        
+            <div class="d-flex flex-row gap-3 align-items-center">
+
+                <form th:action="@{/complaint/{id}/delete(id=${complaint.id})}" method="post">
+                    <button type="submit" onclick="return confirm('¿Seguro que quieres borrar esta queja?')"
+                        class="btn btn-danger btn-sm mt-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                        </svg>
+                    </button>
+                </form>
+
+            </div>
+        </div>  
 
     </main>
     
-    <script th:src="@{/js/recipeInfo.js}"></script>
+    <script th:src="@{/js/complaint.js}"></script>
     <th:block th:replace="~{fragments/footer.html :: footer}" />
 </body>
 

@@ -135,7 +135,7 @@
                             th:value="${ev.id}"
                             hidden>
                         
-                         <div class="card_wrapper">
+                        <div class="card_wrapper">
 
                             <div style="width: 360px; height: 250px; overflow: hidden;">
                                 <img th:src="@{${ev.imagePath != null ? ev.imagePath : '/img/events/default.jpg'}}"
@@ -161,7 +161,7 @@
 
     </main>
     
-    <script th:src="@{/js/complaint.js}"></script>
+    <script th:src="@{/js/complaintCreate.js}"></script>
     <th:block th:replace="~{fragments/footer.html :: footer}" />
 </body>
 

@@ -18,6 +18,7 @@ import es.ucm.fdi.iw.model.Recipe;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 @Controller
@@ -91,6 +92,59 @@ public class ComplaintController {
         log.info("New complaint created with description: {}", complaint.getDescription());
         return "redirect:/account";
         
+    }
+
+    @GetMapping("complaint/{id}")
+    public String showComplaint(@PathVariable long id, Model model) {
+
+        // Buscar la info de la receta en la base de datos usando el id que viene en la url
+        Complaint complaint = entityManager.find(Complaint.class, id);
+
+        // Si el id no existe, se redirige a eventos
+        if (complaint == null) {
+            return "redirect:/admin";
+        }
+
+        if(complaint.getType() == Complaint.typeMap.get("RECIPE")) {
+            Recipe recipe = entityManager.find(Recipe.class, complaint.getReferenceId());
+
+            model.addAttribute("recipe", recipe);
+        }
+        else if(complaint.getType() == Complaint.typeMap.get("EVENT")) {
+            Event event = entityManager.find(Event.class, complaint.getReferenceId());
+
+            model.addAttribute("event", event);
+        }
+        else if(complaint.getType() == Complaint.typeMap.get("COMMUNITY")) {
+            Community community = entityManager.find(Community.class, complaint.getReferenceId());
+
+            model.addAttribute("community", community);
+        }
+        else if(complaint.getType() == Complaint.typeMap.get("USER")) {
+            User user = entityManager.find(User.class, complaint.getReferenceId());
+
+            model.addAttribute("user", user);
+        }
+
+        model.addAttribute("complaint", complaint);
+        
+        return "complaint";
+    }
+
+    @Transactional
+    @PostMapping("complaint/{id}")
+    public String resolveComplaint(@PathVariable long id) {
+
+        Complaint complaint = entityManager.find(Complaint.class, id);
+
+        if (complaint != null) {
+
+            complaint.setResolved(true);
+
+            log.info("Complaint {} marcada como resuelta", complaint.getId());
+        }
+
+        return "redirect:/admin";
     }
 
     // Cargar quejas
