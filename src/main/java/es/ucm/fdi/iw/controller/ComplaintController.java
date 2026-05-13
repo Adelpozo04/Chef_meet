@@ -113,6 +113,10 @@ public class ComplaintController {
         else if(complaint.getType() == Complaint.typeMap.get("EVENT")) {
             Event event = entityManager.find(Event.class, complaint.getReferenceId());
 
+            if(event == null){
+                log.info("ERROR: La queja con id {} se refiere a un evento con id {} que no existe", complaint.getId(), complaint.getReferenceId());
+            }
+
             model.addAttribute("event", event);
         }
         else if(complaint.getType() == Complaint.typeMap.get("COMMUNITY")) {
@@ -132,7 +136,7 @@ public class ComplaintController {
     }
 
     @Transactional
-    @PostMapping("complaint/{id}")
+    @PostMapping("/complaint/{id}")
     public String resolveComplaint(@PathVariable long id) {
 
         Complaint complaint = entityManager.find(Complaint.class, id);
@@ -144,7 +148,7 @@ public class ComplaintController {
             log.info("Complaint {} marcada como resuelta", complaint.getId());
         }
 
-        return "redirect:/admin";
+        return "redirect:/admin/";
     }
 
     // Cargar quejas

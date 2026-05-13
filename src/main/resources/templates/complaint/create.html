@@ -11,7 +11,7 @@
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
+    <main class="flex-shrink-0 column-gap-3 row-gap-5 complaint_wrapper">
         
         <form th:action="@{/complaint/create}" th:object="${complaint}" enctype="multipart/form-data" method="post" 
         class="mt-4 gap-5
@@ -26,7 +26,7 @@
                 <!-- Descripción -->
                 <textarea 
                     th:field="*{description}"
-                    class="title_m border-0 text-left description_box">
+                    class="description_m border-0 text-left description_box">
                 </textarea>
             </div>
 
@@ -125,7 +125,7 @@
                 </div>
 
                 <div id="events_block" class="reference_block cards_list d-none">
-                    <div class="card_item"
+                    <label class="card_item"
                         th:each="ev : ${AllEvents}"
                         style="cursor:pointer;">
 
@@ -149,7 +149,7 @@
 
                         </div>
                         
-                    </div>
+                    </label>
                     
                 </div>
 

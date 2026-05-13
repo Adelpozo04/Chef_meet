@@ -15,9 +15,33 @@
 
 
         <section class="cards_list" th:unless="${#lists.isEmpty(myComplaints)}">
-            
+
+            <div class="card_item" th:each="compl: ${myComplaints}">
+
+                <div class="card_wrapper">
+
+                    <!--Enlace a la informacion de la receta-->
+                    <span class="card_footer_middle" th:text="${compl.title}">Título</span> 
+                    
+                    <a th:if="${compl.resolved == true}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="30"
+                            height="30"
+                            fill="green"
+                            class="bi bi-check-lg"
+                            viewBox="0 0 16 16">
+                            <path d="M13.485 1.929a.75.75 0 0 1 .086 1.056l-7 8a.75.75 0 0 1-1.08.02L2.47 8.03a.75.75 0 1 1 1.06-1.06l2.438 2.439 6.472-7.4a.75.75 0 0 1 1.045-.08"/>
+                        </svg>
+                    </a>
+
+                </div>                       
+                
+            </div>
 
         </section>
 
     </div>
+
+    
+
 </body>

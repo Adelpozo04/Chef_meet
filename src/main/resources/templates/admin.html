@@ -212,9 +212,7 @@
             <summary class="communities-dropdown">Quejas resueltas</summary>
 
             <section class="cards_list">
-                <div class="card_item" th:each="compl: ${complaints}">
-
-                    <div th:if="${compl.resolved == true}">
+                <div class="card_item" th:each="compl: ${complaints}" th:if="${compl.resolved == true}">
 
                         <div class="card_wrapper">
 
@@ -225,9 +223,6 @@
                             </a>                                      
 
                         </div>
-                        
-
-                    </div>
                     
                 </div>
 

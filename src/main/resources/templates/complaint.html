@@ -11,7 +11,7 @@
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
+    <main class="flex-shrink-0 column-gap-3 row-gap-5 complaint_wrapper">
 
         <a href="javascript:history.back()" class="btn-volver"> 
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -34,7 +34,7 @@
 
             <textarea 
                 th:text="${complaint.description}"
-                class="title_m border-0 text-left description_box">
+                class="description_m border-0 text-left description_box">
             </textarea>
 
 
@@ -102,7 +102,7 @@
                             class="w-100 h-100"
                             style="object-fit: cover;">
                     </div>
-
+            
                     <span class="card_footer_middle"
                         th:text="${event.title}">
                     </span>

@@ -409,6 +409,12 @@ img.preview {
     margin-left: 1rem;
 }
 
+.description_m{
+    font-size: 15px;
+    color: black;
+    margin-left: 1rem;
+}
+
 .recipe_wrapper{
     margin-top: 15px;
     padding: 15px 30px 15px 30px;
@@ -448,7 +454,7 @@ img.preview {
     width: 400px;
     height: 150px;
     overflow-y: auto;
-    resize: none; /* opcional */
+    resize: none;
 }
 
 .list_disc{
@@ -511,6 +517,12 @@ img.preview {
     margin-bottom: 30px;
     background-color: #eee;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.complaint_wrapper{
+    margin-top: 15px;
+    padding: 15px 30px 15px 30px;
+    background-color: rgb(240, 93, 93);
 }
 
 .create-main {

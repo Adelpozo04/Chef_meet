@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.model.Community;
+import es.ucm.fdi.iw.model.Complaint;
 import es.ucm.fdi.iw.model.Event;
 import es.ucm.fdi.iw.model.Recipe;
 
@@ -159,6 +160,11 @@ public class RootController {
                 "SELECT r FROM Recipe r WHERE r.author.id = :userId ORDER BY r.title ASC", Recipe.class)
                 .setParameter("userId", u.getId())
                 .getResultList();
+
+            List<Complaint> myComplaints = entityManager.createQuery(
+            "SELECT r FROM Complaint r WHERE r.owner.id = :userId ORDER BY r.title ASC", Complaint.class)
+            .setParameter("userId", u.getId())
+            .getResultList();
             
             List<Community> myCreatedCommunities = entityManager.createNamedQuery("Community.ownedCommunities", Community.class)
                                                     .setParameter("id", u.getId())
@@ -182,6 +188,7 @@ public class RootController {
             // Pasar la lista ordenada al HTML
             model.addAttribute("myEvents", myEvents);
             model.addAttribute("myRecipes", myRecipes);
+            model.addAttribute("myComplaints", myComplaints);
             model.addAttribute("myCreatedCommunities", myCreatedCommunities);
             model.addAttribute("myJoinedCommunities", myJoinedCommunities);
         }
