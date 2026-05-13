@@ -261,11 +261,11 @@ public class RecipeController {
   
     }
 
-    // Borrar el evento en la base de datos
+    // Borrar la receta en la base de datos
     @Transactional
     @PostMapping("/{id}/delete") 
-    public String deleteEvent(@PathVariable long id) {
-        // Buscar el evento en la base de datos pot su id
+    public String deleteRecipe(@PathVariable long id) {
+        // Buscar la receta en la base de datos por su id
         Recipe recipe = entityManager.find(Recipe.class, id);
 
         if(recipe != null) {

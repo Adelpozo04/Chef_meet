@@ -30,7 +30,7 @@
                 </textarea>
             </div>
 
-            <select id="referenceType" class="form-select">
+            <select th:field="*{type}" id="referenceType" class="form-select">
                 <option value="" disabled selected>Selecciona el tipo de queja</option>
                 <option value=0>Usuario</option>
                 <option value=1>Receta</option>

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import es.ucm.fdi.iw.model.Topic;
 import es.ucm.fdi.iw.controller.EventController.DontHavePermissionException;
 import es.ucm.fdi.iw.model.Community;
+import es.ucm.fdi.iw.model.Complaint;
 import es.ucm.fdi.iw.model.Event;
 import es.ucm.fdi.iw.model.Lorem;
 import es.ucm.fdi.iw.model.Message;
@@ -75,6 +76,10 @@ public class AdminController {
     // Cargar eventos
     model.addAttribute("events", 
       entityManager.createQuery("SELECT e FROM Event e", Event.class).getResultList());
+
+      // Cargar quejas
+    model.addAttribute("complaints",
+        entityManager.createQuery("SELECT c FROM Complaint c", Complaint.class).getResultList());
     
     // Cargar reports o messages aqui 
     return "admin";

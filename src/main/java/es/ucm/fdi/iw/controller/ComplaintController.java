@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.transaction.Transactional;
 import es.ucm.fdi.iw.model.User;
@@ -64,7 +65,7 @@ public class ComplaintController {
             Model model,
             HttpSession session) {
 
-        if (complaint.getTitle().isBlank() || complaint.getDescription().isBlank()){
+        if (complaint.getTitle().isBlank() || complaint.getDescription().isBlank() || complaint.getType() == null){
             model.addAttribute("createError", true);
             log.info("ERROR AL INTENTAR CREAR QUEJA");
             return "complaint/create";
@@ -100,5 +101,21 @@ public class ComplaintController {
         model.addAttribute("complaints", complaints);
         return "account"; // Redirige a complaint.html
     }
+
+    // Borrar la queja en la base de datos
+    @Transactional
+    @PostMapping("complaint/{id}/delete") 
+    public String deleteComplaint(@PathVariable long id) {
+        // Buscar la queja en la base de datos por su id
+        Complaint complaint = entityManager.find(Complaint.class, id);
+
+        if(complaint != null) {
+            // Eliminar de la base de datos
+            entityManager.remove(complaint);
+            log.info("El administrador ha borrado la queja: {}", complaint.getTitle());
+        }
+
+        return "redirect:/admin";
+    } 
 
 }

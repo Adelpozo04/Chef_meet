@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{fragments/head :: header}" />
+    <title>IW: Informacion de Receta</title>
+    <link rel="stylesheet" th:href="@{/css/custom.css}" href="/css/custom.css"
+        type="text/css" />
+</head>
+
+<body class="d-flex flex-column h-100">
+    <header th:replace="~{fragments/nav.html :: nav}"></header>
+
+    <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
+
+        <a href="javascript:history.back()" class="btn-volver"> 
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+            </svg>
+        </a>
+
+        <!--Apartado principal principal de la receta-->
+        <div class="d-flex flex-column align-items-center">
+
+            <!-- Titulo -->
+            <h1 th:text="${recipe.title}" class="title_xxl border-0 text-center"></h1>
+
+        </div>
+
+        <!--Ingredientes de la receta-->
+        <div>
+
+            <h3>Descripción</h3>
+
+            <textarea 
+                th:text="${recipe.description}"
+                class="title_m border-0 text-left description_box">
+            </textarea>
+
+
+        </div>
+
+        <section>
+
+                <div id="recipes_block" class="reference_block cards_list d-none">
+                    
+                </div>
+
+                <div id="users_block" class="reference_block cards_list d-none">
+                    
+                </div>
+
+                <div id="communities_block" class="reference_block cards_list d-none">
+                    
+                </div>
+
+                <div id="events_block" class="reference_block cards_list d-none">
+                    
+                </div>
+
+            </section>
+
+        
+
+    </main>
+    
+    <script th:src="@{/js/recipeInfo.js}"></script>
+    <th:block th:replace="~{fragments/footer.html :: footer}" />
+</body>
+
+</html>

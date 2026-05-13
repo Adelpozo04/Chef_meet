@@ -44,7 +44,7 @@ public class Complaint implements Transferable<Complaint.Transfer> {
     private String description;
 
     @Column(name = "type")
-    private int type;
+    private Integer type;
 
     @Column(name = "resolved")
     private boolean resolved;
@@ -58,7 +58,7 @@ public class Complaint implements Transferable<Complaint.Transfer> {
         private long id;
         private String title;
         private String description;
-        private int type;
+        private Integer type;
         private boolean resolved;
         private long referenceId;
     }
