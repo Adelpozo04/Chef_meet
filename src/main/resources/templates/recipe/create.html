@@ -42,14 +42,14 @@
             <div class="d-flex flex-column align-items-center">
 
                 <!-- Titulo -->
-                <input th:field="*{title}" class="title_xxl border-0 text-center">
+                <input th:field="*{title}" id="recipe-title" class="title_xxl border-0 text-center">
         
                 <!-- Marco visual Bootstrap -->
                 <label class="d-flex flex-column align-items-center justify-content-center empty_image" 
                 style="cursor:pointer;">
 
                     <!-- Input oculto -->
-                    <input type="file" name="cover" accept="image/*" class="empty_image_input">
+                    <input type="file" id="recipe-cover" name="cover" accept="image/*" class="empty_image_input">
 
                     <span>Pulsa para subir imagen</span>
 
@@ -69,14 +69,14 @@
                     <p>Tiempo de preparación:  </p>
 
                     <!-- Tiempo de preparacion -->
-                    <input th:field="*{time}" class="title_m border-0 text-left">
+                    <input th:field="*{time}" id="recipe-time" class="title_m border-0 text-left">
                 </div>
 
                 <div for="difficulty" class="d-flex flex-row">
                     <p>Nivel de dificultad:  </p>
 
                     <!-- Nivel de dificultad -->
-                    <input th:field="*{difficulty}" class="title_m border-0 text-left">
+                    <input th:field="*{difficulty}" id="recipe-difficulty" class="title_m border-0 text-left">
                 </div>
 
             </div>
@@ -113,7 +113,7 @@
 
                 <div for="calories" class="d-flex flex-row ml-3">
                     <!-- Calorías -->
-                    <input th:field="*{calories}" class="title_m border-0 text-left">
+                    <input th:field="*{calories}" id="recipe-calories" class="title_m border-0 text-left">
                 </div>
 
             </div>
@@ -121,7 +121,7 @@
             <div>
                 <h3>Receta Pública</h3>
                 <label>
-                    <input type="checkbox" th:field="*{publicRecipe}">
+                    <input type="checkbox" th:field="*{publicRecipe}" id="recipe-public">
                     Pública
                 </label>
             </div>

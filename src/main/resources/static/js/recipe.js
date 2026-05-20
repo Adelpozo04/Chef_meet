@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function (){
 
         //Creamos un elemento de la lista
         const dropdown = document.createElement("select");
+        dropdown.id = `ingredient-${counter}`;
 
         dropdown.multiple = false;
 
@@ -99,7 +100,6 @@ document.addEventListener("DOMContentLoaded", function (){
         textAmount.dataset.placeholder = "Escribe cantidad...";
 
         textAmount.classList.add("editable");
-
 
         dropdown.addEventListener("change", function() {
             //Si quiero el texto y no el value hay que usar select.options[select.selectedIndex].text;
@@ -132,6 +132,8 @@ document.addEventListener("DOMContentLoaded", function (){
 
         });
 
+        counter++;
+
     });
 });
 
@@ -163,6 +165,7 @@ document.addEventListener("DOMContentLoaded", function (){
         const newElement = document.createElement("li");
         const stepDescription = document.createElement("input");
 
+        stepDescription.id = `step-${counter}`;
         stepDescription.name = "steps";
         stepDescription.type = "text";
 
