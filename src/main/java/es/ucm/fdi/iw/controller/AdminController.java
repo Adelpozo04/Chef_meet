@@ -34,20 +34,25 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
 /**
- * Site administration.
- *
- * Access to this end-point is authenticated - see SecurityConfig
+* Controlador encargado de gestionar las funcionalidades de admin.
+* Tofas las rutas parten de /admin
  */
 @Controller
 @RequestMapping("admin")
 public class AdminController {
 
+  // Codificador de contraseñas
   @Autowired
   private PasswordEncoder passwordEncoder;
 
+  // Para realizar consultas a la base de datos
   @Autowired
   private EntityManager entityManager;
 
+  /**
+   * Añade al modelo algunosa tributos guardados en sesion
+   * Se ejecuta antes de cada metodo del controlador 
+  */
   @ModelAttribute
   public void populateModel(HttpSession session, Model model) {
     for (String name : new String[] { "u", "url", "ws", "topics"}) {
@@ -57,6 +62,9 @@ public class AdminController {
 
   private static final Logger log = LogManager.getLogger(AdminController.class);
 
+  /**
+   * Muestr la pagina principal del panel de admin
+   */
   @GetMapping("/")
   public String index(Model model) {
     log.info("Admin acaba de entrar");
@@ -81,31 +89,44 @@ public class AdminController {
     model.addAttribute("complaints",
         entityManager.createQuery("SELECT c FROM Complaint c", Complaint.class).getResultList());
     
-    // Cargar reports o messages aqui 
+    // Devuelve la lista admin.html
     return "admin";
   }
 
+  /**
+   * Activa o desactiva un usuario
+   * Devuelve un JSON indicando el nuevo estado del usuario
+   */
   @PostMapping("/toggle/{id}")
   @Transactional
   @ResponseBody
   public String toggleUser(@PathVariable long id, Model model) {
     log.info("Admin cambia estado de " + id);
+
+    // Busca user por id
     User target = entityManager.find(User.class, id);
+
+    // Cambiar su estado actual
     target.setEnabled(!target.isEnabled());
     return "{\"enabled\":" + target.isEnabled() + "}";
   }
 
   /**
-   * Returns JSON with all received messages
+   * Devuelve en formato JSON los ultimo mensajes recibidos
+   * Maximo de 5
    */
   @GetMapping(path = "all-messages", produces = "application/json")
   @Transactional // para no recibir resultados inconsistentes
   @ResponseBody // para indicar que no devuelve vista, sino un objeto (jsonizado)
   public List<Message.Transfer> retrieveMessages(HttpSession session) {
+    
+    // Consulta para obtener los mensajes
     TypedQuery<Message> query = entityManager.createQuery("select m from Message m", Message.class);
+    
     query.setMaxResults(5);
     query.setFirstResult(0); // para paginar: cambias el 1er resultado
-    // devuelve resultado
+    
+    // Convertir los mensajes a objteos Transfer para enviarlos como JSON
     return query.getResultList().stream().map(Transferable::toTransfer)
         .collect(Collectors.toList());
   }
@@ -148,15 +169,19 @@ public class AdminController {
     return "{\"admin\": \"populated\"}";
   }
 
-  // Borrar el evento en la base de datos
+  /**
+  * Eliminar un evento en la base de datos
+  */
   @PostMapping("/event/{id}/delete") 
   @Transactional
   public String deleteEvent(@PathVariable long id) {
 
     log.info("Admin intentando borrar el evento con id: " + id);
+
     // Obtener el evento en la base de datos por su id
     Event event = entityManager.find(Event.class, id);
 
+    // Si existe, eliminarlo
     if(event != null) {
       entityManager.remove(event);
       log.info("Evento borrado con exito.");
@@ -165,7 +190,9 @@ public class AdminController {
     return "redirect:/admin/";
   } 
 
-  // Borrar la comunidad en la base de datos
+  /**
+  * Borrar una comunidad en la base de datos
+  */
   @PostMapping("/community/{id}/delete")
   @Transactional
   public String deleteCommunity(
@@ -173,8 +200,10 @@ public class AdminController {
 
     log.info("Admin intentando borrar la comunidad con id: " + id);
 
+    // Obtener la comunidad en la base de datos por su id
     Community community = entityManager.find(Community.class, id);
 
+    // Si existe, eliminarlo
     if(community != null) {
       entityManager.remove(community);
       log.info("Comunidad borrada con exito.");
@@ -183,12 +212,16 @@ public class AdminController {
     return "redirect:/admin/";
   }
 
-  // Borrar el evento en la base de datos
+  /**
+   *  Eliminar una receta de la base de datos
+   */
   @PostMapping("/recipe/{id}/delete") 
   @Transactional
   public String deleteRecipe(@PathVariable long id) {
 
     log.info("Admin intentando borrar la receta con id: " + id);
+
+    // Buscar receta por id
     Recipe recipe = entityManager.find(Recipe.class, id);
 
     if(recipe != null) {

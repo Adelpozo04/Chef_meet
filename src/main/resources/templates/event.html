@@ -19,6 +19,7 @@
 
             <h1>Explorar eventos</h1>
 
+            <!-- Se muestra cuando has intentado reservar un evento donde no habia plazas disponible y te redirige a esta vista -->
             <div th:if="${errorFull}" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
                 <strong>¡Lo sentimos!</strong> El evento al que has intentado apuntarte ya no tiene plazas disponibles.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -41,7 +42,7 @@
             </div>
             
 
-            
+            <!-- Boton crear evento  -->
             <div th:if="${session.u}" class="d-flex justify-content-center mb-4">
                 <a th:href="@{event/create}" class="category_item">Crear evento</a>
             </div>
@@ -58,12 +59,14 @@
                             <p>Aún no te has a puntado a ningún evento. ¡Únete a uno o crea el tuyo propio!</p>
                         </div>
 
+                         <!-- Mostrar eventos con plaza reservada-->
                         <div th:if="${!#lists.isEmpty(myEvents)}" class="cards_list">
                             <!-- Inyectar titulo y tematica a las tarjetas para la busqueda-->
                             <div class="card_item" th:each="ev: ${myEvents}"
                                  th:data-title="${ev.title}"
                                  th:data-theme="${ev.theme}">
-                                
+
+                                 <!-- Seleccionar imagen que se subio al crearlo, si no existe, una por defecto  -->
                                 <a class="event-card" th:href="@{/reservation/{id}(id=${ev.id})}">
                                     <div class="event-card_background"
                                          th:style="'background-image: url(' + @{${ev.imagePath != null ? ev.imagePath : '/img/events/default.jpg'}} + ')'"></div>
@@ -77,6 +80,7 @@
                                     </div>
                                 </a>
 
+                                 <!-- Boton para borrar solo visible para admin y creador del evento  -->
                                 <form class="form-delete" th:if="${session.u != null && (session.u.hasRole('ADMIN') || (ev.organizer != null && ev.organizer.id == session.u.id))}"
                                       th:action="@{/event/{id}/delete(id=${ev.id})}" method="post">
                                     <button type="submit" class="btn btn-danger btn-sm btn_delete">
@@ -98,12 +102,14 @@
                             <p>No hay otros eventos disponibles en este momento.</p>
                         </div>
 
+                        <!-- Mostrar el resto de eventos publicos-->
                         <div th:if="${!#lists.isEmpty(otherEvents)}" class="cards_list">
                             <div class="card_item" th:each="ev: ${otherEvents}"
                                  th:data-title="${ev.title}"
                                  th:data-theme="${ev.theme}">
                                 
                                 <a class="event-card" th:href="@{/reservation/{id}(id=${ev.id})}">
+                                    <!-- Seleccionar imagen que se subio al crearlo, si no existe, una por defecto  -->
                                     <div class="event-card_background"
                                          th:style="'background-image: url(' + @{${ev.imagePath != null ? ev.imagePath : '/img/events/default.jpg'}} + ')'"></div>
                                     <div class="event-card_content">
@@ -117,6 +123,7 @@
                                     </div>
                                 </a>
 
+                                 <!-- Boton para borrar solo visible para admin y creador del evento  -->
                                 <form class="form-delete" th:if="${session.u != null && (session.u.hasRole('ADMIN') || (ev.organizer != null && ev.organizer.id == session.u.id))}"
                                       th:action="@{/event/{id}/delete(id=${ev.id})}" method="post">
                                     <button type="submit" class="btn btn-danger btn-sm btn_delete">

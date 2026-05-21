@@ -46,12 +46,12 @@
 
             <div class="mb-3">
                 <label for="community-title" class="form-label">Título de la comunidad(*)</label>
-                <input th:field="*{title}" class="form-control" type="text">
+                <input th:field="*{title}" class="form-control" id="title-input" type="text">
             </div>
 
             <div class="mb-3">
                 <label for="community-country" class="form-label">País(*)</label>
-                <select name="countryID" class="form-select">
+                <select name="countryID" class="form-select" id="country-select">
                     <option value="" disabled selected>Selecciona un país</option>
                     <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.countryName}"></option>
                 </select>
@@ -72,7 +72,7 @@
 
             <div class="mb-3">
                 <label for="community-desc" class="form-label">Descripción(*)</label>
-                <textarea th:field="*{description}" class="form-control" rows="2"></textarea>
+                <textarea th:field="*{description}" class="form-control" rows="2" id="comm-desc"></textarea>
             </div>
             
             <button type="submit" class="btn btn-primary" id="create-button">Crear comunidad</button>

@@ -71,27 +71,31 @@ public class EventController {
         // Se piden todos los eventos a la base de datos
         List<Event> allEvents = entityManager.createQuery("SELECT e FROM Event e", Event.class).getResultList();
         
+        // Obtener de la sesion actual el usuario guardado
         User sessionUser = (User) session.getAttribute("u");
 
-        // Filtrar eventos segun privacidad
         List<Event> visibleEvents = new java.util.ArrayList<>();
+
+        // Filtrar eventos segun privacidad
         for(Event e: allEvents) {
+            // Eventos publicos, siempre visibles por cualquier usuario
             if(!e.isPrivate()) {
-                visibleEvents.add(e); // Eventos publicos, siempre visibles
+                visibleEvents.add(e); 
             } 
             else if(sessionUser != null) {
                 User u = entityManager.find(User.class, sessionUser.getId());
 
-                // Es miembro de la comunidad?
+                // Comprobar si el usuario es admin
+                boolean isAdmin = u.hasRole(User.Role.ADMIN);
+                // Es miembro de la comunidad asociada al evento?
                 boolean isMember = e.getCommunity() != null && e.getCommunity().getMembers().contains(u);
                 // Organizador del evento?
                 boolean isOrganizer = e.getOrganizer() != null && e.getOrganizer().getId() == u.getId();
                 // Tiene una reserva para el evento?
                 boolean isAttendee = e.getAttendees() != null && e.getAttendees().stream().anyMatch(r -> r.getAttendee().getId() == u.getId());
-                // Eventos privados, solo visibles si el usuario pertenece a la comunidad
-                
-                // Si cumple cualquiera de las tres condiciones, el evento es visible
-                if(isMember || isOrganizer || isAttendee) {
+                // Eventos privados, solo visibles si el usuario cumple alguna condicion
+                // Si cumple cualquiera de las condiciones, el evento es visible
+                if(isAdmin|| isMember || isOrganizer || isAttendee) {
                     visibleEvents.add(e);
                 }
             }
@@ -102,7 +106,7 @@ public class EventController {
             // Usuario logueado: separar en dos listas
             long uid = sessionUser.getId();
 
-            // Mis eventos: Soy el organizador estoy en la lista de asistentes
+            // Mis eventos: Soy el organizador o estoy en la lista de asistentes
             List<Event> myEvents = visibleEvents.stream()
                 .filter(e -> (e.getOrganizer() != null && e.getOrganizer().getId() == uid) ||
                              (e.getAttendees() != null && e.getAttendees().stream().anyMatch(r -> r.getAttendee().getId() == uid)))      
@@ -113,19 +117,19 @@ public class EventController {
                 .filter(e -> !myEvents.contains(e))
                 .toList();
             
+            // Enviar ambas listas a la vista
             model.addAttribute("myEvents", myEvents);
             model.addAttribute("otherEvents", otherEvents);
-
         }
         else {
             // Usuario anonimo: todos los eventos van a otros eventos
             model.addAttribute("otherEvents", visibleEvents);
         }
 
-        // Todos los eventos
+        // Enviar todos los eventos visibles a la vista
         model.addAttribute("events", visibleEvents);
 
-        // Pasar la API key al HTML
+        // Enviar la API key de Google Maps al HTML
         model.addAttribute("googleMapsKey", googleMapsKey);
         
         return "event"; // Redirige a event.html
@@ -169,6 +173,7 @@ public class EventController {
                 // Verificar el tipo de archivo
                 String contentType = photo.getContentType();
 
+                // Comprobar formato imagen
                 if(contentType == null ||  (!contentType.equals("image/jpeg") && !contentType.equals("image/png"))){
                     // Mandar señal de error al HTML y recargar formulario
                     model.addAttribute("errorImage", true);
