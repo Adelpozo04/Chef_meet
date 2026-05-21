@@ -31,7 +31,11 @@
                         <p class="price-text" th:text="${event.price == 0 ? 'Precio: Gratis' : 
                                                   (event.price % 1 == 0 ? 'Precio: ' + #numbers.formatDecimal(event.price, 1, 'COMMA', 0, 'POINT') + '€' :
                                                   'Precio: ' + #numbers.formatDecimal(event.price, 1, 'COMMA', 2, 'POINT') + '€')}"></p>
-                        <p th:text="'Disponibles: ' + ${reservedSpots} + '/' + ${event.capacity}"></p>
+                        <p class="text-muted">
+                            <span th:text="|${reservedSpots} ${reservedSpots == 1 ? 'apuntado' : 'apuntados'}|"></span> &bull;
+                            <strong class="text-success" 
+                                    th:text="|${availableSpots == 1 ? 'Queda: 1 plaza' : 'Quedan ' + availableSpots + ' plazas'}|"></strong>
+                        </p>                      
                         
                         <div th:if="${isAlreadyAttending}" class="alert alert-info reservation-alert" role="alert">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill me-1" viewBox="0 0 16 16">

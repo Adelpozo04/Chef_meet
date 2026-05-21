@@ -232,7 +232,7 @@ public class EventController {
                     }
 
                     // Actualizar la imagen del evento con la ruta 
-                    event.setImagePath("/events/" + event.getId() + "/pic");
+                    event.setImagePath("/event/" + event.getId() + "/pic");
 
                     // Forzar a la base de datos a guardar esta actualizacion
                     entityManager.merge(event);
