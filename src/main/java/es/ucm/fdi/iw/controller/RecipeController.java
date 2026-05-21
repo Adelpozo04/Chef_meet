@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 
+//Controlador de las recetas, maneja la creación, eliminación, carga y valoración de estas, así como su adición a comunidades y la subida de fotos para las recetas
 @Controller
 @RequestMapping("/recipe")
 public class RecipeController {
@@ -39,6 +40,7 @@ public class RecipeController {
     @Autowired
     private EntityManager entityManager;
 
+    //Usado para el acceso a la ruta donde se almacenan las fotos de las recetas
     @Autowired
     private LocalData localData;
 
@@ -49,17 +51,19 @@ public class RecipeController {
         return "recipe/create";
     }
 
+    //Una vez que se cree la receta se maneja su creación en la base de datos con este metodo, se le asigna un autor, se crean los IngredientInRecipe necesarios para la receta y se suben las fotos que se hayan incluido
     @Transactional
     @PostMapping("/create")
     public String createRecipe(
             @ModelAttribute Recipe recipe,
             @ModelAttribute User edited,
-            @RequestParam Map<String, MultipartFile> allParams,
+            @RequestParam Map<String, MultipartFile> allParams, //Esto debe llamarse si o si allParams para que tome todos los parametros independientemente del nombre de estos y poder hacer bien la criba de steps y las imagenes
             @RequestParam List<Long> ingredientIds,
             @RequestParam List<String> quantities,
             Model model,
             HttpSession session) {
 
+        //Se revisa que esta tenga los campos necesarios rellenados, si no es asi se muestra un mensaje de error y se vuelve a la pagina de crear receta
         if (recipe.getTitle().isBlank() || recipe.getDifficulty().isBlank() || 
             recipe.getTime().isBlank() || recipe.getCalories().isBlank()){
             model.addAttribute("createError", true);
@@ -75,7 +79,7 @@ public class RecipeController {
         if (recipe.getAuthor() == null)
             author.getRecipes().add(recipe);
 
-        // Set community owner and add it as member
+        //Se añaden los datos a la propia recta
         recipe.setAuthor(author);
         recipe.setHasRating(false);
         recipe.setAverageRating(0);
@@ -106,6 +110,7 @@ public class RecipeController {
         //Le pasamos la lista a la receta
         recipe.setRecipeIngredients(list);
 
+        //Añadimos la imagen a la receta
         try{
             setPic(allParams, recipe.getId(), null, session, model);
         }
@@ -120,6 +125,7 @@ public class RecipeController {
         
     }
 
+    //Metodo para añadir una receta a la comunidad
     @GetMapping("/addToCommunity/{id}")
     public String showAddToCommunityPage(@PathVariable long id, Model model, HttpSession session) {
         // Buscar la info de la receta en la base de datos usando el id que viene en la url
@@ -130,6 +136,7 @@ public class RecipeController {
             return "redirect:/recipe";
         }
 
+        // Sacamos las comunidades a las que pertenece el usuario para mostrarlas en un dropdown y que pueda elegir a cual añadir la receta
         User sessionUser = (User) session.getAttribute("u");
 
         User user = entityManager.find(User.class, sessionUser.getId());
@@ -145,14 +152,17 @@ public class RecipeController {
         return "recipe/addToCommunity";
     }
 
+    //Una vez que se ha elegido la comunidad y se ha pulsado que se quiere añadir receta
     @PostMapping("/addToCommunity")
     @Transactional
     public String addRecipe(@RequestParam Long communityId,
                             @RequestParam Long recipeId){
 
+        //Tomamos tanto la comunidad como la receta que se quieren relacionar
         Community community = entityManager.find(Community.class, communityId);
         Recipe recipe = entityManager.find(Recipe.class, recipeId);
 
+        //Se añade mutuamente
         community.getRecipes().add(recipe);
         recipe.getCommunities().add(community);
 
@@ -163,9 +173,11 @@ public class RecipeController {
         return "redirect:/recipe";
     }
 
+    //Metodo para cargar las cosas en la pestaña de valoracion
     @GetMapping("/addRating/{id}")
     public String showAddRatingPage(@PathVariable long id, Model model){
 
+        //Se carga la receta que se quiere valorar para mostrar su información en la pestaña de valoración y que el usuario sepa a que receta le esta añadiendo la valoración
         Recipe recipe = entityManager.find(Recipe.class, id);
 
         model.addAttribute("recipe", recipe);
@@ -173,6 +185,7 @@ public class RecipeController {
         return "recipe/addRating";
     }
 
+    //Una vez se valore la receta se envia el rating con el metodo especifico y el valor que le ha dado el usuario
     @PostMapping("/addRating/{id}")
     @Transactional
     public String addRating(@PathVariable long id, @RequestParam float rating){

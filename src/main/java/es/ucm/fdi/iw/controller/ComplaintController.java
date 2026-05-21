@@ -18,37 +18,43 @@ import es.ucm.fdi.iw.model.Recipe;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 @Controller
 public class ComplaintController {
     
+    //Sistema de logs
     private static final Logger log = LogManager.getLogger(ComplaintController.class);
 
+    //Uso del entity manager para hacer consultas sobre la base de datos
     @Autowired
     private EntityManager entityManager;
 
-    //Cuando se pulse el boton de crear receta se dirige a la pagina para rellenar el formulario con los datos de esta
+    //Cuando se pulse el boton de crear queja se dirige a la pagina para rellenar el formulario con los datos de esta
     @GetMapping("complaint/create")
     public String createComplaint(Model model) {
 
+        //Se toman todas las recetas que existen
         List<Recipe> allRecipes = entityManager.createQuery(
             "SELECT r FROM Recipe r ORDER BY r.title ASC", Recipe.class)
             .getResultList();
 
+        //Se toman todos los eventos que existen
         List<Event> allEvents = entityManager.createQuery(
             "SELECT e FROM Event e ORDER BY e.title ASC", Event.class)
             .getResultList();
 
+        //Se toman todas las comunidades que existen
         List<Community> allCommunities = entityManager.createQuery(
             "SELECT c FROM Community c ORDER BY c.title ASC", Community.class)
             .getResultList();
 
+        //Se toman todos los usuarios que existen
         List<User> allUsers = entityManager.createQuery(
             "SELECT u FROM User u ORDER BY u.username ASC", User.class)
             .getResultList();
 
+        //Se añaden al modelo para su uso en la pagina de crear queja
         model.addAttribute("AllRecipes", allRecipes);
         model.addAttribute("AllEvents", allEvents);
         model.addAttribute("AllCommunities", allCommunities);
@@ -58,6 +64,7 @@ public class ComplaintController {
         return "complaint/create";
     }
 
+    //Una vez se envia la queja creada
     @Transactional
     @PostMapping("complaint/create")
     public String createComplaint(
@@ -66,6 +73,7 @@ public class ComplaintController {
             Model model,
             HttpSession session) {
 
+        //Se revisa que esta tenga los campos necesarios rellenados, si no es asi se muestra un mensaje de error y se vuelve a la pagina de crear queja
         if (complaint.getTitle().isBlank() || complaint.getDescription().isBlank() || complaint.getType() == null){
             model.addAttribute("createError", true);
             log.info("ERROR AL INTENTAR CREAR QUEJA");
@@ -81,8 +89,10 @@ public class ComplaintController {
             owner.getComplaints().add(complaint);
         }
             
-        // Set community owner and add it as member
+        // Se indica la persona que ha dejado la queja
         complaint.setOwner(owner);
+
+        //Se pone que la queja aun no esta resuelta ya que se acaba de crear
         complaint.setResolved(false);
         entityManager.persist(complaint);
         entityManager.flush();
@@ -94,6 +104,7 @@ public class ComplaintController {
         
     }
 
+    //Metodo para meterse en la pagina de una queja concreta
     @GetMapping("complaint/{id}")
     public String showComplaint(@PathVariable long id, Model model) {
 
@@ -105,6 +116,7 @@ public class ComplaintController {
             return "redirect:/admin/";
         }
 
+        //Se carga el elemento correspondiente segun el tipo de queja
         if(complaint.getType() == Complaint.typeMap.get("RECIPE")) {
             Recipe recipe = entityManager.find(Recipe.class, complaint.getReferenceId());
 
@@ -130,11 +142,13 @@ public class ComplaintController {
             model.addAttribute("user", user);
         }
 
+        //Se toma la queja correspondiente para mostrar su información facilmente
         model.addAttribute("complaint", complaint);
         
         return "complaint";
     }
 
+    //Metodo que maneja que una qieja se marque como resuelta, llamado por el admin
     @Transactional
     @PostMapping("/complaint/{id}")
     public String resolveComplaint(@PathVariable long id) {

@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Complaint implements Transferable<Complaint.Transfer> {
 
+    //Tipos de queja que se pueden hacer, se usa el map para relacionar el string que se muestra al usuario con un numero entero que se guarda en la base de datos para facilitar las consultas
     public static Map<String, Integer> typeMap = Map.of(
         "USER", 0,
         "RECIPE", 1,
@@ -34,21 +35,27 @@ public class Complaint implements Transferable<Complaint.Transfer> {
     @SequenceGenerator(name = "gen", sequenceName = "gen")
     private long id;
 
+    //Usuario que hace la queja
     @ManyToOne
     private User owner;
 
+    //Titulo de la queja
     @Column(name = "title", length = 300, nullable = false)
     private String title;
 
+    //Descripcion de la queja
     @Column(name = "description", length = 300, nullable = false)
     private String description;
 
+    //Tipo de queja, puede ser contra un usuario, una receta, una comunidad o un evento
     @Column(name = "type")
     private Integer type;
 
+    //Indica si la queja ya a sido resuelta o no, lo marca el admin solamente
     @Column(name = "resolved")
     private boolean resolved;
 
+    //Id del elemento al que se refiere la queja
     @Column(name = "reference_id")
     private long referenceId;   // ID del objeto al que se refiere -> Si type="USER" y ID=5 : la queja se refiere al usuario con ID 5
 

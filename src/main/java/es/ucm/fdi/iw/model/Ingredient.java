@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 
+/**
+ * Clase que representa un ingrediente en la base de datos.
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -25,13 +28,17 @@ public class Ingredient implements Transferable<Ingredient.Transfer>  {
     @SequenceGenerator(name = "gen", sequenceName = "gen")
     private long id;
 
+    //Nombre del ingrediente
     @Column(nullable = false)
     private String name;
 
+    //Lista de alergenos que tiene el ingrediente
     @Column(nullable = false)
     private String[] allergens;
 
     // Conexiones entre las distintas tablas de la base de datos.
+
+    //Recetas que poseen este ingrediente, como hay un paso medio que es ingrediente en receta no es un ManyToMany sino un OneToMany ya que cada receta establece cantidades distintas que diferencian a estos
     @OneToMany(mappedBy = "ingredientUsed", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<IngredientInRecipe> ingredientsInRecipes = new ArrayList<>();
