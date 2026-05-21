@@ -1,3 +1,4 @@
+<!--Pestaña para ver la información de una receta en especifico-->
 <!DOCTYPE html>
 <html class="h-100" xmlns:th="http://www.thymeleaf.org">
 
@@ -13,6 +14,7 @@
 
     <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
 
+        <!-- Botón de volver atrás -->
         <a href="javascript:history.back()" class="btn-volver"> 
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
@@ -25,12 +27,15 @@
             <!-- Titulo -->
             <h1 th:text="${recipe.title}" class="title_xxl border-0 text-center"></h1>
 
+            <!-- Seccion central de la receta-->
             <div class="d-flex flex-row align-items-center gap-5">
+
                 <!-- Imagen de vista previa -->
                 <div>
                     <img class="main_image" th:src="@{/img/recipes/{id}_cover.jpg(id=${recipe.id})}" alt="Imagen de la receta">
                 </div> 
 
+                <!-- Seccion descriptiva de la receta-->
                 <div class="d-flex flex-column align-items-start justify-content-center gap-2 ml-5">
 
                     <!--Datos generales-->
@@ -45,7 +50,7 @@
                         </div>
                     </div>
 
-                    <!--Datos de alergenos-->
+                    <!--Datos de alergenos, estos se han rellenado segun la informacion que tienen los ingredientes que contiene la receta-->
                     <div>
                         <h3>Alergias</h3>
 
@@ -96,6 +101,7 @@
         <!--Ingredientes de la receta-->
         <div>
 
+            <!-- Se toman los ingredientes de la receta y se itera en la informacion de cada uno de ellos para mostrarla. Cabe destacar que no son de clase Ingrediente sino IngredienteInRecipe ya que contienen informacion adicional sobre la cantidad utilizada -->
             <h3>Ingredientes</h3>
             <ul th:each="ingredient, iterStat : ${recipe.recipeIngredients}" id="ingredientsList">
 
@@ -114,10 +120,12 @@
                 <ol th:each="step, iterStat : ${recipe.steps}" id="stepsList">
 
                     <li class="mb-3">
+                        <!-- Imagen del paso concreto-->
                         <img class="main_image" 
                         th:src="@{/img/recipes/{id}_step{index}.jpg(id=${recipe.id}, index=${iterStat.index})}" 
                         alt="Imagen de la receta">
                         
+                        <!-- Texto descriptivo del paso-->
                         <p th:text="${step}"></p> 
                     </li>
 

@@ -1,3 +1,4 @@
+<!-- Pestaña que sirve para rellenar los datos de una receta con el objetivo de crearla-->
 <!DOCTYPE html>
 <html class="h-100" xmlns:th="http://www.thymeleaf.org">
 
@@ -13,6 +14,7 @@
 
     <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
         
+        <!-- Base para la generacion de imagenes en los steps-->
         <template id="imageUploadTemplate">
  
             <!-- Marco visual Bootstrap -->
@@ -23,11 +25,12 @@
                     <!-- Input oculto -->
                     <input type="file" name="stepPhotos" accept="image/*" class="empty_image_input">
 
+                    <!-- Texto visible en el cuadro gris de subida de imagenes-->
                     <span>Pulsa para subir imagen</span>
 
                 </label>
 
-                <!-- Imagen de vista previa -->
+                <!-- Imagen de vista previa, en este caso es un cuadro gris marcado por el CSS -->
                 <div>
                     <img class="main_image d-none" name="imageRecipePreview" >
                 </div>
@@ -48,20 +51,22 @@
                 <label class="d-flex flex-column align-items-center justify-content-center empty_image" 
                 style="cursor:pointer;">
 
-                    <!-- Input oculto -->
+                    <!-- Input oculto, es el que recoge el JS para la subida de imagenes -->
                     <input type="file" id="recipe-cover" name="cover" accept="image/*" class="empty_image_input">
 
+                    <!-- Texto visible en el cuadro gris de subida de imagenes-->
                     <span>Pulsa para subir imagen</span>
 
                 </label>
 
-                <!-- Imagen de vista previa -->
+                <!-- Imagen de vista previa, en este caso es un cuadro gris marcado por el CSS -->
                 <div>
                     <img class="main_image d-none" name="imageRecipePreview" >
                 </div>        
                 
             </div>
 
+            <!--Datos generales de la receta, son inputs de texto simples-->
             <div>
                 <h3>Datos Generales</h3>
 
@@ -84,10 +89,13 @@
             <!--Ingredientes de la receta-->
             <div>
                 <h3>Ingredientes</h3>
+
+                <!-- La lista es rellenada creando elementos dinamicamente, esto en el JS de recipe.js-->
                 <ul class="list_disc" id="ingredientsList">
 
                 </ul>
 
+                <!-- Boton para añadir ingrediente, este activa la funcionalidad en el JS que registra el click-->
                 <button class="category_item" type="button" id="addIngredient">
                     Añadir Ingrediente
                 </button>
@@ -98,16 +106,21 @@
             <!--Pasos para elaborar la receta-->
             <div>
                 <h3>Elaboración</h3>
+
+                <!-- La lista es rellenada creando elementos dinamicamente, esto en el JS de recipe.js-->
                 <ol id="stepsList">
 
 
                 </ol>
+
+                <!-- Boton para añadir paso, este activa la funcionalidad en el JS que registra el click-->
                 <button class="category_item" type="button"id="addStep">
                     Añadir Paso
                 </button>
 
             </div>
 
+            <!--Especificación de las calorias, un input de texto normal-->
             <div>
                 <h3>Calorías</h3>
 
@@ -118,6 +131,7 @@
 
             </div>
 
+            <!--Checkbox que marca si la receta es publica o no. Esto marca la visibilidad en la pestaña de recetas-->
             <div>
                 <h3>Receta Pública</h3>
                 <label>
@@ -126,6 +140,7 @@
                 </label>
             </div>
 
+            <!-- Boton para enviar el formulario y crear la receta, este envia toda la informacion al backend para su procesamiento-->
             <button type="submit" class="category_item" id="create-button">Crear Receta</button>
         </form>
 
@@ -133,6 +148,7 @@
 
     </main>
     
+    <!-- JS para la creacion de la receta, se encarga de subida de imagenes y creacion de pasos e ingredientes de forma dinamica.-->
     <script th:src="@{/js/recipe.js}"></script>
     <th:block th:replace="~{fragments/footer.html :: footer}" />
 </body>

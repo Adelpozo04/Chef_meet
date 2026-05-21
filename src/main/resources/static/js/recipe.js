@@ -50,7 +50,7 @@ async function loadIngredients() {
 }
 
 
-//Anyadir para los ingredientes
+//Añadir para los ingredientes
 document.addEventListener("DOMContentLoaded", function (){
 
     const button = document.getElementById("addIngredient");
@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function (){
     });
 });
 
-//Anyadir para los pasos
+//Añadir para los pasos
 document.addEventListener("DOMContentLoaded", function (){
 
     //Contador para marcar la key que tendra cada uno de los pasos

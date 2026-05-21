@@ -1,3 +1,4 @@
+<!-- Vista enfocada en añadir la informacion de una receta a una comunidad en concreto-->
 <!DOCTYPE html>
 <html class="h-100" xmlns:th="http://www.thymeleaf.org">
 
@@ -13,16 +14,19 @@
 
     <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
 
+        <!-- Botón de volver atrás -->
         <a href="javascript:history.back()" class="btn-volver"> 
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
             </svg>
         </a>
 
+        <!-- Apartado principal que maneja la selección y envio de la informacion a la comunidad. La mayoria de la logica esta en el controlador-->
         <form method="post" th:action="@{/recipe/addToCommunity}">
 
             <input type="hidden" name="recipeId" th:value="${recipe.id}">
 
+            <!-- Dropdown para la selección de la comunidad dado el nombre-->
             <select name="communityId">
                 <option th:each="c : ${communities}"
                         th:value="${c.id}"
@@ -30,6 +34,7 @@
                 </option>
             </select>
 
+            <!-- Envio de la información -->
             <button type="submit" class="category_item">Añadir a comunidad</button>
 
         </form>

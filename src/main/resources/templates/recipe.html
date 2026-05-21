@@ -1,3 +1,4 @@
+<!--Vista de la recetas subidas por ti u otros usuarios-->
 <!DOCTYPE html>
 <html class="h-100" xmlns:th="http://www.thymeleaf.org">
 
@@ -11,6 +12,7 @@
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
+    <!-- recipe wrapper marca el color de fondo de las paginas de receta-->
     <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
         
         <!-- Barra de busqueda de bootstrap -->
@@ -32,7 +34,7 @@
         </div>
         </th:block>
 
-        <!-- Lista de recetas del usuario propias -->
+        <!-- Lista de recetas del propio usuario -->
         <details open>
             <summary class="communities-dropdown">Mis Recetas</summary>
 
@@ -43,21 +45,26 @@
                     <!--Criba de recetas para que solo sean las propias-->
                     <div th:if="${(session.u != null && recip.author != null && recip.author.id == session.u.id)}">
 
+                        <!-- Wrapper de como es la tarjeta de una sola receta -->
                         <div class="card_wrapper">
 
                             <!--Enlace a la informacion de la receta-->
                             <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
 
+                                <!-- Imagen que representa a la receta-->
                                 <div style="width: 360px; height: 250px; overflow: hidden;">
                                     <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" 
                                     alt="Imagen de la receta" class="w-100 h-100" style="object-fit: cover;">
                                 </div>
 
+                                <!-- Titulo de la receta, hace uso de un footer al punto medio-->
                                 <span class="card_footer_middle" th:text="${recip.title}">Título</span>
                                 
+                                <!-- Representacion mediante estrellas de las evaluaciones a una receta, en un footer final-->
                                 <div for="averageRating" class="d-flex flex-row gap-3 card_footer align-items-center justify-content-center">
                                     <p id="ratingNumber" th:text="${recip.averageRating}"></p>
 
+                                    <!-- La configuracion del color de las recetas se hace entre el CSS que tiene los diseños y el JS que activa los necesarios-->
                                     <div class="star-rating upElement" id="star-rating">
 
                                         <span class="star" data-value="1">★</span>
@@ -70,10 +77,10 @@
                                 </div>
                             </a>
 
-                            <!-- Botón de eliminar solo visible para el autor o admin -->
-                            
+                            <!-- Botones de interaccion con la receta-->
                             <div class="d-flex flex-row gap-3 align-items-center">
 
+                                <!-- Botón de eliminar solo visible para el autor o admin -->
                                 <form th:action="@{/recipe/{id}/delete(id=${recip.id})}" method="post">
                                     <button type="submit" onclick="return confirm('¿Seguro que quieres borrar esta receta?')"
                                         class="btn btn-danger btn-sm mt-2">
@@ -83,14 +90,14 @@
                                     </button>
                                 </form>
 
+                                <!-- Boton para añadir una receta a una comunidad a la que se pertenezca-->
                                 <a th:if="${session.u != null}"
                                     th:href="@{/recipe/addToCommunity/{id}(id=${recip.id})}"
                                     class="category_item">
                                     +
                                 </a>
 
-                            </div>
-                            
+                            </div>   
 
                         </div>
                         
@@ -114,15 +121,22 @@
                     <!--Criba de recetas para que solo sean las publicas extenas al usuario o cualquiera si es admin-->
                     <div th:if="${(recip.publicRecipe && session.u != null && recip.author != null && recip.author.id != session.u.id) || (session.u != null && session.u.hasRole('ADMIN'))}">
 
+                        <!-- Wrapper de como es la tarjeta de una sola receta -->
                         <div class="card_wrapper">
+
                             <!--Enlace a la informacion de la receta-->
                             <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
+
+                                <!-- Imagen que representa a la receta-->
                                 <div style="width: 360px; height: 250px; overflow: hidden;">
                                     <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" 
                                     alt="Imagen de la receta" class="w-100 h-100" style="object-fit: cover;">
                                 </div>
                                
+                                <!-- Titulo de la receta, hace uso de un footer al punto medio-->
                                 <span class="card_footer_middle" th:text="${recip.title}">Título</span>
+
+                                <!-- Representacion mediante estrellas de las evaluaciones a una receta, en un footer final-->
                                 <div for="averageRating" class="d-flex flex-row gap-3 card_footer align-items-center justify-content-center">
                                     <p id="ratingNumber" th:text="${recip.averageRating}"></p>
 
@@ -138,6 +152,7 @@
                                 </div>
                             </a>
 
+                            <!-- Botones de interaccion con la receta-->
                             <div class="d-flex flex-row gap-3 align-items-center">
 
                                 <!-- Botón de eliminar solo visible para el autor o admin -->
@@ -151,6 +166,7 @@
                                     </button>
                                 </form> 
 
+                                <!-- Boton para añadir una receta a una comunidad a la que se pertenezca-->
                                 <a th:if="${session.u != null}"
                                     th:href="@{/recipe/addRating/{id}(id=${recip.id})}"
                                     class="category_item">
@@ -173,6 +189,7 @@
         
     </main>
 
+    <!-- Script que configura la vista de las recetas -->
     <script th:src="@{/js/recipeView.js}"></script>
     <th:block th:replace="~{fragments/footer.html :: footer}" />
     
