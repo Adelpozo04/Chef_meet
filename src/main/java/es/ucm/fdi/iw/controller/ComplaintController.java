@@ -102,7 +102,7 @@ public class ComplaintController {
 
         // Si el id no existe, se redirige a eventos
         if (complaint == null) {
-            return "redirect:/admin";
+            return "redirect:/admin/";
         }
 
         if(complaint.getType() == Complaint.typeMap.get("RECIPE")) {
@@ -173,7 +173,7 @@ public class ComplaintController {
             log.info("El administrador ha borrado la queja: {}", complaint.getTitle());
         }
 
-        return "redirect:/admin";
+        return "redirect:/admin/";
     } 
 
 }

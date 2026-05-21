@@ -6,6 +6,8 @@
     <title>IW: Admin</title>
     <link rel="stylesheet" th:href="@{/css/simple-datatables-10.css}" href="/css/simple-datatables-10.css"
         type="text/css" />
+            <link rel="stylesheet" th:href="@{/css/simple-datatables-10.css}" href="/css/simple-datatables-10.css"
+            type="text/css" />
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -184,52 +186,53 @@
         !-->
 
         <!-- Lista de quejas sin resolver -->
-        <details open>
-            <summary class="communities-dropdown">Quejas sin resolver</summary>
+        <div class="container mt-5" id="complaints-admin-section">
+            <details open class="mb-4">
+                <summary class="communities-dropdown">Quejas sin resolver</summary>
 
-            <section class="cards_list">
-                <div class="card_item" th:each="compl: ${complaints}" th:if="${compl.resolved == false}">
-
-                    <div class="card_wrapper">
-
-                        <!--Enlace a la informacion de la receta-->
-                        <a th:href="@{/complaint/{id}(id=${compl.id})}" class="card_link">
-
-                            <span class="card_footer" th:text="${compl.title}">Título</span>
-                            
-                        </a>
-
-                    </div>                       
-                    
-                </div>
-
-            </section>
-
-        </details>
-
-        <!-- Lista de quejas resueltas -->
-        <details open>
-            <summary class="communities-dropdown">Quejas resueltas</summary>
-
-            <section class="cards_list">
-                <div class="card_item" th:each="compl: ${complaints}" th:if="${compl.resolved == true}">
+                <section class="cards_list complaints_cards_list">
+                    <div class="card_item" th:each="compl: ${complaints}" th:if="${compl.resolved == false}">
 
                         <div class="card_wrapper">
 
+                            <!--Enlace a la informacion de la receta-->
                             <a th:href="@{/complaint/{id}(id=${compl.id})}" class="card_link">
 
                                 <span class="card_footer" th:text="${compl.title}">Título</span>
                                 
-                            </a>                                      
+                            </a>
 
-                        </div>
-                    
-                </div>
+                        </div>                       
+                        
+                    </div>
 
-            </section>
+                </section>
 
-        </details>
+            </details>
 
+            <!-- Lista de quejas resueltas -->
+            <details open class="mb-4">
+                <summary class="communities-dropdown">Quejas resueltas</summary>
+
+                <section class="cards_list complaints_cards_list">
+                    <div class="card_item" th:each="compl: ${complaints}" th:if="${compl.resolved == true}">
+
+                            <div class="card_wrapper">
+
+                                <a th:href="@{/complaint/{id}(id=${compl.id})}" class="card_link">
+
+                                    <span class="card_footer" th:text="${compl.title}">Título</span>
+                                    
+                                </a>                                      
+
+                            </div>
+                        
+                    </div>
+
+                </section>
+
+            </details>
+        </div>
 
     </main>
 

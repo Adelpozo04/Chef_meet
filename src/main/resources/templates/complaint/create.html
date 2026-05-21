@@ -11,154 +11,164 @@
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0 column-gap-3 row-gap-5 complaint_wrapper">
-        
-        <form th:action="@{/complaint/create}" th:object="${complaint}" enctype="multipart/form-data" method="post" 
-        class="mt-4 gap-5
-         d-flex flex-column align-items-center">
+    <main class="flex-shrink-0">
+        <div class="container py-5">
+            <h1 class="text-center mb-4">Crear nueva queja</h1>
+                
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <form th:action="@{/complaint/create}" th:object="${complaint}" enctype="multipart/form-data" method="post" 
+                        class="card shadow-sm p-4">
 
-            <!-- Titulo -->
-            <input th:field="*{title}" class="title_l border-0 text-center">
-             
-            <div class="d-flex flex-row align-items-start">
-                <p class="me-2">Descripción:</p>
+                       <div class="mb-3">
+                            <!-- Titulo -->
+                             <label class="form-label fw-bold">Título:</label>
+                            <input th:field="*{title}" class="form-control" placeholder="Ej: Comportamiento inadecuado">
+                        </div>
 
-                <!-- Descripción -->
-                <textarea 
-                    th:field="*{description}"
-                    class="description_m border-0 text-left description_box">
-                </textarea>
+                        <div class="mb-3">
+                            <!-- Descripción -->
+                            <label class="form-label fw-bold">Descripción:</label>
+                            <textarea 
+                                th:field="*{description}"
+                                class="form-control" rows="4" placeholder="Explica detalladamente qué ha ocurrido...">
+                            </textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Tipo de queja:</label>
+                            <select th:field="*{type}" id="referenceType" class="form-select">
+                                <option value="" disabled selected>Selecciona el tipo de queja</option>
+                                <option value=0>Usuario</option>
+                                <option value=1>Receta</option>
+                                <option value=2>Comunidad</option>
+                                <option value=3>Evento</option>
+                            </select>
+
+                            <section>
+
+                                <div id="recipes_block" class="reference_block cards_list_complaint d-none">
+                                    <label class="card_item_complaint"
+                                        th:each="recip : ${AllRecipes}"
+                                        style="cursor:pointer;">
+
+                                        <!-- ID receta -->
+                                        <input type="radio"
+                                            th:field="*{referenceId}"
+                                            th:value="${recip.id}"
+                                            hidden>
+
+                                        <div class="card_wrapper_complaint">
+
+                                            <div style="width: 360px; height: 250px; overflow: hidden;">
+                                                <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}"
+                                                    class="w-100 h-100"
+                                                    style="object-fit: cover;">
+                                            </div>
+
+                                            <span class="card_footer_middle_complaint"
+                                                th:text="${recip.title}">
+                                            </span>
+
+                                        </div>
+
+                                    </label>
+                                </div>
+
+                                <div id="users_block" class="reference_block cards_list_complaint d-none">
+
+                                    <label class="card_item_complaint"
+                                        th:each="user : ${AllUsers}"
+                                        style="cursor:pointer;">
+
+                                        <!-- ID usuario -->
+                                        <input type="radio"
+                                            th:field="*{referenceId}"
+                                            th:value="${user.id}"
+                                            hidden>
+
+                                        <div class="card_wrapper_complaint">
+
+                                            <div style="width: 360px; height: 250px; overflow: hidden;">
+                                                <img th:src="@{/user/{id}/pic(id=${user.id})}"
+                                                    class="w-100 h-100"
+                                                    style="object-fit: cover;">
+                                            </div>
+
+                                            <span class="card_footer_middle_complaint"
+                                                th:text="${user.username}">
+                                            </span>
+
+                                        </div>
+
+                                    </label>
+                                </div>
+
+                                <div id="communities_block" class="reference_block cards_list_complaint d-none">
+                                    <label class="card_item_complaint"
+                                        th:each="comm: ${AllCommunities}"
+                                        style="cursor:pointer;">
+
+                                        <!-- ID comunidad -->
+                                        <input type="radio"
+                                            th:field="*{referenceId}"
+                                            th:value="${comm.id}"
+                                            hidden>
+
+                                        <div class="card_wrapper_complaint">
+
+                                            <div style="width: 360px; height: 250px; overflow: hidden;">
+                                                <img src="/img/communities/default-image.png"
+                                                    class="w-100 h-100"
+                                                    style="object-fit: cover;">
+                                            </div>
+
+                                            <span class="card_footer_middle_complaint"
+                                                th:text="${comm.title}">
+                                            </span>
+
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div id="events_block" class="reference_block cards_list_complaint d-none">
+                                    <label class="card_item_complaint"
+                                        th:each="ev : ${AllEvents}"
+                                        style="cursor:pointer;">
+
+                                        <!-- ID evento -->
+                                        <input type="radio"
+                                            th:field="*{referenceId}"
+                                            th:value="${ev.id}"
+                                            hidden>
+                                        
+                                        <div class="card_wrapper_complaint">
+
+                                            <div style="width: 360px; height: 250px; overflow: hidden;">
+                                                <img th:src="@{${ev.imagePath != null ? ev.imagePath : '/img/events/default.jpg'}}"
+                                                    class="w-100 h-100"
+                                                    style="object-fit: cover;">
+                                            </div>
+
+                                            <span class="card_footer_middle_complaint"
+                                                th:text="${ev.title}">
+                                            </span>
+
+                                        </div>
+                                        
+                                    </label>
+                                    
+                                </div>
+
+                            </section>
+                        </div>
+                        <div class="text-center mt-3">
+                             <button type="submit" class="category_item" id="create-button">Enviar Queja</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <select th:field="*{type}" id="referenceType" class="form-select">
-                <option value="" disabled selected>Selecciona el tipo de queja</option>
-                <option value=0>Usuario</option>
-                <option value=1>Receta</option>
-                <option value=2>Comunidad</option>
-                <option value=3>Evento</option>
-            </select>
-
-            <section>
-
-                <div id="recipes_block" class="reference_block cards_list d-none">
-                    <label class="card_item"
-                        th:each="recip : ${AllRecipes}"
-                        style="cursor:pointer;">
-
-                        <!-- ID receta -->
-                        <input type="radio"
-                            th:field="*{referenceId}"
-                            th:value="${recip.id}"
-                            hidden>
-
-                        <div class="card_wrapper">
-
-                            <div style="width: 360px; height: 250px; overflow: hidden;">
-                                <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}"
-                                    class="w-100 h-100"
-                                    style="object-fit: cover;">
-                            </div>
-
-                            <span class="card_footer_middle"
-                                th:text="${recip.title}">
-                            </span>
-
-                        </div>
-
-                    </label>
-                </div>
-
-                <div id="users_block" class="reference_block cards_list d-none">
-
-                    <label class="card_item"
-                        th:each="user : ${AllUsers}"
-                        style="cursor:pointer;">
-
-                        <!-- ID usuario -->
-                        <input type="radio"
-                            th:field="*{referenceId}"
-                            th:value="${user.id}"
-                            hidden>
-
-                        <div class="card_wrapper">
-
-                            <div style="width: 360px; height: 250px; overflow: hidden;">
-                                <img th:src="@{/user/{id}/pic(id=${user.id})}"
-                                    class="w-100 h-100"
-                                    style="object-fit: cover;">
-                            </div>
-
-                            <span class="card_footer_middle"
-                                th:text="${user.username}">
-                            </span>
-
-                        </div>
-
-                    </label>
-                </div>
-
-                <div id="communities_block" class="reference_block cards_list d-none">
-                    <label class="card_item"
-                        th:each="comm: ${AllCommunities}"
-                        style="cursor:pointer;">
-
-                        <!-- ID comunidad -->
-                        <input type="radio"
-                            th:field="*{referenceId}"
-                            th:value="${comm.id}"
-                            hidden>
-
-                        <div class="card_wrapper">
-
-                            <div style="width: 360px; height: 250px; overflow: hidden;">
-                                <img src="/img/communities/default-image.png"
-                                    class="w-100 h-100"
-                                    style="object-fit: cover;">
-                            </div>
-
-                            <span class="card_footer_middle"
-                                th:text="${comm.title}">
-                            </span>
-
-                        </div>
-                    </label>
-                </div>
-
-                <div id="events_block" class="reference_block cards_list d-none">
-                    <label class="card_item"
-                        th:each="ev : ${AllEvents}"
-                        style="cursor:pointer;">
-
-                        <!-- ID evento -->
-                        <input type="radio"
-                            th:field="*{referenceId}"
-                            th:value="${ev.id}"
-                            hidden>
-                        
-                        <div class="card_wrapper">
-
-                            <div style="width: 360px; height: 250px; overflow: hidden;">
-                                <img th:src="@{${ev.imagePath != null ? ev.imagePath : '/img/events/default.jpg'}}"
-                                    class="w-100 h-100"
-                                    style="object-fit: cover;">
-                            </div>
-
-                            <span class="card_footer_middle"
-                                th:text="${ev.title}">
-                            </span>
-
-                        </div>
-                        
-                    </label>
-                    
-                </div>
-
-            </section>
-            
-
-            <button type="submit" class="category_item" id="create-button">Crear Queja</button>
-        </form>
-
+        </div>
     </main>
     
     <script th:src="@{/js/complaintCreate.js}"></script>

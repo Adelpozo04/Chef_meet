@@ -393,19 +393,19 @@ img.preview {
 .title_xxl{
     font-size: 75px;
     color: black;
-    text-transform: capitalize;
+    text-transform: none;
 }
 
 .title_l{
     font-size: 35px;
     color: black;
-    text-transform: capitalize;
+    text-transform: none;
 }
 
 .title_m{
     font-size: 15px;
     color: black;
-    text-transform: capitalize;
+    text-transform: none;
     margin-left: 1rem;
 }
 
@@ -635,4 +635,77 @@ img.preview {
         opacity: 1;
         transform: translateX(0);
     }
+}
+
+.cards_list_complaint {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    margin-top: 24px;
+}
+
+.card_item_complaint {
+    width: 100%;
+    min-width: 0;
+}
+
+.card_wrapper_complaint {
+    width: 100%;
+    position: relative;
+}
+
+.card_wrapper_complaint > div {
+    width: 100% !important;
+    height: 180px !important;
+    overflow: hidden;
+}
+
+.card_wrapper_complaint img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card_footer_middle_complaint {
+    display: inline-block;
+    background-color: #0d2745;
+    color: white;
+    padding: 6px 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .cards_list_complaint {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+    .cards_list_complaint {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.complaint-delete-btn {
+    height: 38px;
+    width: 45px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+#complaints-admin-section {
+    max-width: 1200px;
+}
+
+#complaints-admin-section summary {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.complaints_cards_list {
+    margin-top: 20px;
 }
