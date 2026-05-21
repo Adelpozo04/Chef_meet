@@ -85,6 +85,8 @@ public class EventController {
             else if(sessionUser != null) {
                 User u = entityManager.find(User.class, sessionUser.getId());
 
+                // Comprobar si el usuario es admin
+                boolean isAdmin = u.hasRole(User.Role.ADMIN);
                 // Es miembro de la comunidad asociada al evento?
                 boolean isMember = e.getCommunity() != null && e.getCommunity().getMembers().contains(u);
                 // Organizador del evento?
@@ -92,8 +94,8 @@ public class EventController {
                 // Tiene una reserva para el evento?
                 boolean isAttendee = e.getAttendees() != null && e.getAttendees().stream().anyMatch(r -> r.getAttendee().getId() == u.getId());
                 // Eventos privados, solo visibles si el usuario cumple alguna condicion
-                // Si cumple cualquiera de las tres condiciones, el evento es visible
-                if(isMember || isOrganizer || isAttendee) {
+                // Si cumple cualquiera de las condiciones, el evento es visible
+                if(isAdmin|| isMember || isOrganizer || isAttendee) {
                     visibleEvents.add(e);
                 }
             }
