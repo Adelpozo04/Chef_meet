@@ -151,6 +151,7 @@ public class ComplaintController {
         return "redirect:/admin/";
     }
 
+    /* 
     // Cargar quejas
     @GetMapping({"", "/"})
     public String showComplaints(Model model) {
@@ -158,7 +159,7 @@ public class ComplaintController {
         List<Complaint> complaints = entityManager.createQuery("SELECT c FROM Complaint c", Complaint.class).getResultList();
         model.addAttribute("complaints", complaints);
         return "account"; // Redirige a complaint.html
-    }
+    }*/
 
     // Borrar la queja en la base de datos
     @Transactional
