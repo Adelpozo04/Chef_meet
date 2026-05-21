@@ -61,7 +61,7 @@ public class ReservationController {
                     .anyMatch(r -> r.getAttendee().getId() == u.getId());
         }
 
-
+        // Enviar los datos a la vista
         model.addAttribute("event", event);
         model.addAttribute("availableSpots", availableSpots);
         model.addAttribute("reservedSpots", reservedSpots);
@@ -74,10 +74,11 @@ public class ReservationController {
     @Transactional
     @PostMapping("/reservation/confirm")
     public String confirmReservation(@RequestParam long eventId, HttpSession session) {
-        // Obtener el usuario logueado de la sesion
+
         //User u = (User) session.getAttribute("u");
         //u = entityManager.find(User.class, u.getId());
 
+        // Obtener el usuario logueado de la sesion
         long userId = ((User) session.getAttribute("u")).getId();
         User u = entityManager.find(User.class, userId);
         // Buscar el evento que queremos reservar
@@ -86,14 +87,14 @@ public class ReservationController {
         // Si existen ambos, se crea la reserva en la base de datos
         if(event != null && u != null) {
 
-            // Validacion del servidor para comprobar si hay plazas disponibles
+            // Comprobar si hay plazas disponibles
             int reservedSpots = event.getAttendees() != null ? event.getAttendees().size() : 0;
             if (reservedSpots >= event.getCapacity()) {
                 // Si el evento esta lleno, se delvuelve al usuario a la pagina de eventos con un error
                 return "redirect:/event?error=full";
             }
 
-            // Validacion servidor para comprobar si el usuario esta ya apuntado
+            // Comprobar si el usuario esta ya apuntado
             boolean isAlreadyAttending = event.getAttendees().stream()
                     .anyMatch(r -> r.getAttendee().getId() == u.getId());
 
@@ -102,7 +103,7 @@ public class ReservationController {
                 return "redirect:/account?tab=events";
             }
 
-            // Si pasa las validaciones de seguridad, se lleva a cabo la reserva
+            // Si se pasan las validaciones de seguridad, se lleva a cabo la reserva
             Reservation reservation = new Reservation();
             reservation.setAttendee(u);
             reservation.setEvent(event);
@@ -113,13 +114,17 @@ public class ReservationController {
             entityManager.persist(reservation);
             entityManager.flush();
 
-            // Enviar notificacion websocket, broadcast a topic
+            // Enviar notificacion por websocket al canal del evento
             try {
                 // Construir el JSON del mensaje usando Jackson
                 ObjectMapper mapper = new ObjectMapper();
+                // Nodo principal de JSON
                 ObjectNode rootNode = mapper.createObjectNode();
+                // Tipo de mensaje
                 rootNode.put("type", "EVENT_JOIN");
+                // Texto de la notificacion
                 rootNode.put("text", u.getUsername() + " se ha unido al evento " + event.getTitle());
+                // Convertir JSON a texto
                 String json = mapper.writeValueAsString(rootNode);
 
                 // Publicar en el canal del evento
@@ -131,10 +136,13 @@ public class ReservationController {
             }
 
             // Suscribir al usuario al canal de este evento
+            // Obtener de la sesion la lista de canales a los que esta suscrito el usuario
             String topics = (String) session.getAttribute("topics");
+            // Si ya habia canales guardados en sesion, añadir el nuevo canal del evento
             if(topics != null && !topics.isEmpty()) {
                 session.setAttribute("topics", topics + ",event-" + event.getId());
             }
+            // Si no, crear la lista con el canal de este evento
             else {
                 session.setAttribute("topics", "event-" + event.getId());
             }

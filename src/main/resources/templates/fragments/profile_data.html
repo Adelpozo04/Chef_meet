@@ -6,8 +6,10 @@
         
         <div class="profile-summary-container">
             <div class="profile-summary-card">
+                <!-- Obtener foto de perfil-->
                 <img th:src="@{/user/{id}/pic(id=${session.u.id})}" class="card-img-profile" id="profile-avatar" alt="Foto de perfil">
                 
+                <!-- Nombre, apellidos y username-->
                 <div class="profile-summary-body">
                     <h5 class="card-name" th:text="${session.u.firstName + ' ' + session.u.lastName}">
                         Nombre Apellidos
@@ -16,11 +18,13 @@
                         @username
                     </p>
 
+                    <!-- Poder cambiar foto-->
                     <div class="profile-photo-controls">
                         <input type="file" id="f_avatar" accept="image/jpeg,image/png" class="d-none">
 
                         <label for="f_avatar" class="btn-select-photo">Cambiar foto</label>
 
+                        <!-- Guardar foto-->
                         <button id="postAvatar" class="btn-save-photo d-none" th:data-url="@{/user/{id}/pic(id=${session.u.id})}">
                             Guardar foto
                         </button>

@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     this.value = "";
                 }
 
-                // Validar que es realmente una imagen
+                // Validar que es realmente una imagen, en el formato pedido
                 if(!file.type.startsWith("image/")) {
                     alert("Por favor, selecciona un archivo de imagen válido (JPG, PNG).");
                     this.value = "";

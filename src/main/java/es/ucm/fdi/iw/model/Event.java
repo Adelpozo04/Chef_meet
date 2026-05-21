@@ -57,6 +57,7 @@ public class Event implements Transferable<Event.Transfer> {
     @ManyToOne(targetEntity = User.class) // Usuario que organiza el evento
     private User organizer;
     
+    // Evento puede estar asociado a una comunidad
     @ManyToOne
     private Community community;
 
