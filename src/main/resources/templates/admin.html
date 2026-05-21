@@ -32,6 +32,7 @@
             </div>
             -->
             <div class="admin-filters d-flex align-items-center ms-4">
+                <!-- Filtrar para mostrar usuarios, recetas, comunidades o eventos-->
                 <label for="filters" class="me-2 text-muted fw-bold mb-0">Filtrar por: </label>
 
                 <select name="filters" id="admin-filters-value" class="form-select border-primary text-primary fw-semibold shadow-sm" style="cursor: pointer; width: auto; border-radius: 8px;">
@@ -46,6 +47,7 @@
 
         <div class="container" id="container-users">
 
+            <!-- Usuarios muestra id, user, nombre y apellidos, rol-->
             <h2 class="mt-5 text-center fw-bold">Usuarios</h2>
             <table id="tabla-usuarios" class="table table-striped table-hover text-center align-middle">
                 <thead>
@@ -67,12 +69,14 @@
                         <td>
                             <span th:if="${user.firstName != null}" th:text="${user.firstName}"></span>
                             <span th:if="${user.lastName != null}" th:text="${user.lastName}"></span>
+                            <!-- Por si no se han introducido nombre y apellidos-->
                             <span th:if="${user.firstName == null and user.lastName == null}" class="text-muted fst-italic">Sin especificar</span>
                         </td>
                         
                         <td th:text="${user.roles}"></td>
 
                         <td>
+                            <!-- Admin puede deshabilitar o habilitar usuarios-->
                             <form th:if="${user.id != u.id}" th:action="@{'/admin/toggle/' + ${user.id}}" th:method="post">
                                 <button th:if="${user.enabled}" type="submit"
                                     class="toggle btn btn-danger">Deshabilitar</button>
@@ -90,6 +94,7 @@
         </div>
 
         <div class="container" id="container-recipes">
+            <!-- Recetas muestra id, titulo y creador-->
             <h2 class="mt-5 text-center fw-bold">Recetas</h2>
             <table id="tabla-recetas-dt" class="table table-striped table-hover text-center align-middle">
                 <thead>
@@ -106,6 +111,7 @@
                         <td th:text="${recipe.title}"></td>
                         <td th:text="${recipe.author.username}"></td>
                         <td>
+                            <!-- El admin puede eliminar una receta-->
                             <form th:action="@{'/admin/recipe/' + ${recipe.id} + '/delete'}" method="post">
                                 <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                             </form>
@@ -116,6 +122,7 @@
         </div>
 
         <div class="container" id="container-communities">
+            <!-- Comunidades muestra id, nombre, tematica, creador y numero de miembros-->
             <h2 class="mt-5 text-center fw-bold">Comunidades</h2>
             <table id="tabla-comunidades-dt" class="table table-striped table-hover text-center align-middle">
                 <thead>
@@ -136,6 +143,7 @@
                         <td th:text="${community.owner.username}"></td>
                         <td th:text="${community.members.size()}"></td>
                         <td>
+                             <!-- El admin puede eliminar una comunidad-->
                             <form th:action="@{'/admin/community/' + ${community.id} + '/delete'}" method="post">
                                 <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                             </form>
@@ -146,6 +154,7 @@
         </div>
 
         <div class="container" id="container-events">
+             <!-- Eventos muestra id, nombre, creador, localizacion y fecha-->
             <h2 class="mt-5 text-center fw-bold">Eventos</h2>
             <table id="tabla-eventos-dt" class="table table-striped table-hover text-center align-middle">
                 <thead>
@@ -166,6 +175,7 @@
                         <td th:text="${event.location}"></td>
                         <td th:text="${#temporals.format(event.date, 'dd/MM/yyyy HH:mm')}"></td>
                         <td>
+                             <!-- El admin puede cancelar un evento-->
                             <form th:action="@{'/admin/event/' + ${event.id} + '/delete'}" method="post">
                                 <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
                             </form>
@@ -238,20 +248,27 @@
 
     <th:block th:replace="~{fragments/footer.html :: footer}" />
     <script>
+        // Escucha cualquier envio de formulario en la vista
         document.addEventListener('submit', (e) => {
            
+            // Comprobar si el boton que ha enviado el form tiene la clase toggle
             if(e.submitter && e.submitter.classList.contains('toggle')) {
                 
                 e.preventDefault();
 
+                // Guardar el form y el boton que se ha pulsado
                 const form = e.target;
                 const button = e.submitter;
 
+                // Enviar peticion post
                 go(form.action, 'POST').then((d) => {
+                    // Si el usuario queda habilitado
                     if (d.enabled) {
                         button.className = 'toggle btn btn-danger';
                         button.textContent = 'Deshabilitar';
-                    } else {
+                    } 
+                    // Si queda deshabilitado
+                    else {
                         button.className = 'toggle btn btn-primary';
                         button.textContent = 'Habilitar';
                     }
@@ -266,7 +283,7 @@
     <script type="module">
         import { DataTable } from "../js/simple-datatables-10.js"
 
-        // Para configurar el estilo de las tablas
+        // Para configurar el estilo comun de las tablas
         const dtConfig = {
             searchable: true,
             paging: true,
@@ -278,18 +295,28 @@
             }
         };
 
+        // Crear tablas dinamicas para usuarios, recetas, comunidades y eventos
         const tableUsuarios = new DataTable('#tabla-usuarios', dtConfig);
         const tableRecetas = new DataTable('#tabla-recetas-dt', dtConfig);
         const tableComunidades = new DataTable('#tabla-comunidades-dt', dtConfig);
         const tableEventos = new DataTable('#tabla-eventos-dt', dtConfig);
 
+        // Tabla de mensajes
         let dt = null;
+
+        // Actualizar la tabla de mensajes
         function refreshMessages() {
+
+            // Pedir mensajes mediante peticion GET
             go('/admin/all-messages', 'GET').then((d) => {
+                
+                // Destruir tabla si ya existia
                 if (dt) {
                     dt.destroy();
                     document.querySelector("#messages").innerHTML = '';
                 }
+
+                // Crear tabla nueva con los mensajes recibidos
                 dt = new DataTable('#messages', {
                     data: {
                         headings: ['from', 'to', 'text'],
@@ -298,13 +325,19 @@
                     searchable: true,
                     paging: false
                 });
+
+                // Evento al seleccionar una fila de la tabla
                 dt.on("datatable.selectrow", (rowIndex, event, focused) => {
                     event.preventDefault();
                     console.log("click en fila: ", dataTable.data[rowIndex]);
                 });
             });
         }
+
+        // Al pulsar el boton se actualiza la tabla de mensajes
         document.getElementById('refresh').addEventListener('click', refreshMessages);
+        
+        // Cargar los mensajes una vez al abrir la pagina
         refreshMessages();
 
 

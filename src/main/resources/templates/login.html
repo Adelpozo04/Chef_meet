@@ -13,6 +13,7 @@
         <div class="container">
             <form class="form-signin" method="post" th:action="@{/login}">
                 <h2 class="form-signin-heading">Inicia sesión, por favor</h2>
+                 <!-- Mensaje por si ha dado error el inicio de sesion  -->
                 <p th:if="${loginError != false}" class="error">
                     Error en nombre de usuario o contraseña
                 </p>
