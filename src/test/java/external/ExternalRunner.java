@@ -25,4 +25,10 @@ class ExternalRunner {
         return Karate.run("eventReservation")
                      .relativeTo(getClass());
     } 
+
+    @Karate.Test
+    Karate testCreateCommunity() {
+        return Karate.run("communityCreate")
+                     .relativeTo(getClass());
+    } 
 }
