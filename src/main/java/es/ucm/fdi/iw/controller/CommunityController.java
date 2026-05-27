@@ -32,6 +32,7 @@ import es.ucm.fdi.iw.model.Country;
 import es.ucm.fdi.iw.model.User;
 import es.ucm.fdi.iw.model.Event;
 import es.ucm.fdi.iw.model.Message;
+import es.ucm.fdi.iw.model.Recipe;
 import es.ucm.fdi.iw.model.Message.Transfer;
 import es.ucm.fdi.iw.model.User.Role;
 import jakarta.persistence.EntityManager;
@@ -123,6 +124,9 @@ public class CommunityController {
         model.addAttribute("upcomingEvents", upcomingEvents);
         model.addAttribute("pastEvents", pastEvents);
             
+        List<Recipe> recipes = community.getRecipes().stream().toList();
+
+        model.addAttribute("recipes", recipes);
 
         model.addAttribute("community", community);
         model.addAttribute("isOwner", userIsOwner);

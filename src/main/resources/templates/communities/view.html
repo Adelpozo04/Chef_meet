@@ -74,16 +74,41 @@
             </ul>
         </div>
 
-        <div class="community-posts">
+        <div class="community-posts cards_list">
             <h2>Recetas</h2>
-            <ul class="community-posts-list">
-                <li>
-                    <p> Una receta </p>
-                </li>
-                <li>
-                    <p> Otra receta </p>
-                </li>
-            </ul>
+            <div class="card_item" th:each="recip: ${recipes}">
+
+                <!--Criba de recetas para que solo sean las propias-->
+                <div class="card_wrapper">
+
+                    <!--Enlace a la informacion de la receta-->
+                    <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
+
+                        <div style="width: 360px; height: 250px; overflow: hidden;">
+                            <img th:src="@{/recipe/{id}/cover(id=${recip.id})}" 
+                            alt="Imagen de la receta" class="w-100 h-100" style="object-fit: cover;">
+                        </div>
+
+                        <span class="card_footer_middle" th:text="${recip.title}">Título</span>
+                        
+                        <div for="averageRating" class="d-flex flex-row gap-3 card_footer align-items-center justify-content-center">
+                            <p id="ratingNumber" th:text="${recip.averageRating}"></p>
+
+                            <div class="star-rating upElement" id="star-rating">
+
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+
+                            </div>
+                        </div>
+                    </a>                            
+
+                </div>
+                
+            </div>
         </div>
 
         <!-- Informacion de eventos asociados a una comunidad-->
