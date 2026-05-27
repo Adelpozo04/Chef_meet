@@ -32,7 +32,7 @@
 
                 <!-- Imagen de vista previa -->
                 <div>
-                    <img class="main_image" th:src="@{/img/recipes/{id}_cover.jpg(id=${recipe.id})}" alt="Imagen de la receta">
+                    <img class="main_image" th:src="@{/recipe/{id}/cover(id=${recipe.id})}" alt="Imagen de la receta">
                 </div> 
 
                 <!-- Seccion descriptiva de la receta-->
@@ -122,7 +122,7 @@
                     <li class="mb-3">
                         <!-- Imagen del paso concreto-->
                         <img class="main_image" 
-                        th:src="@{/img/recipes/{id}_step{index}.jpg(id=${recipe.id}, index=${iterStat.index})}" 
+                        th:src="@{/recipe/{id}/step/{index}(id=${recipe.id}, index=${iterStat.index})}" 
                         alt="Imagen de la receta">
                         
                         <!-- Texto descriptivo del paso-->

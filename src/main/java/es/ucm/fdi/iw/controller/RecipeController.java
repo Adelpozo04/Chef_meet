@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import es.ucm.fdi.iw.LocalData;
 import es.ucm.fdi.iw.model.Community;
@@ -28,6 +30,7 @@ import jakarta.transaction.Transactional;
 
 import java.io.*;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -291,7 +294,7 @@ public class RecipeController {
 
                 if(entry.getKey().equals("cover") || entry.getKey().startsWith("step")){
                     //Nos creamos la ruta en la que se va a guardar la fotografia
-                    File f = localData.getFile("../src/main/resources/static/img/recipes", "" + id + "_" + entry.getKey() + ".jpg");
+                    File f = localData.getFile("../iwdata/recipe", "" + id + "_" + entry.getKey() + ".jpg");
 
                     if (allParams.get(entry.getKey()).isEmpty()) {
                         log.info("failed to upload photo: emtpy file?");
@@ -325,6 +328,49 @@ public class RecipeController {
         return "{\"status\":\"photo uploaded correctly\"}";
   
     }
+
+    /**
+   * Returns the default profile pic
+   * 
+   * @return
+   */
+  private static InputStream defaultPic() {
+    return new BufferedInputStream(Objects.requireNonNull(
+        UserController.class.getClassLoader().getResourceAsStream(
+            "static/img/default-avatar.jpg")));
+  }
+
+    /**
+   * Downloads a profile pic for a user id
+   * 
+   * @param id
+   * @return
+   * @throws IOException
+   */
+  @GetMapping("{id}/cover")
+  public StreamingResponseBody getPic(@PathVariable long id) throws IOException {
+    File f = localData.getFile("recipe", id + "_cover.jpg");
+
+    InputStream in = new BufferedInputStream(f.exists() ? new FileInputStream(f) : RecipeController.defaultPic());
+
+    return os -> FileCopyUtils.copy(in, os);
+  }
+
+  /**
+   * Downloads a profile pic for a user id
+   * 
+   * @param id
+   * @return
+   * @throws IOException
+   */
+  @GetMapping("{id}/step/{index}")
+  public StreamingResponseBody getPicStep(@PathVariable long id, @PathVariable int index) throws IOException {
+    File f = localData.getFile("recipe", id + "_step" + index + ".jpg");
+
+    InputStream in = new BufferedInputStream(f.exists() ? new FileInputStream(f) : RecipeController.defaultPic());
+    
+    return os -> FileCopyUtils.copy(in, os);
+  }
 
     // Borrar la receta en la base de datos
     @Transactional
