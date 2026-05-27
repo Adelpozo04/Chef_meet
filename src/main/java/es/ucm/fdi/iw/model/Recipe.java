@@ -73,6 +73,9 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     @JsonIgnore
     private List<Community> communities = new ArrayList<>();
 
+    @ManyToMany(targetEntity = Event.class, mappedBy = "recipes")
+	private List<Event> events = new ArrayList<>();
+
     //Usuario creador de la receta
     @ManyToOne
     private User author;

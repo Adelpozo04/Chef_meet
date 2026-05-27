@@ -61,6 +61,14 @@ public class Event implements Transferable<Event.Transfer> {
     @ManyToOne
     private Community community;
 
+    @ManyToMany
+    @JoinTable(
+        name = "event_recipes",
+        joinColumns = @JoinColumn(name = "event_id"),
+        inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private List<Recipe> recipes = new ArrayList<>();
+
     // Un evento tiene muchas reservas asociadas
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Reservation> attendees = new ArrayList<>();

@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.ucm.fdi.iw.LocalData;
 import es.ucm.fdi.iw.model.Community;
+import es.ucm.fdi.iw.model.Event;
 import es.ucm.fdi.iw.model.Ingredient;
 import es.ucm.fdi.iw.model.IngredientInRecipe;
 import es.ucm.fdi.iw.model.Recipe;
@@ -146,8 +147,45 @@ public class RecipeController {
         communities.addAll(user.getJoinedCommunities());
         communities.addAll(user.getOwnedCommunities());
 
+        // Se piden todos los eventos a la base de datos
+        List<Event> allEvents = entityManager.createQuery("SELECT e FROM Event e", Event.class).getResultList();
+
+        List<Event> visibleEvents = new java.util.ArrayList<>();
+
+        // Filtrar eventos segun privacidad
+        for(Event e: allEvents) {
+            // Eventos publicos, siempre visibles por cualquier usuario
+            if(!e.isPrivate()) {
+                visibleEvents.add(e); 
+            } 
+            else if(sessionUser != null) {
+                User u = entityManager.find(User.class, sessionUser.getId());
+
+                // Comprobar si el usuario es admin
+                boolean isAdmin = u.hasRole(User.Role.ADMIN);
+                // Es miembro de la comunidad asociada al evento?
+                boolean isMember = e.getCommunity() != null && e.getCommunity().getMembers().contains(u);
+                // Organizador del evento?
+                boolean isOrganizer = e.getOrganizer() != null && e.getOrganizer().getId() == u.getId();
+                // Tiene una reserva para el evento?
+                boolean isAttendee = e.getAttendees() != null && e.getAttendees().stream().anyMatch(r -> r.getAttendee().getId() == u.getId());
+                // Eventos privados, solo visibles si el usuario cumple alguna condicion
+                // Si cumple cualquiera de las condiciones, el evento es visible
+                if(isAdmin|| isMember || isOrganizer || isAttendee) {
+                    visibleEvents.add(e);
+                }
+            }
+        }
+
+        // Mis eventos: Soy el organizador o estoy en la lista de asistentes
+        List<Event> myEvents = visibleEvents.stream()
+            .filter(e -> (e.getOrganizer() != null && e.getOrganizer().getId() == user.getId()) ||
+                            (e.getAttendees() != null && e.getAttendees().stream().anyMatch(r -> r.getAttendee().getId() == user.getId())))      
+            .toList();
+
         model.addAttribute("recipe", recipe);
         model.addAttribute("communities", communities);
+        model.addAttribute("events", myEvents);
 
         return "recipe/addToCommunity";
     }
@@ -156,17 +194,31 @@ public class RecipeController {
     @PostMapping("/addToCommunity")
     @Transactional
     public String addRecipe(@RequestParam Long communityId,
+                            @RequestParam Long eventId,
                             @RequestParam Long recipeId){
 
-        //Tomamos tanto la comunidad como la receta que se quieren relacionar
-        Community community = entityManager.find(Community.class, communityId);
         Recipe recipe = entityManager.find(Recipe.class, recipeId);
 
-        //Se añade mutuamente
-        community.getRecipes().add(recipe);
-        recipe.getCommunities().add(community);
+        if(communityId != -1){
+            //Tomamos tanto la comunidad como la receta que se quieren relacionar
+            Community community = entityManager.find(Community.class, communityId);
 
-        entityManager.persist(community);
+            community.getRecipes().add(recipe);
+            recipe.getCommunities().add(community);
+
+            entityManager.persist(community);
+        }
+        
+        if(eventId != -1){
+            Event event = entityManager.find(Event.class, eventId);
+
+            event.getRecipes().add(recipe);
+            recipe.getEvents().add(event);
+
+            entityManager.persist(event);
+        }
+
+        //Se añade mutuamente      
         entityManager.persist(recipe);
         entityManager.flush();
 

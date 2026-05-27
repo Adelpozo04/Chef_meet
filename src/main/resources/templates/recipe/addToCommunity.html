@@ -26,13 +26,33 @@
 
             <input type="hidden" name="recipeId" th:value="${recipe.id}">
 
-            <!-- Dropdown para la selección de la comunidad dado el nombre-->
-            <select name="communityId">
-                <option th:each="c : ${communities}"
-                        th:value="${c.id}"
-                        th:text="${c.title}">
-                </option>
-            </select>
+            <div id="communities_block">
+
+                <!-- Dropdown para la selección de la comunidad dado el nombre-->
+                <select name="communityId">
+                    <option value="-1" disabled selected>Selecciona una comunidad</option>
+                    <option value="-1">No añadir</option>
+                    <option th:each="c : ${communities}"
+                            th:value="${c.id}"
+                            th:text="${c.title}">
+                    </option>
+                </select>
+
+            </div>
+            
+            <div id="events_block">
+
+                <!-- Dropdown para la selección de la comunidad dado el nombre-->
+                <select name="eventId">
+                    <option value="-1" disabled selected>Selecciona un evento</option>
+                    <option value="-1">No añadir</option>
+                    <option th:each="e : ${events}"
+                            th:value="${e.id}"
+                            th:text="${e.title}">
+                    </option>
+                </select>          
+
+            </div>
 
             <!-- Envio de la información -->
             <button th:if="${recipe.publicRecipe != false}" type="submit" class="category_item">Añadir a comunidad</button>
