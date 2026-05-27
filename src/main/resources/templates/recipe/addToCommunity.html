@@ -35,7 +35,9 @@
             </select>
 
             <!-- Envio de la información -->
-            <button type="submit" class="category_item">Añadir a comunidad</button>
+            <button th:if="${recipe.publicRecipe != false}" type="submit" class="category_item">Añadir a comunidad</button>
+
+            <p th:if="${recipe.publicRecipe == false}"> Esta receta no es publica y por tanto no puede ser añadida a una comunidad.</p>
 
         </form>
 
