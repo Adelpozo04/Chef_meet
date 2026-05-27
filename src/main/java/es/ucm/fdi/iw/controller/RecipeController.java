@@ -61,15 +61,15 @@ public class RecipeController {
     public String createRecipe(
             @ModelAttribute Recipe recipe,
             @ModelAttribute User edited,
-            @RequestParam Map<String, MultipartFile> allParams, //Esto debe llamarse si o si allParams para que tome todos los parametros independientemente del nombre de estos y poder hacer bien la criba de steps y las imagenes
-            @RequestParam List<Long> ingredientIds,
-            @RequestParam List<String> quantities,
+            @RequestParam(required = false) Map<String, MultipartFile> allParams, //Esto debe llamarse si o si allParams para que tome todos los parametros independientemente del nombre de estos y poder hacer bien la criba de steps y las imagenes
+            @RequestParam(required = false) List<Long> ingredientIds,
+            @RequestParam(required = false) List<String> quantities,
             Model model,
             HttpSession session) {
 
         //Se revisa que esta tenga los campos necesarios rellenados, si no es asi se muestra un mensaje de error y se vuelve a la pagina de crear receta
         if (recipe.getTitle().isBlank() || recipe.getDifficulty().isBlank() || 
-            recipe.getTime().isBlank() || recipe.getCalories().isBlank()){
+            recipe.getTime().isBlank() || recipe.getCalories().isBlank() || allParams == null){
             model.addAttribute("createError", true);
             log.info("ERROR AL INTENTAR CREAR RECETA");
             return "recipe/create";
@@ -90,30 +90,32 @@ public class RecipeController {
         entityManager.persist(recipe);
         entityManager.flush();
 
-        //Nos creamos una lista de ingredientes usados en la receta
-        List<IngredientInRecipe> list = new ArrayList<>();
+        if(ingredientIds != null || quantities != null){
+            //Nos creamos una lista de ingredientes usados en la receta
+            List<IngredientInRecipe> list = new ArrayList<>();
 
-        //Iteramos sobre los ingredientes y la cantidad de cada uno para crear los IngredientInRecipe necesarios para la receta
-        for (int i = 0; i < ingredientIds.size(); i++) {
+            //Iteramos sobre los ingredientes y la cantidad de cada uno para crear los IngredientInRecipe necesarios para la receta
+            for (int i = 0; i < ingredientIds.size(); i++) {
 
-            //Sacamos el ingrediente segun el id
-            Ingredient ing = entityManager.find(Ingredient.class, ingredientIds.get(i));
+                //Sacamos el ingrediente segun el id
+                Ingredient ing = entityManager.find(Ingredient.class, ingredientIds.get(i));
 
-            //Nos creamos un ingrediente de receta
-            IngredientInRecipe ri = new IngredientInRecipe();
+                //Nos creamos un ingrediente de receta
+                IngredientInRecipe ri = new IngredientInRecipe();
 
-            //Le asignamos sus valores
-            ri.setRecipeUsed(recipe);
-            ri.setIngredientUsed(ing);
-            ri.setQuantity(quantities.get(i));
+                //Le asignamos sus valores
+                ri.setRecipeUsed(recipe);
+                ri.setIngredientUsed(ing);
+                ri.setQuantity(quantities.get(i));
 
-            //Lo anyadimos a la lista
-            list.add(ri);
+                //Lo anyadimos a la lista
+                list.add(ri);
+            }
+
+            //Le pasamos la lista a la receta
+            recipe.setRecipeIngredients(list);
         }
-
-        //Le pasamos la lista a la receta
-        recipe.setRecipeIngredients(list);
-
+       
         //Añadimos la imagen a la receta
         try{
             setPic(allParams, recipe.getId(), null, session, model);
