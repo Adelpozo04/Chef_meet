@@ -69,7 +69,7 @@ public class RecipeController {
 
         //Se revisa que esta tenga los campos necesarios rellenados, si no es asi se muestra un mensaje de error y se vuelve a la pagina de crear receta
         if (recipe.getTitle().isBlank() || recipe.getDifficulty().isBlank() || 
-            recipe.getTime().isBlank() || recipe.getCalories().isBlank() || allParams == null){
+            recipe.getTime().isBlank() || recipe.getCalories().isBlank() || allParams == null || recipe.getSteps() == null){
             model.addAttribute("createError", true);
             log.info("ERROR AL INTENTAR CREAR RECETA");
             return "recipe/create";

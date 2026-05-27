@@ -58,7 +58,7 @@ public class Recipe implements Transferable<Recipe.Transfer> {
     private float averageRating;
 
     //Conjunto de pasos para hacer la receta
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String[] steps;
 
     // Conexiones entre las distintas tablas de la base de datos.
