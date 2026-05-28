@@ -55,10 +55,23 @@ public class ReservationController {
 
         // Comprobar si el usuario actual ya esta apuntado
         boolean isAlreadyAttending = false;
+        boolean canEditEvent = false;
+
         User u = (User) session.getAttribute("u");
         if (u != null && event.getAttendees() != null) {
             isAlreadyAttending = event.getAttendees().stream()
                     .anyMatch(r -> r.getAttendee().getId() == u.getId());
+        }
+
+        // NUEVO
+        if (u != null) {
+            User currentUser = entityManager.find(User.class, u.getId());
+
+            boolean isAdmin = currentUser.hasRole(User.Role.ADMIN);
+            boolean isOrganizer = event.getOrganizer() != null 
+                    && event.getOrganizer().getId() == currentUser.getId();
+
+            canEditEvent = isAdmin || isOrganizer;
         }
 
         // Enviar los datos a la vista
@@ -66,6 +79,7 @@ public class ReservationController {
         model.addAttribute("availableSpots", availableSpots);
         model.addAttribute("reservedSpots", reservedSpots);
         model.addAttribute("isAlreadyAttending", isAlreadyAttending);
+        model.addAttribute("canEditEvent", canEditEvent);
         // Pasar la API key al HTML
         model.addAttribute("googleMapsKey", googleMapsKey);
         return "reservation";

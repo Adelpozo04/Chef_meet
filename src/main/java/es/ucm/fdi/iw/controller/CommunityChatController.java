@@ -20,6 +20,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
 
+import es.ucm.fdi.iw.model.Community;
+import es.ucm.fdi.iw.model.Complaint;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 @Controller
 public class CommunityChatController {
 
@@ -39,15 +45,22 @@ public class CommunityChatController {
         Message msg,
         SimpMessageHeaderAccessor accessor  // Allow WebSocket access to session variables
     ) {
+        // NUEVO
+        // Obtener el usuario logueado desde la sesión del WebSocket
+         User sessionUser = (User) accessor.getSessionAttributes().get("u");
 
-        String username = ((User) accessor.getSessionAttributes().get("u") ).getUsername();
+         // Recargar el usuario desde base de datos para trabajar con una entidad gestionada
+    User user = entityManager.find(User.class, sessionUser.getId());
+
+    /*        String username = ((User) accessor.getSessionAttributes().get("u") ).getUsername();
         Transfer t = new Transfer(username, msg.getText());
         messagingTemplate.convertAndSend(
             "/topic/community-" + id,
             t
-        );
+        ); */
 
-        User user = entityManager.find(User.class, ((User)accessor.getSessionAttributes().get("u")).getId() );
+
+        //User user = entityManager.find(User.class, ((User)accessor.getSessionAttributes().get("u")).getId() );
         LocalDateTime now = LocalDateTime.now();
         Message message = new Message();
         message.setRecipient(null);
@@ -57,9 +70,42 @@ public class CommunityChatController {
         message.setText(msg.getText());
         message.setDateSent(now);
 
+        // Guardar primero el mensaje para que tenga id
         entityManager.persist(message);
         entityManager.flush();
 
+        Community community = entityManager.find(Community.class, id);
+
+        try {
+
+                ObjectMapper mapper = new ObjectMapper();
+                ObjectNode rootNode = mapper.createObjectNode();
+
+                rootNode.put("type", "NEW_CHAT_MESSAGE");
+                // Texto de la notificacion
+                rootNode.put("text", message.getSender().getUsername() + " ha enviado un mensaje por el chat de " + community.getTitle());
+                // Convertir JSON a texto
+                String json = mapper.writeValueAsString(rootNode);
+
+                // Publicar en el canal del evento
+                messagingTemplate.convertAndSend("/topic/community-"+ id, json);
+                
+            } catch (Exception e) {
+
+               log.error("Error al publicar en el canal del evento", e );
+            }
+
+        // NUEVO
+        // Crear el objeto que se enviará al frontend.
+        // Incluye el id del mensaje, necesario para poder denunciarlo.
+        Transfer t = new Transfer(message.getId(), user.getUsername(), message.getText());
+
+        // Enviar el mensaje a todos los usuarios suscritos al canal de la comunidad
+        messagingTemplate.convertAndSend(
+            "/topic/community-" + id,
+            t
+        );
+        
         return t;
     }
 }

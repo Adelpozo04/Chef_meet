@@ -233,4 +233,27 @@ public class AdminController {
     return "redirect:/admin/";
   } 
 
+  /**
+ * NUEVO
+ * Página de administración para consultar cuántas veces
+ * ha iniciado sesión cada usuario.
+ *
+ * Al estar dentro de /admin/login-stats, esta vista queda protegida
+ * igual que el resto del panel de administración.
+ */
+@GetMapping("/stats")
+public String showLoginStats(Model model) {
+
+  // Cargar todos los usuarios ordenados por nombre de usuario
+  List<User> users = entityManager.createQuery(
+      "SELECT u FROM User u ORDER BY u.username ASC", User.class)
+      .getResultList();
+
+  // Enviar los usuarios a la vista.
+  // Cada usuario ya contiene el campo loginCount.
+  model.addAttribute("users", users);
+
+  // Cargar la plantilla admin/loginStats.html
+  return "adminStats";
+}
 }

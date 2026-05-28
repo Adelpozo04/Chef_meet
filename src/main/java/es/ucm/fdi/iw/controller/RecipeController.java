@@ -234,13 +234,15 @@ public class RecipeController {
             log.info("failed to upload photo: emtpy file?");
 
         } else {
-
+            // Recorremos todos los archivos recibidos:
             for (Map.Entry<String, MultipartFile> entry : allParams.entrySet()){
-
+                // Solo se guardan imágenes de portada o de pasos
                 if(entry.getKey().equals("cover") || entry.getKey().startsWith("step")){
                     //Nos creamos la ruta en la que se va a guardar la fotografia
-                    File f = localData.getFile("../src/main/resources/static/img/recipes", "" + id + "_" + entry.getKey() + ".jpg");
+                    //File f = localData.getFile("../src/main/resources/static/img/recipes", "" + id + "_" + entry.getKey() + ".jpg");
 
+                    // NUEVO
+                    File f = localData.getFile("recipes", id + "_" + entry.getKey() + ".jpg");
                     if (allParams.get(entry.getKey()).isEmpty()) {
                         log.info("failed to upload photo: emtpy file?");
                     } 
@@ -289,5 +291,31 @@ public class RecipeController {
 
         return "redirect:/recipe";
     } 
+
+    // NUEVO
+    // Devuelve una imagen de receta guardada en iwdata.
+    // Se usa tanto para la imagen principal como para imágenes de pasos.
+    // Ejemplo de ruta: /recipe/5/pic/cover
+    // Ejemplo de ruta: /recipe/5/pic/step0
+    @GetMapping("/{id}/pic/{imageName}")
+    @ResponseBody
+    public void getRecipePhoto(
+            @PathVariable long id,
+            @PathVariable String imageName,
+            HttpServletResponse response) throws IOException {
+
+        // Buscar la imagen dentro de iwdata/recipes
+        File f = localData.getFile("recipes", id + "_" + imageName + ".jpg");
+
+        if (f.exists() && f.canRead()) {
+            // Si existe, se devuelve al navegador
+            response.setContentType("image/jpeg");
+            java.nio.file.Files.copy(f.toPath(), response.getOutputStream());
+        }
+        else {
+            // Si no existe, se muestra una imagen genérica desde static
+            response.sendRedirect("/img/recipes/default.jpg");
+        }
+    }
     
 }

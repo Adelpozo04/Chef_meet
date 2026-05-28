@@ -98,9 +98,16 @@ public class CommunityController {
                                         .setMaxResults(50)
                                         .getResultList();
 
-        List<Message.Transfer> lastMessages = new ArrayList<>();
+        /*List<Message.Transfer> lastMessages = new ArrayList<>();
         for(Message m : messages) {
             lastMessages.add( new Transfer(m.getSender().getUsername(), m.getText()) );
+        }*/
+       // NUEVO
+       // Convertir los mensajes antiguos a Transfer conservando su id.
+        // El id es necesario para poder denunciarlos desde el frontend.
+        List<Message.Transfer> lastMessages = new ArrayList<>();
+        for(Message m : messages) {
+            lastMessages.add(m.toTransfer());
         }
 
         boolean userIsOwner = community.getOwner().getId() == user.getId();
@@ -110,7 +117,25 @@ public class CommunityController {
                                 .stream()
                                 .anyMatch(u -> u.getId() == user.getId());
 
+        // NUEVO
+        // Si el usuario puede ver el chat, asegurar que su sesión está suscrita al canal
+        if (userIsOwner || userIsMember || userIsAdmin) {
+            String communityTopic = "community-" + community.getId();
 
+            String topics = (String) session.getAttribute("topics");
+
+            if (topics == null || topics.isBlank()) {
+                session.setAttribute("topics", communityTopic);
+            }
+            else {
+                List<String> topicList = new ArrayList<>(Arrays.asList(topics.split(",")));
+
+                if (!topicList.contains(communityTopic)) {
+                    topicList.add(communityTopic);
+                    session.setAttribute("topics", String.join(",", topicList));
+                }
+            }
+        }
         // Separar los eventos en proximos y pasados
         LocalDateTime now = LocalDateTime.now();
         List<Event> upcomingEvents = community.getEvents().stream()
@@ -168,9 +193,21 @@ public class CommunityController {
         User user = entityManager.find(User.class, ((User) session.getAttribute("u")).getId() );
         Community community = entityManager.find(Community.class, id);
 
-        // Actualizar topics
+        // NUEVO
+        // Actualizar topics sin borrar los que ya tenía el usuario
+        String communityTopic = "community-" + community.getId();
+
+        String currentTopics = (String) session.getAttribute("topics");
         List<String> topics = new ArrayList<>();
-        topics.add("community-" + community.getId());
+        // NUEVO
+        if (currentTopics != null && !currentTopics.isBlank()) {
+            topics.addAll(Arrays.asList(currentTopics.split(",")));
+        }
+
+        if (!topics.contains(communityTopic)) {
+            topics.add(communityTopic);
+        }
+
         session.setAttribute("topics", String.join(",", topics));
 
         if ( !community.getMembers().contains(user) )

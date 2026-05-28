@@ -503,3 +503,13 @@ h1 {
 .chat-footer button:hover {
 	background-color: #1c65c9;
 }
+
+/* Mensajes del chat que se pueden denunciar */
+.reportable-message {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.reportable-message:hover {
+    background-color: rgba(255, 0, 0, 0.08);
+}

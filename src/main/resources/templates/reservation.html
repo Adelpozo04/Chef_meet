@@ -63,7 +63,7 @@
                 <!-- Descripción del evento -->
                 <div class="right-panel">
                     <div class="box-rounded description-box">
-
+                        
                         <div id="map-reservation"></div>
 
                         <h2 class="fw-bold" th:text="${event.title}"></h2>
@@ -87,6 +87,12 @@
                         <hr>
                         <h4>Descripción del evento</h4>
                         <p th:text="${event.description}"></p>
+                        <!-- NUEVO -->
+                        <div class="reservation-actions" th:if="${canEditEvent}">
+                            <a th:href="@{/event/{id}/edit(id=${event.id})}" class="btn-edit-event">
+                                Editar evento
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>  

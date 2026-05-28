@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{fragments/head :: header}" />
+    <title>IW: Estadísticas de Login</title>
+    <link rel="stylesheet" th:href="@{/css/custom.css}" href="/css/custom.css" type="text/css" />
+</head>
+
+<body class="d-flex flex-column h-100">
+    <header th:replace="~{fragments/nav.html :: nav}"></header>
+
+    <main class="flex-shrink-0">
+        <div class="container py-5">
+
+            <!-- Boton para volver -->
+            <a href="javascript:history.back()" class="btn-volver"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                </svg>
+            </a>
+
+            <h1 class="text-center mb-4">Estadísticas de inicio de sesión</h1>
+
+            <p class="text-center text-muted mb-4">
+                Esta tabla muestra cuántas veces ha iniciado sesión correctamente cada usuario.
+            </p>
+
+            <table class="table table-striped table-hover text-center align-middle">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Usuario</th>
+                        <th>Nº de logins</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <!-- Se recorre la lista de usuarios enviada desde AdminController -->
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}"></td>
+
+                        <td th:text="${user.username}"></td>
+
+                        <!-- NUEVO -->
+                        <!-- Muestra el contador de logins guardado en User.loginCount -->
+                        <td th:text="${user.loginCount}"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+
+    <th:block th:replace="~{fragments/footer.html :: footer}" />
+</body>
+
+</html>

@@ -25,7 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.Topic;
 import es.ucm.fdi.iw.model.User;
-
+// NUEVO
+import jakarta.transaction.Transactional;
 /**
  * Called when a user is first authenticated (via login).
  * Called from SecurityConfig; see https://stackoverflow.com/a/53353324
@@ -52,6 +53,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
      * Called whenever a user authenticates correctly.
      */
     @Override
+    @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
         Authentication authentication) throws IOException, ServletException {
 
@@ -72,6 +74,17 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         User u = entityManager.createNamedQuery("User.byUsername", User.class)
             .setParameter("username", username)
             .getSingleResult();
+        // NUEVO
+        // Cada vez que el login es correcto, se incrementa el contador de accesos.
+        // Como este método solo se ejecuta si Spring Security ha autenticado bien,
+        // no cuenta intentos fallidos.
+        u.setLoginCount(u.getLoginCount() + 1);
+
+        // Guardar el cambio en base de datos
+        entityManager.merge(u);
+        entityManager.flush();
+
+        // Guardar el usuario actualizado en sesión
         session.setAttribute("u", u);
 
         // add 'url' and 'ws' session variables
@@ -107,15 +120,39 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             topics.add("event-" + eventId);
         }
 
-        // Suscripcion a comunidades
-        List<Community> userCommunities = entityManager
-                                    .createNamedQuery("User.joinedCommunities", Community.class)
-                                    .setParameter("id", u.getId())
-                                    .getResultList();
-        for(Community c : userCommunities) {
-            log.info("Connecting to channel from community {}[{}]", c.getTitle(), c.getId());
-            topics.add("community-" + c.getId());
-        }
+        // NUEVO
+        // Suscripcion a comunidades en las que el usuario es miembro
+List<Community> userCommunities = entityManager
+        .createNamedQuery("User.joinedCommunities", Community.class)
+        .setParameter("id", u.getId())
+        .getResultList();
+
+// Suscripcion a comunidades creadas por el usuario
+// Esto evita que el creador se quede sin canal si no aparece en members
+List<Community> ownedCommunities = entityManager
+        .createNamedQuery("User.ownedCommunities", Community.class)
+        .setParameter("id", u.getId())
+        .getResultList();
+
+// Añadir comunidades donde es miembro
+for (Community c : userCommunities) {
+    String topic = "community-" + c.getId();
+
+    if (!topics.contains(topic)) {
+        log.info("Connecting to channel from joined community {}[{}]", c.getTitle(), c.getId());
+        topics.add(topic);
+    }
+}
+
+// Añadir comunidades que ha creado
+for (Community c : ownedCommunities) {
+    String topic = "community-" + c.getId();
+
+    if (!topics.contains(topic)) {
+        log.info("Connecting to channel from owned community {}[{}]", c.getTitle(), c.getId());
+        topics.add(topic);
+    }
+}
 
         session.setAttribute("topics", String.join(",", topics));
 

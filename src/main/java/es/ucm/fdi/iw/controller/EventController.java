@@ -264,6 +264,195 @@ public class EventController {
 
     }
 
+
+    // NUEVO
+// Muestra el formulario para editar un evento concreto.
+// Solo puede entrar el administrador o el organizador del evento.
+@GetMapping("/{id}/edit")
+public String editEvent(@PathVariable long id, Model model, HttpSession session) {
+
+    // Buscar el evento en base de datos usando el id de la URL
+    Event event = entityManager.find(Event.class, id);
+
+    // Si el evento no existe, se redirige a la lista de eventos
+    if (event == null) {
+        return "redirect:/event";
+    }
+
+    // Obtener el usuario que está intentando editar desde la sesión
+    User requester = (User) session.getAttribute("u");
+
+    // Si no hay usuario logueado, no tiene permisos
+    if (requester == null) {
+        throw new DontHavePermissionException();
+    }
+
+    // Recargar el usuario desde base de datos para tener sus roles actualizados
+    requester = entityManager.find(User.class, requester.getId());
+
+    // Comprobar si el usuario es administrador
+    boolean isAdmin = requester.hasRole(User.Role.ADMIN);
+
+    // Comprobar si el usuario es el organizador/creador del evento
+    boolean isOrganizer = event.getOrganizer() != null 
+            && event.getOrganizer().getId() == requester.getId();
+
+    // Si no es admin ni organizador, se bloquea el acceso
+    if (!isAdmin && !isOrganizer) {
+        log.warn("El usuario {} ha intentado editar el evento {} sin permisos.",
+                requester.getUsername(), event.getTitle());
+        throw new DontHavePermissionException();
+    }
+
+    // Enviar el evento a la vista para rellenar el formulario con sus datos actuales
+    model.addAttribute("event", event);
+
+    // Cargar la plantilla event/edit.html
+    return "event/edit";
+}
+
+
+// NUEVO
+// Guarda los cambios realizados en el formulario de edición.
+// También comprueba permisos, validaciones e imagen nueva si se ha subido.
+@Transactional
+@PostMapping("/{id}/edit")
+public String updateEvent(
+        @PathVariable long id,
+        @Valid @ModelAttribute("event") Event editedEvent,
+        BindingResult result,
+        @RequestParam("photo") MultipartFile photo,
+        Model model,
+        HttpSession session) {
+
+    // Buscar el evento original en base de datos
+    Event event = entityManager.find(Event.class, id);
+
+    // Si no existe, se vuelve a la lista de eventos
+    if (event == null) {
+        return "redirect:/event";
+    }
+
+    // Obtener el usuario que intenta guardar los cambios
+    User requester = (User) session.getAttribute("u");
+
+    // Si no hay sesión, no tiene permisos
+    if (requester == null) {
+        throw new DontHavePermissionException();
+    }
+
+    // Recargar el usuario desde base de datos
+    requester = entityManager.find(User.class, requester.getId());
+
+    // Comprobar si es administrador
+    boolean isAdmin = requester.hasRole(User.Role.ADMIN);
+
+    // Comprobar si es el organizador del evento
+    boolean isOrganizer = event.getOrganizer() != null 
+            && event.getOrganizer().getId() == requester.getId();
+
+    // Si no tiene permisos, no puede guardar los cambios
+    if (!isAdmin && !isOrganizer) {
+        log.warn("El usuario {} ha intentado guardar cambios del evento {} sin permisos.",
+                requester.getUsername(), event.getTitle());
+        throw new DontHavePermissionException();
+    }
+
+    // Calcular cuántas personas tienen ya plaza reservada
+    int reservedSpots = event.getAttendees() != null ? event.getAttendees().size() : 0;
+
+    // Evitar que el aforo editado sea menor que las plazas ya reservadas
+    if (editedEvent.getCapacity() != null && editedEvent.getCapacity() < reservedSpots) {
+        model.addAttribute("capacityError", true);
+
+        // Mantener datos necesarios para que la vista no falle al volver al formulario
+        editedEvent.setId(event.getId());
+        editedEvent.setImagePath(event.getImagePath());
+
+        model.addAttribute("event", editedEvent);
+        return "event/edit";
+    }
+
+    // Si hay errores de validación en los campos del evento, volver al formulario
+    if (result.hasErrors()) {
+        editedEvent.setId(event.getId());
+        editedEvent.setImagePath(event.getImagePath());
+
+        model.addAttribute("event", editedEvent);
+        return "event/edit";
+    }
+
+    // Si el usuario ha subido una nueva imagen, validar formato y tamaño
+    if (!photo.isEmpty()) {
+        String contentType = photo.getContentType();
+
+        // Solo se permiten imágenes JPEG o PNG
+        if (contentType == null || 
+            (!contentType.equals("image/jpeg") && !contentType.equals("image/png"))) {
+            model.addAttribute("errorImage", true);
+
+            editedEvent.setId(event.getId());
+            editedEvent.setImagePath(event.getImagePath());
+
+            model.addAttribute("event", editedEvent);
+            return "event/edit";
+        }
+
+        // Tamaño máximo permitido: 5 MB
+        long maxBytes = 5 * 1024 * 1024;
+
+        if (photo.getSize() > maxBytes) {
+            model.addAttribute("errorSize", true);
+
+            editedEvent.setId(event.getId());
+            editedEvent.setImagePath(event.getImagePath());
+
+            model.addAttribute("event", editedEvent);
+            return "event/edit";
+        }
+    }
+
+    // Actualizar solo los campos editables del evento.
+    // No se cambia el organizador, la comunidad ni la lista de asistentes.
+    event.setTitle(editedEvent.getTitle());
+    event.setTheme(editedEvent.getTheme());
+    event.setDate(editedEvent.getDate());
+    event.setLocation(editedEvent.getLocation());
+    event.setPrice(editedEvent.getPrice());
+    event.setCapacity(editedEvent.getCapacity());
+    event.setDescription(editedEvent.getDescription());
+
+    // Si se ha subido una imagen nueva, sustituir la anterior
+    if (!photo.isEmpty()) {
+        try {
+            // Obtener el archivo donde se guarda la imagen del evento
+            File f = localData.getFile("events", String.valueOf(event.getId()));
+
+            // Crear la carpeta si no existe
+            f.getParentFile().mkdirs();
+
+            // Guardar los bytes de la imagen nueva
+            try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(f))) {
+                stream.write(photo.getBytes());
+            }
+
+            // Actualizar la ruta de imagen del evento
+            event.setImagePath("/event/" + event.getId() + "/pic");
+        }
+        catch (IOException e) {
+            log.error("Error al actualizar la imagen del evento", e);
+        }
+    }
+
+    // Guardar los cambios en base de datos
+    entityManager.merge(event);
+    entityManager.flush();
+
+    log.info("El usuario {} ha editado el evento {}", requester.getUsername(), event.getTitle());
+
+    // Volver a la página de detalle/reserva del evento actualizado
+    return "redirect:/reservation/" + event.getId();
+}
     // Borrar el evento en la base de datos
     @Transactional
     @PostMapping("/{id}/delete") 

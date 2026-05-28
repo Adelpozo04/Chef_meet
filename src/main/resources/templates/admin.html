@@ -15,8 +15,14 @@
 
     <main class="flex-shrink-0">
 
-        <div class="container">
+        <div class="container text-center">
             <h1 class="mt-5">Administración</h1>
+            <!-- NUEVO -->
+    <!-- Enlace a la página de estadísticas de logins.
+         Solo aparece dentro del panel de admin. -->
+    <a th:href="@{/admin/stats}" class="btn btn-primary mt-3">
+        Ver estadísticas de login
+    </a>
         </div>
 
         <!-- Barra de busqueda de bootstrap -->
@@ -57,6 +63,9 @@
                         <th class="
                         nter">Nombre y Apellidos</th>
                         <th class="text-center">Roles</th>
+                        <!-- NUEVO -->
+                        <!-- Número de veces que este usuario ha iniciado sesión correctamente -->
+                        <th class="text-center">Logins</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
@@ -74,7 +83,9 @@
                         </td>
                         
                         <td th:text="${user.roles}"></td>
-
+                        <!-- NUEVO -->
+                        <!-- Muestra el contador de logins guardado en User.loginCount -->
+                        <td th:text="${user.loginCount}"></td>
                         <td>
                             <!-- Admin puede deshabilitar o habilitar usuarios-->
                             <form th:if="${user.id != u.id}" th:action="@{'/admin/toggle/' + ${user.id}}" th:method="post">

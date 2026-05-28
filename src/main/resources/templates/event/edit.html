@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html class="h-100" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{fragments/head :: header}" />
+    <title>IW: Editar Evento</title>
+    <link rel="stylesheet" th:href="@{/css/custom.css}" href="/css/custom.css" type="text/css" />
+</head>
+
+<body class="d-flex flex-column h-100">
+    <header th:replace="~{fragments/nav.html :: nav}"></header>
+
+    <main class="flex-shrink-0">
+        <div class="container py-5">
+
+            <!-- Boton para volver -->
+            <a href="javascript:history.back()" class="btn-volver"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                </svg>
+            </a>
+
+            <h1 class="text-center mb-4">Editar evento</h1>
+
+            <div th:if="${capacityError}" class="alert alert-danger text-center">
+                El aforo no puede ser menor que el número de personas que ya tienen plaza reservada.
+            </div>
+
+            <div th:if="${errorImage}" class="alert alert-danger text-center">
+                La imagen debe ser JPG o PNG.
+            </div>
+
+            <div th:if="${errorSize}" class="alert alert-danger text-center">
+                La imagen no puede superar los 5 MB.
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+
+                    <form th:action="@{/event/{id}/edit(id=${event.id})}"
+                          th:object="${event}"
+                          method="post"
+                          enctype="multipart/form-data"
+                          class="card shadow-sm p-4">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Título:</label>
+                            <input type="text" th:field="*{title}" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Temática:</label>
+                            <input type="text" th:field="*{theme}" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Fecha y hora:</label>
+                            <input type="datetime-local"
+                                   name="date"
+                                   class="form-control"
+                                   th:value="${#temporals.format(event.date, 'yyyy-MM-dd''T''HH:mm')}"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Lugar:</label>
+                            <input type="text" th:field="*{location}" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Precio:</label>
+                            <input type="number" th:field="*{price}" class="form-control" min="0" step="0.01" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Aforo:</label>
+                            <input type="number" th:field="*{capacity}" class="form-control" min="1" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Descripción:</label>
+                            <textarea th:field="*{description}" class="form-control" rows="5" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Cambiar imagen:</label>
+                            <input type="file" name="photo" class="form-control" accept="image/png, image/jpeg">
+                            <small class="text-muted">Si no subes una imagen nueva, se mantendrá la actual.</small>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <button type="submit" class="category_item">
+                                Guardar cambios
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <th:block th:replace="~{fragments/footer.html :: footer}" />
+</body>
+</html>

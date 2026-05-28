@@ -65,6 +65,8 @@ public class Message implements Transferable<Message.Transfer> {
 
 	// Campos especificos para quejas
 	@Enumerated(EnumType.STRING)
+	//NUEVO
+	@Column(name = "complain_type")
 	private ComplainType complainType = ComplainType.NONE;
 
 	// ID elemento reportado. Long para que pueda ser null en la base de datos
@@ -105,7 +107,11 @@ public class Message implements Transferable<Message.Transfer> {
 			this.id = m.getId();
 		}
 
-		public Transfer(String from, String msg) {
+		// NUEVO
+// Constructor usado para enviar mensajes de chat por WebSocket.
+// Incluye el id del mensaje para que desde JavaScript se pueda denunciar.
+		public Transfer(long id, String from, String msg) {
+			this.id = id;
 			this.from = from;
 			this.text = msg;
 		}

@@ -27,14 +27,31 @@ const ws = {
             //alert("¡Nueva Notificación!\n" + msg.text);
             showNotification(data.text);
         }
+        else if(data.type === 'NEW_COMPLAINT') {
+            showNotification(data.text);
+        }
+        else if(data.type == 'NEW_CHAT_MESSAGE') {
+            showNotification(data.text);
+        }
         else if(document.getElementById('chat-messages')) {
 
             const chatLog = document.getElementById('chat-messages');
             const div = document.createElement("div");
-            div.className = "chat-message";
+            /*div.className = "chat-message";
 
             div.innerHTML = `
                 <p> <strong>[${data.from}]:</strong> ${data.text}</p>
+            `;*/
+
+            // NUEVO
+            // Crear visualmente el mensaje recibido por WebSocket.
+            // Se añade el id del mensaje para poder denunciarlo después.
+            div.className = "chat-message reportable-message";
+            div.dataset.messageId = data.id;
+            div.title = "Haz click para denunciar este mensaje";
+
+            div.innerHTML = `
+                <p><strong>[${data.from}]:</strong> ${data.text}</p>
             `;
 
             chatLog.appendChild(div);
@@ -292,7 +309,48 @@ document.addEventListener("DOMContentLoaded", () => {
             chatInput.value = "";
         });
     }   
-    
+    // NUEVO
+    // Permite denunciar mensajes del chat haciendo click sobre ellos.
+    // Se usa delegación de eventos para que funcione tanto con mensajes antiguos
+    // como con mensajes nuevos recibidos por WebSocket.
+    document.addEventListener("click", (event) => {
+
+        // Buscar si el click se ha hecho sobre un mensaje denunciable
+        const message = event.target.closest(".reportable-message");
+
+        // Si no se ha pulsado un mensaje, no hacemos nada
+        if (!message) {
+            return;
+        }
+
+        // Obtener el id del mensaje desde el atributo data-message-id
+        const messageId = message.dataset.messageId;
+
+        // Si por algún motivo no hay id, no se puede denunciar
+        if (!messageId) {
+            console.warn("No se puede denunciar un mensaje sin id.");
+            return;
+        }
+
+        // Confirmación pedida en el enunciado
+        let v = confirm("¿Denunciar mensaje?");
+
+        // Si el usuario cancela, no se envía nada
+        if (!v) {
+            return;
+        }
+
+        // Llamada AJAX al servidor para denunciar el mensaje.
+        // La función go ya añade CSRF en peticiones POST.
+        go(`${config.rootUrl}/complaint/report/${messageId}`, "POST")
+            .then(() => {
+                alert("Mensaje denunciado correctamente.");
+            })
+            .catch(error => {
+                console.error("Error denunciando mensaje:", error);
+                alert("No se ha podido denunciar el mensaje.");
+            });
+    });
 
     // add your after-page-loaded JS code here; or even better, call 
     // 	 document.addEventListener("DOMContentLoaded", () => { /* your-code-here */ });

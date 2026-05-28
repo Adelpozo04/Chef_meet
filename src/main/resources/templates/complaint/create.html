@@ -14,7 +14,10 @@
     <main class="flex-shrink-0">
         <div class="container py-5">
             <h1 class="text-center mb-4">Crear nueva queja</h1>
-                
+            <!-- NUEVO -->
+            <div th:if="${createError}" class="alert alert-danger text-center">
+    Debes rellenar todos los campos y seleccionar el usuario, receta, comunidad o evento denunciado.
+</div>
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <form th:action="@{/complaint/create}" th:object="${complaint}" enctype="multipart/form-data" method="post" 
@@ -22,22 +25,22 @@
 
                        <div class="mb-3">
                             <!-- Titulo -->
-                             <label class="form-label fw-bold">Título:</label>
-                            <input th:field="*{title}" class="form-control" placeholder="Ej: Comportamiento inadecuado">
+                             <label class="form-label fw-bold">Título*:</label>
+                            <input th:field="*{title}" class="form-control" placeholder="Ej: Comportamiento inadecuado" required>
                         </div>
 
                         <div class="mb-3">
                             <!-- Descripción -->
-                            <label class="form-label fw-bold">Descripción:</label>
+                            <label class="form-label fw-bold">Descripción*:</label>
                             <textarea 
                                 th:field="*{description}"
-                                class="form-control" rows="4" placeholder="Explica detalladamente qué ha ocurrido...">
+                                class="form-control" rows="4" placeholder="Explica detalladamente qué ha ocurrido..." required>
                             </textarea>
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Tipo de queja:</label>
-                            <select th:field="*{type}" id="referenceType" class="form-select">
+                            <label class="form-label fw-bold">Tipo de queja*:</label>
+                            <select th:field="*{type}" id="referenceType" class="form-select" required>
                                 <option value="" disabled selected>Selecciona el tipo de queja</option>
                                 <option value=0>Usuario</option>
                                 <option value=1>Receta</option>

@@ -2,11 +2,11 @@
 ALTER SEQUENCE "PUBLIC"."GEN" RESTART WITH 2000;
 
 -- insert admin (username a, password aa)
-INSERT INTO IWUser (id, enabled, roles, username, password)
-VALUES (1, TRUE, 'ADMIN,USER', 'a',
+INSERT INTO IWUser (id, enabled, login_count, roles, username, password)
+VALUES (1, TRUE, 0, 'ADMIN,USER', 'a',
     '{bcrypt}$2a$10$2BpNTbrsarbHjNsUWgzfNubJqBRf.0Vz9924nRSHBqlbPKerkgX.W');
-INSERT INTO IWUser (id, enabled, roles, username, password)
-VALUES (2, TRUE, 'USER', 'b',
+INSERT INTO IWUser (id, enabled, login_count, roles, username, password)
+VALUES (2, TRUE, 0, 'USER', 'b',
     '{bcrypt}$2a$10$2BpNTbrsarbHjNsUWgzfNubJqBRf.0Vz9924nRSHBqlbPKerkgX.W');
 
 -- Ejemplo de paises

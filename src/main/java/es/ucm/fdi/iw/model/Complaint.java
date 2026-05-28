@@ -27,7 +27,9 @@ public class Complaint implements Transferable<Complaint.Transfer> {
         "USER", 0,
         "RECIPE", 1,
         "COMMUNITY", 2,
-        "EVENT", 3
+        "EVENT", 3,
+        // NUEVO
+        "MESSAGE", 4
     );
 
     @Id
@@ -57,7 +59,8 @@ public class Complaint implements Transferable<Complaint.Transfer> {
 
     //Id del elemento al que se refiere la queja
     @Column(name = "reference_id")
-    private long referenceId;   // ID del objeto al que se refiere -> Si type="USER" y ID=5 : la queja se refiere al usuario con ID 5
+    // NUEVO
+    private Long referenceId;   // ID del objeto al que se refiere -> Si type="USER" y ID=5 : la queja se refiere al usuario con ID 5
 
     @Getter
     @AllArgsConstructor
@@ -67,7 +70,8 @@ public class Complaint implements Transferable<Complaint.Transfer> {
         private String description;
         private Integer type;
         private boolean resolved;
-        private long referenceId;
+        // NUEVO
+        private Long referenceId;
     }
     
     @Override
