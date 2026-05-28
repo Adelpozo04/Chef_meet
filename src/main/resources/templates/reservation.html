@@ -87,6 +87,29 @@
                         <hr>
                         <h4>Descripción del evento</h4>
                         <p th:text="${event.description}"></p>
+                        <hr>
+                        <!--Recetas asociadas a los eventos-->
+                        <div class="reference_block cards_list_complaint">
+                            <label class="card_item_complaint"
+                                th:each="recip : ${recipes}"
+                                style="cursor:pointer;">
+
+                                <div class="card_wrapper_complaint">
+
+                                    <div style="width: 360px; height: 250px; overflow: hidden;">
+                                        <img th:src="@{/recipe/{id}/cover(id=${recip.id})}"
+                                            class="w-100 h-100"
+                                            style="object-fit: cover;">
+                                    </div>
+
+                                    <span class="card_footer_middle_complaint"
+                                        th:text="${recip.title}">
+                                    </span>
+
+                                </div>
+
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>  

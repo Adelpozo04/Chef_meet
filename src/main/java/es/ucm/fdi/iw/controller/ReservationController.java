@@ -13,12 +13,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import es.ucm.fdi.iw.model.Event;
+import es.ucm.fdi.iw.model.Recipe;
 import es.ucm.fdi.iw.model.Reservation;
 import es.ucm.fdi.iw.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
+
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,6 +63,10 @@ public class ReservationController {
             isAlreadyAttending = event.getAttendees().stream()
                     .anyMatch(r -> r.getAttendee().getId() == u.getId());
         }
+
+        List<Recipe> recipes = event.getRecipes().stream().toList();
+
+        model.addAttribute("recipes", recipes);
 
         // Enviar los datos a la vista
         model.addAttribute("event", event);
