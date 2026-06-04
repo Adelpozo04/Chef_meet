@@ -98,13 +98,9 @@ public class CommunityController {
                                         .setMaxResults(50)
                                         .getResultList();
 
-        /*List<Message.Transfer> lastMessages = new ArrayList<>();
-        for(Message m : messages) {
-            lastMessages.add( new Transfer(m.getSender().getUsername(), m.getText()) );
-        }*/
-       // NUEVO
-       // Convertir los mensajes antiguos a Transfer conservando su id.
-        // El id es necesario para poder denunciarlos desde el frontend.
+
+        // Convertir los mensajes antiguos a Transfer conservando su id.
+        // El id es necesario para poder denunciarlos
         List<Message.Transfer> lastMessages = new ArrayList<>();
         for(Message m : messages) {
             lastMessages.add(m.toTransfer());
@@ -117,8 +113,7 @@ public class CommunityController {
                                 .stream()
                                 .anyMatch(u -> u.getId() == user.getId());
 
-        // NUEVO
-        // Si el usuario puede ver el chat, asegurar que su sesión está suscrita al canal
+        // Si el usuario puede ver el chat, asegurar que su sesion esta suscrita al canal
         if (userIsOwner || userIsMember || userIsAdmin) {
             String communityTopic = "community-" + community.getId();
 
@@ -193,13 +188,12 @@ public class CommunityController {
         User user = entityManager.find(User.class, ((User) session.getAttribute("u")).getId() );
         Community community = entityManager.find(Community.class, id);
 
-        // NUEVO
-        // Actualizar topics sin borrar los que ya tenía el usuario
+        // Actualizar topics sin borrar los que ya tenia el usuario
         String communityTopic = "community-" + community.getId();
 
         String currentTopics = (String) session.getAttribute("topics");
         List<String> topics = new ArrayList<>();
-        // NUEVO
+
         if (currentTopics != null && !currentTopics.isBlank()) {
             topics.addAll(Arrays.asList(currentTopics.split(",")));
         }

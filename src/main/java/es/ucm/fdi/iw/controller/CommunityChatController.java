@@ -45,22 +45,12 @@ public class CommunityChatController {
         Message msg,
         SimpMessageHeaderAccessor accessor  // Allow WebSocket access to session variables
     ) {
-        // NUEVO
         // Obtener el usuario logueado desde la sesión del WebSocket
          User sessionUser = (User) accessor.getSessionAttributes().get("u");
 
          // Recargar el usuario desde base de datos para trabajar con una entidad gestionada
-    User user = entityManager.find(User.class, sessionUser.getId());
+        User user = entityManager.find(User.class, sessionUser.getId());
 
-    /*        String username = ((User) accessor.getSessionAttributes().get("u") ).getUsername();
-        Transfer t = new Transfer(username, msg.getText());
-        messagingTemplate.convertAndSend(
-            "/topic/community-" + id,
-            t
-        ); */
-
-
-        //User user = entityManager.find(User.class, ((User)accessor.getSessionAttributes().get("u")).getId() );
         LocalDateTime now = LocalDateTime.now();
         Message message = new Message();
         message.setRecipient(null);
@@ -76,6 +66,7 @@ public class CommunityChatController {
 
         Community community = entityManager.find(Community.class, id);
 
+        // Enviar notificacion de que se ha enviado un mensaje por el chat
         try {
 
                 ObjectMapper mapper = new ObjectMapper();
@@ -95,9 +86,6 @@ public class CommunityChatController {
                log.error("Error al publicar en el canal del evento", e );
             }
 
-        // NUEVO
-        // Crear el objeto que se enviará al frontend.
-        // Incluye el id del mensaje, necesario para poder denunciarlo.
         Transfer t = new Transfer(message.getId(), user.getUsername(), message.getText());
 
         // Enviar el mensaje a todos los usuarios suscritos al canal de la comunidad

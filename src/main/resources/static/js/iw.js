@@ -43,7 +43,6 @@ const ws = {
                 <p> <strong>[${data.from}]:</strong> ${data.text}</p>
             `;*/
 
-            // NUEVO
             // Crear visualmente el mensaje recibido por WebSocket.
             // Se añade el id del mensaje para poder denunciarlo después.
             div.className = "chat-message reportable-message";
@@ -309,10 +308,8 @@ document.addEventListener("DOMContentLoaded", () => {
             chatInput.value = "";
         });
     }   
-    // NUEVO
+   
     // Permite denunciar mensajes del chat haciendo click sobre ellos.
-    // Se usa delegación de eventos para que funcione tanto con mensajes antiguos
-    // como con mensajes nuevos recibidos por WebSocket.
     document.addEventListener("click", (event) => {
 
         // Buscar si el click se ha hecho sobre un mensaje denunciable
@@ -326,22 +323,21 @@ document.addEventListener("DOMContentLoaded", () => {
         // Obtener el id del mensaje desde el atributo data-message-id
         const messageId = message.dataset.messageId;
 
-        // Si por algún motivo no hay id, no se puede denunciar
+        // Si no hay id, no se puede denunciar
         if (!messageId) {
             console.warn("No se puede denunciar un mensaje sin id.");
             return;
         }
 
-        // Confirmación pedida en el enunciado
+        
         let v = confirm("¿Denunciar mensaje?");
 
-        // Si el usuario cancela, no se envía nada
+        // Si el usuario cancela, no se envia nada
         if (!v) {
             return;
         }
 
-        // Llamada AJAX al servidor para denunciar el mensaje.
-        // La función go ya añade CSRF en peticiones POST.
+        // Llamada AJAX al servidor para denunciar el mensaje
         go(`${config.rootUrl}/complaint/report/${messageId}`, "POST")
             .then(() => {
                 alert("Mensaje denunciado correctamente.");

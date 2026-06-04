@@ -65,9 +65,7 @@ public class User implements Transferable<User.Transfer> {
 	private boolean enabled;
 	private String roles; // split by ',' to separate roles
 
-	// NUEVO
-	// Número de veces que el usuario ha iniciado sesión correctamente.
-	// Se incrementa desde LoginSuccessHandler cada vez que el login es válido.
+	// Numero de veces que el usuario ha iniciado sesion correctamente.
 	private int loginCount = 0;
 
 	@OneToMany(mappedBy = "owner")

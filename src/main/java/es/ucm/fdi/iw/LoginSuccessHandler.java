@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.ucm.fdi.iw.model.Community;
 import es.ucm.fdi.iw.model.Topic;
 import es.ucm.fdi.iw.model.User;
-// NUEVO
 import jakarta.transaction.Transactional;
 /**
  * Called when a user is first authenticated (via login).
@@ -74,10 +73,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         User u = entityManager.createNamedQuery("User.byUsername", User.class)
             .setParameter("username", username)
             .getSingleResult();
-        // NUEVO
         // Cada vez que el login es correcto, se incrementa el contador de accesos.
-        // Como este método solo se ejecuta si Spring Security ha autenticado bien,
-        // no cuenta intentos fallidos.
         u.setLoginCount(u.getLoginCount() + 1);
 
         // Guardar el cambio en base de datos
@@ -110,7 +106,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             .getResultList();
 
         // Suscripcion a eventos
-        //Buscar en la Base de datos los ids de los eventos a los que asiste este usuario
+        // Buscar en la Base de datos los ids de los eventos a los que asiste este usuario
         List<Long> eventIds = entityManager.createQuery(
             "SELECT r.event.id FROM Reservation r WHERE r.attendee.id = :uid", Long.class)
             .setParameter("uid", u.getId())
@@ -120,39 +116,38 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             topics.add("event-" + eventId);
         }
 
-        // NUEVO
         // Suscripcion a comunidades en las que el usuario es miembro
-List<Community> userCommunities = entityManager
-        .createNamedQuery("User.joinedCommunities", Community.class)
-        .setParameter("id", u.getId())
-        .getResultList();
+        List<Community> userCommunities = entityManager
+                .createNamedQuery("User.joinedCommunities", Community.class)
+                .setParameter("id", u.getId())
+                .getResultList();
 
-// Suscripcion a comunidades creadas por el usuario
-// Esto evita que el creador se quede sin canal si no aparece en members
-List<Community> ownedCommunities = entityManager
-        .createNamedQuery("User.ownedCommunities", Community.class)
-        .setParameter("id", u.getId())
-        .getResultList();
+        // Suscripcion a comunidades creadas por el usuario
+        // Esto evita que el creador se quede sin canal si no aparece en members
+        List<Community> ownedCommunities = entityManager
+                .createNamedQuery("User.ownedCommunities", Community.class)
+                .setParameter("id", u.getId())
+                .getResultList();
 
-// Añadir comunidades donde es miembro
-for (Community c : userCommunities) {
-    String topic = "community-" + c.getId();
+        // Añadir comunidades donde es miembro
+        for (Community c : userCommunities) {
+            String topic = "community-" + c.getId();
 
-    if (!topics.contains(topic)) {
-        log.info("Connecting to channel from joined community {}[{}]", c.getTitle(), c.getId());
-        topics.add(topic);
-    }
-}
+            if (!topics.contains(topic)) {
+                log.info("Connecting to channel from joined community {}[{}]", c.getTitle(), c.getId());
+                topics.add(topic);
+            }
+        }
 
-// Añadir comunidades que ha creado
-for (Community c : ownedCommunities) {
-    String topic = "community-" + c.getId();
+        // Añadir comunidades que ha creado
+        for (Community c : ownedCommunities) {
+            String topic = "community-" + c.getId();
 
-    if (!topics.contains(topic)) {
-        log.info("Connecting to channel from owned community {}[{}]", c.getTitle(), c.getId());
-        topics.add(topic);
-    }
-}
+            if (!topics.contains(topic)) {
+                log.info("Connecting to channel from owned community {}[{}]", c.getTitle(), c.getId());
+                topics.add(topic);
+            }
+        }
 
         session.setAttribute("topics", String.join(",", topics));
 

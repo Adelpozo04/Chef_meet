@@ -236,12 +236,12 @@ public class RecipeController {
         } else {
             // Recorremos todos los archivos recibidos:
             for (Map.Entry<String, MultipartFile> entry : allParams.entrySet()){
-                // Solo se guardan imágenes de portada o de pasos
+                // Solo se guardan imagenes de portada o de pasos
                 if(entry.getKey().equals("cover") || entry.getKey().startsWith("step")){
                     //Nos creamos la ruta en la que se va a guardar la fotografia
                     //File f = localData.getFile("../src/main/resources/static/img/recipes", "" + id + "_" + entry.getKey() + ".jpg");
 
-                    // NUEVO
+                    
                     File f = localData.getFile("recipes", id + "_" + entry.getKey() + ".jpg");
                     if (allParams.get(entry.getKey()).isEmpty()) {
                         log.info("failed to upload photo: emtpy file?");
@@ -292,11 +292,8 @@ public class RecipeController {
         return "redirect:/recipe";
     } 
 
-    // NUEVO
     // Devuelve una imagen de receta guardada en iwdata.
     // Se usa tanto para la imagen principal como para imágenes de pasos.
-    // Ejemplo de ruta: /recipe/5/pic/cover
-    // Ejemplo de ruta: /recipe/5/pic/step0
     @GetMapping("/{id}/pic/{imageName}")
     @ResponseBody
     public void getRecipePhoto(
@@ -313,7 +310,7 @@ public class RecipeController {
             java.nio.file.Files.copy(f.toPath(), response.getOutputStream());
         }
         else {
-            // Si no existe, se muestra una imagen genérica desde static
+            // Si no existe, se muestra una imagen generica desde static
             response.sendRedirect("/img/recipes/default.jpg");
         }
     }

@@ -3,10 +3,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
     // Selector del tipo de queja: usuario, receta, comunidad o evento
     const selector = document.getElementById("referenceType");
 
-    // Formulario de creación de quejas
+    // Formulario de creacion de quejas
     const form = document.querySelector("form");
 
-    // Botón de enviar queja
+    // Boton de enviar queja
     const submitButton = document.getElementById("create-button");
 
     // Relaciona cada valor del select con el bloque de tarjetas correspondiente
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         3: document.getElementById("events_block")
     };
 
-    // Oculta todos los bloques de tarjetas y limpia la selección anterior
+    // Oculta todos los bloques de tarjetas y limpia la seleccion anterior
     function hideAllBlocks() {
         Object.values(blocks).forEach(block => {
             if (!block) return;
@@ -50,18 +50,18 @@ document.addEventListener('DOMContentLoaded', ()=> {
         // Mostrar el bloque elegido
         selectedBlock.classList.remove("d-none");
 
-        // Activar sus radios y hacer obligatoria la selección de una tarjeta
+        // Activar sus radios y hacer obligatoria la seleccion de una tarjeta
         selectedBlock.querySelectorAll("input[type='radio']").forEach(radio => {
             radio.disabled = false;
             radio.required = true;
         });
     }
 
-    // Al cargar la página, todos los bloques empiezan ocultos
+    // Al cargar la pagina, todos los bloques empiezan ocultos
     hideAllBlocks();
 
     // Cuando cambia el tipo de queja, se ocultan los bloques anteriores
-    // y se muestra únicamente el bloque del tipo seleccionado
+    // y se muestra unicamente el bloque del tipo seleccionado
     selector.addEventListener("change", function () {
         hideAllBlocks();
         showSelectedBlock(this.value);

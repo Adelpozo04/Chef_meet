@@ -130,17 +130,8 @@
 
         <div class="chat-body" id="chat-messages">
 
-            <!-- 
-            <div class="chat-message" th:each="m : ${lastMessages}">
-                <p>
-                    <strong th:text="|[${m.from}]: |">[Usuario]: </strong>
-                    <span th:text="${m.text}">Mensaje</span>
-                </p>
-            </div>
-            -->
-
-            <!--NUEVO Mensajes antiguos cargados desde base de datos.
-            Se añade data-message-id para que JavaScript sepa qué mensaje denunciar. -->
+            <!-- Mensajes antiguos cargados desde base de datos.
+            Se añade data-message-id para que JavaScript sepa que mensaje denunciar. -->
             <div class="chat-message reportable-message"
                 th:each="m : ${lastMessages}"
                 th:data-message-id="${m.id}"

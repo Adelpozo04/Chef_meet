@@ -63,7 +63,7 @@ public class ReservationController {
                     .anyMatch(r -> r.getAttendee().getId() == u.getId());
         }
 
-        // NUEVO
+        // Solo puede editar una reserva el admin o el organizador del evento
         if (u != null) {
             User currentUser = entityManager.find(User.class, u.getId());
 

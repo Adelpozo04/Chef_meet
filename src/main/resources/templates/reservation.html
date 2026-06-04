@@ -87,7 +87,7 @@
                         <hr>
                         <h4>Descripción del evento</h4>
                         <p th:text="${event.description}"></p>
-                        <!-- NUEVO -->
+                        
                         <div class="reservation-actions" th:if="${canEditEvent}">
                             <a th:href="@{/event/{id}/edit(id=${event.id})}" class="btn-edit-event">
                                 Editar evento

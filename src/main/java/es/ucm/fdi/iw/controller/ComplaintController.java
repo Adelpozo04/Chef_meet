@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
-// NUEVO
+
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Map;
 import es.ucm.fdi.iw.model.Message;
@@ -42,11 +42,10 @@ public class ComplaintController {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    // NUEVO
     // Carga todas las listas necesarias para crear una queja:
     // recetas, eventos, comunidades y usuarios.
-    // Se separa en un método porque se usa tanto al entrar al formulario
-    // como cuando hay un error y hay que volver a mostrar la página.
+    // Se separa en un metodo porque se usa tanto al entrar al formulario
+    // como cuando hay un error y hay que volver a mostrar la pagina.
     private void addComplaintCreateLists(Model model) {
         List<Recipe> allRecipes = entityManager.createQuery(
             "SELECT r FROM Recipe r ORDER BY r.title ASC", Recipe.class)
@@ -70,10 +69,7 @@ public class ComplaintController {
         model.addAttribute("AllUsers", allUsers);
     }
 
-    // NUEVO
     // Comprueba que el elemento denunciado existe realmente.
-    // Por ejemplo, si la queja es de tipo EVENT, comprueba que el referenceId
-    // corresponde a un evento existente.
     private boolean referenceExists(Integer type, Long referenceId) {
         if (type == null || referenceId == null) {
             return false;
@@ -98,7 +94,6 @@ public class ComplaintController {
         return false;
     }
 
-    // NUEVO
     // Devuelve el texto del elemento denunciado.
     // Sirve para que en la vista no aparezca solo el ID,
     // sino el nombre real del usuario, receta, comunidad o evento.
@@ -148,7 +143,6 @@ public class ComplaintController {
         return "Tipo desconocido";
     }
 
-    // NUEVO
     //Cuando se pulse el boton de crear queja se dirige a la pagina para rellenar el formulario con los datos de esta
     @GetMapping("complaint/create")
     public String createComplaint(Model model) {
@@ -171,27 +165,17 @@ public class ComplaintController {
             Model model,
             HttpSession session) {
 
-        //Se revisa que esta tenga los campos necesarios rellenados, si no es asi se muestra un mensaje de error y se vuelve a la pagina de crear queja
-        /*if (complaint.getTitle().isBlank() || complaint.getDescription().isBlank() || complaint.getType() == null){
-            model.addAttribute("createError", true);
-            log.info("ERROR AL INTENTAR CREAR QUEJA");
-            return "complaint/create";
-        }*/
-
-        // NUEVO
-        // Validación de campos básicos:
-        // título, descripción y tipo de queja
+        // Validacion de los campos basicos:
+        // título, descripcion y tipo de queja
        boolean invalidBasicFields =
             complaint.getTitle() == null || complaint.getTitle().isBlank()
             || complaint.getDescription() == null || complaint.getDescription().isBlank()
             || complaint.getType() == null;
 
-            // Validación del elemento denunciado:
-        // comprueba que se haya seleccionado una tarjeta
-        // y que ese elemento exista en base de datos
+        // Validacion del elemento denunciado
         boolean invalidReference = !referenceExists(complaint.getType(), complaint.getReferenceId());
 
-        // Si falta algún campo o no hay elemento seleccionado,
+        // Si falta algun campo o no hay elemento seleccionado,
         // se vuelve al formulario con mensaje de error
         if (invalidBasicFields || invalidReference) {
             addComplaintCreateLists(model);
@@ -202,7 +186,7 @@ public class ComplaintController {
             return "complaint/create";
         }
 
-        //model.addAttribute("createError", false);
+        
 
         // Usuario logueado que ejecuta esta query -> creador de la queja
         User owner = (User) session.getAttribute("u");
@@ -239,10 +223,9 @@ public class ComplaintController {
             return "redirect:/admin/";
         }
 
-        // NUEVO
         // Obtiene el nombre del elemento denunciado
         String referenceText = getReferenceText(complaint, model);
-        // Texto legible del tipo de queja.
+        // Texto legible del tipo de queja
         String typeText = "";
 
         if (complaint.getType().equals(Complaint.typeMap.get("USER"))) {
@@ -265,13 +248,11 @@ public class ComplaintController {
         model.addAttribute("complaint", complaint);
         model.addAttribute("referenceText", referenceText);
         model.addAttribute("typeText", typeText);
-        //Se toma la queja correspondiente para mostrar su información facilmente
-        //model.addAttribute("complaint", complaint);
         
         return "complaint";
     }
 
-    //Metodo que maneja que una qieja se marque como resuelta, llamado por el admin
+    //Metodo que maneja que una queja se marque como resuelta, llamado por el admin
     @Transactional
     @PostMapping("/complaint/{id}")
     public String resolveComplaint(@PathVariable long id) {
@@ -314,7 +295,6 @@ public class ComplaintController {
         return "redirect:/admin/";
     } 
 
-    // NUEVO
     // Permite denunciar un mensaje de chat mediante AJAX.
     // Se llama desde JavaScript al hacer click sobre un mensaje y aceptar el confirm.
     @Transactional
@@ -327,7 +307,7 @@ public class ComplaintController {
         // Buscar el mensaje denunciado en base de datos
         Message message = entityManager.find(Message.class, messageId);
 
-        // Si el mensaje no existe, se devuelve error controlado al frontend
+        // Si el mensaje no existe, se devuelve error
         if (message == null) {
             return Map.of(
                 "ok", false,
@@ -338,7 +318,7 @@ public class ComplaintController {
         // Obtener el usuario logueado que realiza la denuncia
         User owner = (User) session.getAttribute("u");
 
-        // Si no hay usuario en sesión, no se permite denunciar
+        // Si no hay usuario en sesion, no se permite denunciar
         if (owner == null) {
             return Map.of(
                 "ok", false,
@@ -354,7 +334,7 @@ public class ComplaintController {
         complaint.setOwner(owner);
         complaint.setTitle("Mensaje de chat denunciado");
 
-        // La descripción guarda información útil para que el admin entienda la denuncia
+        // La descripción guarda información util para que el admin entienda la denuncia
         complaint.setDescription(
             "Mensaje enviado por " 
             + (message.getSender() != null ? message.getSender().getUsername() : "usuario desconocido")
@@ -362,7 +342,7 @@ public class ComplaintController {
             + message.getText()
         );
 
-        // Tipo específico de queja: mensaje
+        // Tipo especifico de queja: mensaje
         complaint.setType(Complaint.typeMap.get("MESSAGE"));
 
         // Guardar el id del mensaje denunciado
@@ -387,6 +367,7 @@ public class ComplaintController {
         );
     }
 
+    // Mostrar notificacion al admin cada vez que un usuario haga una queja
     private void showNotificationAdmin(Complaint complaint) {
         try {
 
@@ -394,34 +375,66 @@ public class ComplaintController {
 
                 if(complaint.getType() == null) return;
 
-                if(!complaint.getType().equals(Complaint.typeMap.get("USER"))) return;
-
                 ObjectMapper mapper = new ObjectMapper();
                 ObjectNode rootNode = mapper.createObjectNode();
 
                 String reporterName = complaint.getOwner() != null ?
                 complaint.getOwner().getUsername() : "Usuario desconocido";
 
-                String reportedName = " usuario desconocido";
-
-                 if (complaint.getReferenceId() != null) {
-                    User reported = entityManager.find(User.class, complaint.getReferenceId());
-
-                    if (reported != null) reportedName = reported.getUsername();
-                 }
+                String reportedText = getReportedText(complaint);
 
                 rootNode.put("type", "NEW_COMPLAINT");
                 // Texto de la notificacion
-                rootNode.put("text", reporterName + " ha reportado a " + reportedName);
+                rootNode.put("text", reporterName + " ha reportado " + reportedText);
                 // Convertir JSON a texto
                 String json = mapper.writeValueAsString(rootNode);
 
-                // Publicar en el canal del evento
+                // Publicar en el canal del admin
                 messagingTemplate.convertAndSend("/topic/admin", json);
                 
             } catch (Exception e) {
 
-               log.error("Error al publicar en el canal del evento", e );
+               log.error("Error al publicar la notificacion de queja al admin", e );
             }
+    }
+
+    private String getReportedText(Complaint complaint) {
+        if (complaint.getReferenceId() == null) {
+            return "un elemento";
+        }
+
+        if (complaint.getType().equals(Complaint.typeMap.get("USER"))) {
+            User reported = entityManager.find(User.class, complaint.getReferenceId());
+            return reported != null 
+                ? "al usuario " + reported.getUsername()
+                : "a un usuario desconocido";
+        }
+
+        if (complaint.getType().equals(Complaint.typeMap.get("RECIPE"))) {
+            Recipe recipe = entityManager.find(Recipe.class, complaint.getReferenceId());
+            return recipe != null 
+                ? "la receta " + recipe.getTitle()
+                : "una receta desconocida";
+        }
+
+        if (complaint.getType().equals(Complaint.typeMap.get("COMMUNITY"))) {
+            Community community = entityManager.find(Community.class, complaint.getReferenceId());
+            return community != null 
+                ? "la comunidad " + community.getTitle()
+                : "una comunidad desconocida";
+        }
+
+        if (complaint.getType().equals(Complaint.typeMap.get("EVENT"))) {
+            Event event = entityManager.find(Event.class, complaint.getReferenceId());
+            return event != null 
+                ? "el evento " + event.getTitle()
+                : "un evento desconocido";
+        }
+
+        if (complaint.getType().equals(Complaint.typeMap.get("MESSAGE"))) {
+            return "un mensaje de chat";
+        }
+
+        return "un elemento";
     }
 }

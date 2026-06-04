@@ -53,7 +53,7 @@
 
                                 <!-- Imagen que representa a la receta-->
                                 <div style="width: 360px; height: 250px; overflow: hidden;">
-                                    <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" 
+                                    <img th:src="@{/recipe/{id}/pic/cover(id=${recip.id})}" 
                                     alt="Imagen de la receta" class="w-100 h-100" style="object-fit: cover;">
                                 </div>
 
@@ -129,7 +129,7 @@
 
                                 <!-- Imagen que representa a la receta-->
                                 <div style="width: 360px; height: 250px; overflow: hidden;">
-                                    <img th:src="@{/img/recipes/{id}_cover.jpg(id=${recip.id})}" 
+                                    <img th:src="@{/recipe/{id}/pic/cover(id=${recip.id})}"
                                     alt="Imagen de la receta" class="w-100 h-100" style="object-fit: cover;">
                                 </div>
                                

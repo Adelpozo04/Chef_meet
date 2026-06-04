@@ -30,7 +30,7 @@
             <!-- Seccion central de la receta-->
             <div class="d-flex flex-row align-items-center gap-5">
 
-                <!-- Imagen de vista previa NUEVO -->
+                <!-- Imagen de vista previa -->
                 <div>
                     <img class="main_image" th:src="@{/recipe/{id}/pic/cover(id=${recipe.id})}" alt="Imagen de la receta">
                 </div> 
@@ -120,7 +120,7 @@
                 <ol th:each="step, iterStat : ${recipe.steps}" id="stepsList">
 
                     <li class="mb-3">
-                        <!-- Imagen del paso concreto NUEVO-->
+                        <!-- Imagen del paso concreto-->
                         <img class="main_image" 
                         th:src="@{/recipe/{id}/pic/step{index}(id=${recipe.id}, index=${iterStat.index})}"  
                         alt="Imagen del paso">
