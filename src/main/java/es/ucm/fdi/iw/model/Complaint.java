@@ -1,5 +1,6 @@
 package es.ucm.fdi.iw.model;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +14,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Complaints made by users to the administrators about others users, recipes, communities, events, etc...
@@ -60,6 +63,9 @@ public class Complaint implements Transferable<Complaint.Transfer> {
     @Column(name = "reference_id")
     private Long referenceId;   // ID del objeto al que se refiere -> Si type="USER" y ID=5 : la queja se refiere al usuario con ID 5
 
+    @Column(name = "date")
+    private LocalDateTime date;
+
     @Getter
     @AllArgsConstructor
     public static class Transfer {
@@ -69,12 +75,15 @@ public class Complaint implements Transferable<Complaint.Transfer> {
         private Integer type;
         private boolean resolved;
         private Long referenceId;
+        private String date;
     }
     
     @Override
     public Transfer toTransfer() {
 
-        return new Transfer(id, title, description, type, resolved, referenceId);
+        return new Transfer(id, title, description, type, resolved, referenceId,
+            date == null ? null : DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(date)
+        );
     }
 
     @Override

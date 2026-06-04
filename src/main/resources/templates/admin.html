@@ -40,6 +40,7 @@
                     <option value="recipes">Receta</option>
                     <option value="communities">Comunidad</option>
                     <option value="events">Evento</option>
+                    <option value="complaints">Quejas</option>
                 </select>
             </div>
 
@@ -186,6 +187,49 @@
             </table>
         </div>
 
+        <div class="container" id="container-complaints">
+
+            <!-- Usuarios muestra id, user, nombre y apellidos, rol-->
+            <h2 class="mt-5 text-center fw-bold">Quejas</h2>
+            <table id="tabla-quejas-dt" class="table table-striped table-hover text-center align-middle">
+                <thead>
+                    <tr>
+                        <th class="text-center">Título</th>
+                        <th class="text-center">Reportado por</th>
+                        <th class="text-center">Fecha</th>
+                        <th class="text-center">Descripción</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="complaint : ${complaints}">
+
+                        <td th:text="${complaint.title}"></td>
+                        <td th:text="${complaint.owner.username}"></td>
+                        <td th:text="${#temporals.format(complaint.date, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td th:text="${complaint.description}"></td>
+                        <td>
+                                <span th:if="${complaint.resolved}" class="badge bg-success">Resuelta</span>
+                                <span th:unless="${complaint.resolved}" class="badge bg-warning text-dark">Pendiente</span>
+                        </td>
+                        
+                        
+                        <td>
+                            <a th:href="@{/complaint/{id}(id=${complaint.id})}" class="btn btn-danger btn-sm">
+
+                                <span>Ver</span>
+                                
+                            </a>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
         <!--
         <div class="container">
 
@@ -196,54 +240,7 @@
         </div>
         !-->
 
-        <!-- Lista de quejas sin resolver -->
-        <div class="container mt-5" id="complaints-admin-section">
-            <details open class="mb-4">
-                <summary class="communities-dropdown">Quejas sin resolver</summary>
-
-                <section class="cards_list complaints_cards_list">
-                    <div class="card_item" th:each="compl: ${complaints}" th:if="${compl.resolved == false}">
-
-                        <div class="card_wrapper">
-
-                            <!--Enlace a la informacion de la receta-->
-                            <a th:href="@{/complaint/{id}(id=${compl.id})}" class="card_link">
-
-                                <span class="card_footer" th:text="${compl.title}">Título</span>
-                                
-                            </a>
-
-                        </div>                       
-                        
-                    </div>
-
-                </section>
-
-            </details>
-
-            <!-- Lista de quejas resueltas -->
-            <details open class="mb-4">
-                <summary class="communities-dropdown">Quejas resueltas</summary>
-
-                <section class="cards_list complaints_cards_list">
-                    <div class="card_item" th:each="compl: ${complaints}" th:if="${compl.resolved == true}">
-
-                            <div class="card_wrapper">
-
-                                <a th:href="@{/complaint/{id}(id=${compl.id})}" class="card_link">
-
-                                    <span class="card_footer" th:text="${compl.title}">Título</span>
-                                    
-                                </a>                                      
-
-                            </div>
-                        
-                    </div>
-
-                </section>
-
-            </details>
-        </div>
+        
 
     </main>
 
@@ -301,6 +298,7 @@
         const tableRecetas = new DataTable('#tabla-recetas-dt', dtConfig);
         const tableComunidades = new DataTable('#tabla-comunidades-dt', dtConfig);
         const tableEventos = new DataTable('#tabla-eventos-dt', dtConfig);
+        const tableQuejas = new DataTable('#tabla-quejas-dt', dtConfig);
 
         // Tabla de mensajes
         let dt = null;

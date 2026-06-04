@@ -18,6 +18,7 @@ import es.ucm.fdi.iw.model.Recipe;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -200,6 +201,9 @@ public class ComplaintController {
 
         //Se pone que la queja aun no esta resuelta ya que se acaba de crear
         complaint.setResolved(false);
+
+        complaint.setDate(LocalDateTime.now());
+        
         entityManager.persist(complaint);
         entityManager.flush();
 
@@ -213,7 +217,19 @@ public class ComplaintController {
 
     //Metodo para meterse en la pagina de una queja concreta
     @GetMapping("complaint/{id}")
-    public String showComplaint(@PathVariable long id, Model model) {
+    public String showComplaint(@PathVariable long id, Model model, HttpSession session) {
+
+        // Obtener de la sesion actual del usuario
+
+        User sessionUser = (User) session.getAttribute("u");
+        User currentUser = entityManager.find(User.class, sessionUser.getId());
+
+        boolean isAdmin = currentUser.hasRole(User.Role.ADMIN);
+
+        // Si no es admin no puede entrar a esta vista
+        if (!isAdmin) {
+            return "redirect:/account";
+        }
 
         // Buscar la info de la receta en la base de datos usando el id que viene en la url
         Complaint complaint = entityManager.find(Complaint.class, id);
@@ -255,11 +271,18 @@ public class ComplaintController {
     //Metodo que maneja que una queja se marque como resuelta, llamado por el admin
     @Transactional
     @PostMapping("/complaint/{id}")
-    public String resolveComplaint(@PathVariable long id) {
+    public String resolveComplaint(@PathVariable long id, HttpSession session) {
+
+        // Obtener de la sesion actual el usuario guardado
+        User sessionUser = (User) session.getAttribute("u");
+        User currentUser = entityManager.find(User.class, sessionUser.getId());
+
+        // Comprobar si el usuario es admin
+        boolean isAdmin = currentUser.hasRole(User.Role.ADMIN);
 
         Complaint complaint = entityManager.find(Complaint.class, id);
 
-        if (complaint != null) {
+        if (complaint != null && isAdmin) {
 
             complaint.setResolved(true);
 

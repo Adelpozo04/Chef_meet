@@ -27,6 +27,9 @@ const ws = {
             //alert("¡Nueva Notificación!\n" + msg.text);
             showNotification(data.text);
         }
+        else if(data.type === 'EVENT_EDIT') {
+            showNotification(data.text);
+        }
         else if(data.type === 'NEW_COMPLAINT') {
             showNotification(data.text);
         }

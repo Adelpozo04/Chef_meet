@@ -69,7 +69,7 @@ public class SecurityConfig {
 						.requestMatchers("/recipe/create").hasRole("USER")
 						.requestMatchers("/recipe/**").permitAll()
 						.requestMatchers("/complaint/create").hasRole("USER")
-						.requestMatchers("/complaint/**").permitAll()
+						.requestMatchers("/complaint/**").hasRole("ADMIN")
 
 						.requestMatchers("/communities").permitAll()
 						.requestMatchers("/communities/create").hasRole("USER")

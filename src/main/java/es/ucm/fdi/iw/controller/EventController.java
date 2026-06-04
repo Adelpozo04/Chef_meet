@@ -27,17 +27,22 @@ import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.io.IOException;
 import java.io.File;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 
 @Controller
@@ -48,6 +53,9 @@ public class EventController {
 
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
     private LocalData localData;
@@ -407,6 +415,27 @@ public class EventController {
                 model.addAttribute("event", editedEvent);
                 return "event/edit";
             }
+        }
+
+        // Enviar notificacion por websocket al canal del evento para avisar de que se ha hecho un cambio
+        try {
+            // Construir el JSON del mensaje usando Jackson
+            ObjectMapper mapper = new ObjectMapper();
+            // Nodo principal de JSON
+            ObjectNode rootNode = mapper.createObjectNode();
+            // Tipo de mensaje
+            rootNode.put("type", "EVENT_EDIT");
+            // Texto de la notificacion
+            rootNode.put("text", "Se han hecho cambios en el evento " + event.getTitle());
+            // Convertir JSON a texto
+            String json = mapper.writeValueAsString(rootNode);
+
+            // Publicar en el canal del evento
+            messagingTemplate.convertAndSend("/topic/event-" + event.getId(), json);
+            
+        } catch (Exception e) {
+
+        log.error("Error al publicar en el canal del evento", e );
         }
 
         // Actualizar solo los campos editables del evento.

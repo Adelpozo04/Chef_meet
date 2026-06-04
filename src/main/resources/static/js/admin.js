@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });*/
 
         // Logica para mostrar/ocultar las tablas
-        const tableContainers = ['users', 'recipes', 'communities', 'events'];
+        const tableContainers = ['users', 'recipes', 'communities', 'events', 'complaints'];
 
         // Ocultar todas las tablas
         tableContainers.forEach(containerName => {
