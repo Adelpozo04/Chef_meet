@@ -61,6 +61,9 @@ public class Event implements Transferable<Event.Transfer> {
     @ManyToOne
     private Community community;
 
+    @ManyToMany
+    private List<Recipe> recipes = new ArrayList<>();
+
     // Un evento tiene muchas reservas asociadas
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Reservation> attendees = new ArrayList<>();

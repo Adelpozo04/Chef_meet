@@ -88,6 +88,27 @@
                         <h4>Descripción del evento</h4>
                         <p th:text="${event.description}"></p>
                         
+                        <div class="event-recipes-box">
+                        <h4>Recetas que se van a cocinar</h4>
+
+                            <div th:if="${!#lists.isEmpty(event.recipes)}" class="event-recipes-grid">
+                                <a th:each="recipe : ${event.recipes}"
+                                th:href="@{/recipeInfo/{id}(id=${recipe.id})}"
+                                class="event-recipe-card">
+
+                                    <span class="event-recipe-title" th:text="${recipe.title}">
+                                        Nombre de la receta
+                                    </span>
+
+                                    <span class="event-recipe-link">Ver receta</span>
+                                </a>
+                            </div>
+
+                            <p th:if="${#lists.isEmpty(event.recipes)}" class="text-muted">
+                                No hay recetas añadidas a este evento.
+                            </p>
+                        </div>
+
                         <div class="reservation-actions" th:if="${canEditEvent}">
                             <a th:href="@{/event/{id}/edit(id=${event.id})}" class="btn-edit-event">
                                 Editar evento

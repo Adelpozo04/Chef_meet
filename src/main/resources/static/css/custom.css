@@ -415,10 +415,12 @@ img.preview {
     margin-left: 1rem;
 }
 
+
 .recipe_wrapper{
-    margin-top: 15px;
-    padding: 15px 30px 15px 30px;
-    background-color: rgb(241, 191, 154);
+    margin-top: 0px;
+    padding: 40px 30px;
+    background-color: #fff;
+    min-height: 100vh;
 }
 
 .empty_image_input{
@@ -442,14 +444,32 @@ img.preview {
     background-color: rgb(137, 137, 137);
 }
 
+
+
 .main_image{
 
-    max-height: 500px;
-    max-width: 500px;
-    object-fit: contain;
-    border-radius: 5%;
+    width: 100%;
+    max-width: 420px;
+    max-height: 360px;
+    object-fit: cover;
+    border-radius: 18px;
 }
 
+.recipe-step-image {
+    width: 100%;
+    max-width: 280px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.recipe-card-img {
+    width: 360px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+/**/
 .description_box{
     width: 400px;
     height: 150px;
@@ -733,4 +753,229 @@ img.preview {
 
 .card_item_complaint.selected_complaint_card:hover {
     transform: scale(1.08);
+}
+
+
+/* Vista listado de recetas */
+.recipe-page-header {
+    max-width: 900px;
+    margin: 0 auto 30px auto;
+}
+
+.recipe-section {
+    max-width: 1200px;
+    margin: 35px auto;
+}
+
+.recipe-section summary {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1e354e;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.recipe-empty {
+    text-align: center;
+    color: #6c757d;
+    margin: 30px 0;
+}
+
+/* Vista detalle receta */
+.recipe-detail-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.recipe-hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 35px;
+    align-items: center;
+    margin-bottom: 45px;
+}
+
+.recipe-info-card {
+    background: #f8f9fa;
+    border: 1px solid #dee2de;
+    border-radius: 18px;
+    padding: 28px;
+}
+
+.recipe-author {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-top: -10px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.recipe-content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+.recipe-panel {
+    background: #fff;
+    border: 1px solid #dee2de;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.recipe-panel h3 {
+    color: #1e354e;
+    margin-bottom: 18px;
+}
+
+.recipe-step-item {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+    align-items: center;
+}
+
+/* Formulario crear receta */
+.recipe-create-container {
+    max-width: 950px;
+    margin: 0 auto;
+}
+
+.recipe-create-form {
+    background: #fff;
+    border: 1px solid #dee2de;
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.recipe-form-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1e354e;
+    font-weight: 700;
+}
+
+.recipe-cover-upload {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.recipe-create-form .empty_image {
+    border-radius: 18px;
+}
+
+.recipe-create-form input,
+.recipe-create-form textarea,
+.recipe-create-form select {
+    margin-bottom: 12px;
+}
+
+@media (min-width: 768px) {
+    .recipe-hero {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .recipe-content-grid {
+        grid-template-columns: 1fr 1.5fr;
+    }
+
+    .recipe-step-item {
+        grid-template-columns: 280px 1fr;
+    }
+}
+
+.recipe-steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.recipe-step-text h4 {
+    color: #1e354e;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.recipe-step-text p {
+    margin: 0;
+    line-height: 1.5;
+}
+.page-title {
+    color: #494B4D;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 32px;
+}
+
+/* Páginas secundarias de receta: valorar / añadir a comunidad */
+.recipe-action-container {
+    max-width: 520px;
+    margin: 0 auto;
+    min-height: 65vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+.recipe-action-card {
+    width: 100%;
+    background: white;
+    border-radius: 22px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    overflow: hidden;
+    text-align: center;
+}
+
+.recipe-action-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.recipe-action-card-body {
+    padding: 24px;
+}
+
+.recipe-action-card-body h2 {
+    color: #1e354e;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.recipe-action-card-body p {
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+.recipe-action-form {
+    width: 100%;
+    background: #f8f9fa;
+    border: 1px solid #dee2de;
+    border-radius: 18px;
+    padding: 24px;
+    text-align: center;
+}
+
+.recipe-action-form .star-rating {
+    margin-bottom: 18px;
+}
+
+.recipe-action-form select {
+    margin-bottom: 18px;
+}
+
+.event-link {
+	text-decoration: none;
+	transition: 0.2s;
+}
+.event-link.dark {
+	font-weight: bold;
+	color: #1f2d3d;
 }

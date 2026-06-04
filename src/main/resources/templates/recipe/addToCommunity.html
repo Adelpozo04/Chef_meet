@@ -9,36 +9,78 @@
         type="text/css" />
 </head>
 
+<!-- Añadir una receta a un evento o a una comunidad-->
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
+    <main class="flex-shrink-0 recipe_wrapper">
 
-        <!-- Botón de volver atrás -->
         <a href="javascript:history.back()" class="btn-volver"> 
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
             </svg>
         </a>
 
-        <!-- Apartado principal que maneja la selección y envio de la informacion a la comunidad. La mayoria de la logica esta en el controlador-->
-        <form method="post" th:action="@{/recipe/addToCommunity}">
+        <h1 class="page-title">Añadir receta a comunidad o evento</h1>
 
-            <input type="hidden" name="recipeId" th:value="${recipe.id}">
+        <div th:if="${errorPrivate}" class="alert alert-danger text-center" role="alert">
+            Para añadir una receta a una comunidad o evento, la receta debe ser pública.
+        </div>
 
-            <!-- Dropdown para la selección de la comunidad dado el nombre-->
-            <select name="communityId">
-                <option th:each="c : ${communities}"
-                        th:value="${c.id}"
-                        th:text="${c.title}">
-                </option>
-            </select>
+        <div th:if="${errorMaxRecipes}" class="alert alert-danger text-center" role="alert">
+            No se puede añadir la receta: el evento ya tiene el máximo de 10 recetas asociadas.
+        </div>
 
-            <!-- Envio de la información -->
-            <button type="submit" class="category_item">Añadir a comunidad</button>
+        <div class="recipe-action-container">
 
-        </form>
+            <div class="recipe-action-card">
+                <img th:src="@{/recipe/{id}/pic/cover(id=${recipe.id})}" alt="Imagen de la receta">
 
+                <div class="recipe-action-card-body">
+                    <h2 th:text="${recipe.title}">Nombre receta</h2>
+                    <p th:text="${recipe.author != null ? 'Receta de ' + recipe.author.username : 'Autor desconocido'}"></p>
+                </div>
+            </div>
+
+            <form method="post" th:action="@{/recipe/addToCommunity}" class="recipe-action-form">
+
+                <input type="hidden" name="recipeId" th:value="${recipe.id}">
+
+                <label for="communityId" class="form-label">Selecciona una comunidad</label>
+
+                <select name="communityId" id="communityId" class="form-select">
+                    <option th:each="c : ${communities}"
+                            th:value="${c.id}"
+                            th:text="${c.title}">
+                    </option>
+                </select>
+
+                <button type="submit" class="category_item mx-auto">
+                    Añadir a comunidad
+                </button>
+
+            </form>
+
+            <form method="post" th:action="@{/recipe/addToEvent}" class="recipe-action-form">
+
+                <input type="hidden" name="recipeId" th:value="${recipe.id}">
+
+                <label for="eventId" class="form-label">Selecciona un evento</label>
+
+                <select name="eventId" id="eventId" class="form-select">
+                    <option th:each="e : ${events}"
+                            th:value="${e.id}"
+                            th:text="${e.title}">
+                    </option>
+                </select>
+
+                <button type="submit" class="category_item mx-auto">
+                    Añadir a evento
+                </button>
+
+            </form>
+
+        </div>
     </main>
 
     <th:block th:replace="~{fragments/footer.html :: footer}" />

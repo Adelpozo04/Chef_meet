@@ -10,12 +10,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 
+
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
+    <main class="flex-shrink-0 recipe_wrapper">
 
-        <!-- Botón de volver atrás -->
+        <!-- Boton de volver atras -->
         <a href="javascript:history.back()" class="btn-volver"> 
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
@@ -23,32 +24,43 @@
         </a>
 
         <!-- Input principal para evaluar la receta, este hace un post que aporta info al campo en cuestion-->
-        <form method="post" th:action="@{/recipe/addRating/{id}(id=${recipe.id})}">
+        <h1 class="page-title">Valora la receta</h1>
 
-            <!-- No son botones ya que toda la logica esta en el JS, el cual revisa la posicion del click del raton para saber cual se ha pulsado-->
-            <div class="star-rating" id="star-rating">
+        <div class="recipe-action-container">
 
-                <span class="star" data-value="1">★</span>
-                <span class="star" data-value="2">★</span>
-                <span class="star" data-value="3">★</span>
-                <span class="star" data-value="4">★</span>
-                <span class="star" data-value="5">★</span>
+            <div class="recipe-action-card">
+                <img th:src="@{/recipe/{id}/pic/cover(id=${recipe.id})}" alt="Imagen de la receta">
 
+                <div class="recipe-action-card-body">
+                    <h2 th:text="${recipe.title}">Nombre receta</h2>
+                    <p th:text="${recipe.author != null ? 'Receta de ' + recipe.author.username : 'Autor desconocido'}"></p>
+                </div>
             </div>
 
-            <!-- Input oculto para almacenar la puntuación seleccionada -->
-            <input type="hidden" name="rating" id="rating" value="0">
+            <form method="post" th:action="@{/recipe/addRating/{id}(id=${recipe.id})}" class="recipe-action-form">
 
-            <!-- Boton que envia la evaluacion al controlador-->
-            <button type="submit" class="category_item">Añadir reseña</button>
+                <div class="star-rating" id="star-rating">
+                    <span class="star" data-value="1">★</span>
+                    <span class="star" data-value="2">★</span>
+                    <span class="star" data-value="3">★</span>
+                    <span class="star" data-value="4">★</span>
+                    <span class="star" data-value="5">★</span>
+                </div>
 
-        </form>
+                <!-- Input oculto para almacenar la puntuación seleccionada -->
+                <input type="hidden" name="rating" id="rating" value="0">
 
+                <!-- Boton que envia la evaluacion al controlador-->
+                <button type="submit" class="category_item mx-auto">
+                    Añadir reseña
+                </button>
+            </form>
+
+        </div>
     </main>
 
-    <!-- JS para la evaluación de la receta -->
+     <!-- JS para la evaluación de la receta -->
     <script th:src="@{/js/recipeAddRating.js}"></script>
     <th:block th:replace="~{fragments/footer.html :: footer}" />
 </body>
-
 </html>

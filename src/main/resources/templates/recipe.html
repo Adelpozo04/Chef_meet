@@ -12,38 +12,39 @@
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
+   
     <!-- recipe wrapper marca el color de fondo de las paginas de receta-->
-    <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
-        
+    <main class="flex-shrink-0 recipe_wrapper">
+        <h1 class="page-title">Explorar recetas</h1>
         <!-- Barra de busqueda de bootstrap -->
-        <div class="row justify-content-center mb-4" id="search-community-bar">
-            <div class="col-md-6">
-                <form class="d-flex" role="search" onsubmit="return false;">
-                    <input id="searchInput" class="form-control me-2" type="search" placeholder="Buscar comunidades..." aria-label="Search"/>
-                    <button class="btn btn-busqueda" type="submit">Buscar</button>
-                </form>
+        <div class="recipe-page-header">
+            <div class="row justify-content-center mb-4" id="search-community-bar">
+                <div class="col-md-8">
+                    <form class="d-flex" role="search" onsubmit="return false;">
+                        <input id="searchInput" class="form-control me-2" type="search" placeholder="Buscar recetas..." aria-label="Search"/>
+                        <button class="btn btn-busqueda" type="submit">Buscar</button>
+                    </form>
+                </div>
             </div>
-        </div>
 
-        <!-- Botón para crear receta solo visible para usuarios logueados -->
-        <th:block th:if="${u}">
-        <div class="explorer_wrapper">
-            <div class="category_list">
-                <a th:href="@{/recipe/create}" class="category_item" category="own" id="create-recipe">Crear receta</a>
-            </div>
+            <th:block th:if="${u}">
+                <div class="category_list">
+                    <a th:href="@{/recipe/create}" class="category_item" category="own" id="create-recipe">Crear receta</a>
+                </div>
+            </th:block>
         </div>
-        </th:block>
 
         <!-- Lista de recetas del propio usuario -->
-        <details open>
+        
+        <details open class="recipe-section">
             <summary class="communities-dropdown">Mis Recetas</summary>
 
+            
             <section class="cards_list">
-                <div class="card_item" th:each="recip: ${recipes}" 
-                th:attr="category=${session.u != null and recip.author != null and recip.author.id == session.u.id ? 'own' : 'none'}">
-
-                    <!--Criba de recetas para que solo sean las propias-->
-                    <div th:if="${(session.u != null && recip.author != null && recip.author.id == session.u.id)}">
+                <div class="card_item" 
+                    th:each="recip: ${recipes}"
+                    th:if="${session.u != null && recip.author != null && recip.author.id == session.u.id}"
+                    th:attr="category='own'">
 
                         <!-- Wrapper de como es la tarjeta de una sola receta -->
                         <div class="card_wrapper">
@@ -51,18 +52,22 @@
                             <!--Enlace a la informacion de la receta-->
                             <a th:href="@{/recipeInfo/{id}(id=${recip.id})}" class="card_link">
 
+
                                 <!-- Imagen que representa a la receta-->
                                 <div style="width: 360px; height: 250px; overflow: hidden;">
-                                    <img th:src="@{/recipe/{id}/pic/cover(id=${recip.id})}" 
-                                    alt="Imagen de la receta" class="w-100 h-100" style="object-fit: cover;">
+                                    
+                                    <img th:src="@{/recipe/{id}/pic/cover(id=${recip.id})}"  
+                                        class="recipe-card-img">
                                 </div>
 
                                 <!-- Titulo de la receta, hace uso de un footer al punto medio-->
                                 <span class="card_footer_middle" th:text="${recip.title}">Título</span>
                                 
+                                
                                 <!-- Representacion mediante estrellas de las evaluaciones a una receta, en un footer final-->
-                                <div for="averageRating" class="d-flex flex-row gap-3 card_footer align-items-center justify-content-center">
-                                    <p id="ratingNumber" th:text="${recip.averageRating}"></p>
+                                <p class="rating-number" th:text="${recip.averageRating}"></p>
+
+                                <div class="star-rating upElement">
 
                                     <!-- La configuracion del color de las recetas se hace entre el CSS que tiene los diseños y el JS que activa los necesarios-->
                                     <div class="star-rating upElement" id="star-rating">
@@ -80,7 +85,7 @@
                             <!-- Botones de interaccion con la receta-->
                             <div class="d-flex flex-row gap-3 align-items-center">
 
-                                <!-- Botón de eliminar solo visible para el autor o admin -->
+                                <!-- Boton de eliminar solo visible para el autor o admin -->
                                 <form th:action="@{/recipe/{id}/delete(id=${recip.id})}" method="post">
                                     <button type="submit" onclick="return confirm('¿Seguro que quieres borrar esta receta?')"
                                         class="btn btn-danger btn-sm mt-2">
@@ -111,15 +116,18 @@
         </details>
 
         <!-- Lista de recetas publicas de otros usuarios -->
-        <details open>
+         
+        <details open class="recipe-section">
             <summary class="communities-dropdown">Otras Recetas</summary>
 
             <section class="cards_list">
-                <div class="card_item" th:each="recip: ${recipes}" 
-                th:attr="category=${session.u != null and recip.author != null and recip.author.id == session.u.id ? 'own' : 'none'}">
-
-                    <!--Criba de recetas para que solo sean las publicas extenas al usuario o cualquiera si es admin-->
-                    <div th:if="${(recip.publicRecipe && session.u != null && recip.author != null && recip.author.id != session.u.id) || (session.u != null && session.u.hasRole('ADMIN'))}">
+                <div class="card_item" 
+                    th:each="recip: ${recipes}"
+                    th:if="${session.u != null 
+                        && recip.author != null 
+                        && recip.author.id != session.u.id 
+                        && (recip.publicRecipe || session.u.hasRole('ADMIN'))}"
+                    th:attr="category='none'">
 
                         <!-- Wrapper de como es la tarjeta de una sola receta -->
                         <div class="card_wrapper">
@@ -129,8 +137,9 @@
 
                                 <!-- Imagen que representa a la receta-->
                                 <div style="width: 360px; height: 250px; overflow: hidden;">
-                                    <img th:src="@{/recipe/{id}/pic/cover(id=${recip.id})}"
-                                    alt="Imagen de la receta" class="w-100 h-100" style="object-fit: cover;">
+                                    
+                                    <img th:src="@{/recipe/{id}/pic/cover(id=${recip.id})}"  
+                                        alt="Imagen de la receta" class="recipe-card-img">
                                 </div>
                                
                                 <!-- Titulo de la receta, hace uso de un footer al punto medio-->
@@ -138,9 +147,10 @@
 
                                 <!-- Representacion mediante estrellas de las evaluaciones a una receta, en un footer final-->
                                 <div for="averageRating" class="d-flex flex-row gap-3 card_footer align-items-center justify-content-center">
-                                    <p id="ratingNumber" th:text="${recip.averageRating}"></p>
+                                   
+                                    <p class="rating-number" th:text="${recip.averageRating}"></p>
 
-                                    <div class="star-rating upElement" id="star-rating">
+                                <div class="star-rating upElement">
 
                                         <span class="star" data-value="1">★</span>
                                         <span class="star" data-value="2">★</span>

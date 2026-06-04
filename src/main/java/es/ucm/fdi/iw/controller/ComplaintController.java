@@ -286,6 +286,8 @@ public class ComplaintController {
 
             complaint.setResolved(true);
 
+            notifyOwnerComplaintResolved(complaint);
+
             log.info("Complaint {} marcada como resuelta", complaint.getId());
         }
 
@@ -459,5 +461,35 @@ public class ComplaintController {
         }
 
         return "un elemento";
+    }
+
+    // Envia una notificacion al usuario que creo la queja
+    // cuando el administrador la marca como resuelta.
+    private void notifyOwnerComplaintResolved(Complaint complaint) {
+
+        try {
+            if (complaint == null || complaint.getOwner() == null) {
+                return;
+            }
+
+            User owner = complaint.getOwner();
+
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode rootNode = mapper.createObjectNode();
+
+            rootNode.put("type", "COMPLAINT_RESOLVED");
+            rootNode.put("text", "Tu queja \"" + complaint.getTitle() + "\" ha sido resuelta.");
+
+            String json = mapper.writeValueAsString(rootNode);
+
+            // Se envía solo al usuario que creó la queja
+            messagingTemplate.convertAndSend(
+                "/user/" + owner.getUsername() + "/queue/updates",
+                json
+            );
+        }
+        catch (Exception e) {
+            log.error("Error al enviar notificación de queja resuelta al usuario", e);
+        }
     }
 }

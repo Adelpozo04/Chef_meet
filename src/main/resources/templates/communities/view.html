@@ -34,7 +34,8 @@
                         <button type="submit">Salirse de la comunidad</button>
                     </form>
                 </th:block>
-                
+                                
+
                 <th:block th:if="${isOwner or isAdmin}">
                     <form th:action="@{/communities/{id}/delete(id=${community.id})}" method="post">
                         <button type="submit">Eliminar comunidad</button>
@@ -45,7 +46,9 @@
 
             <div class="community-title">
                 <h1 th:text="${community.title}">Título de la comunidad</h1>
-                <p class="community-category" th:utext="|${community.country.countryName} ${community.country.emoji}|"></p>
+                <p class="community-category"
+                    th:utext="${community.country != null ? community.country.countryName + ' ' + community.country.emoji : 'Sin país'}">
+                </p>
             </div>
         </div>
         
@@ -74,14 +77,19 @@
             </ul>
         </div>
 
+        
         <div class="community-posts">
             <h2>Recetas</h2>
-            <ul class="community-posts-list">
-                <li>
-                    <p> Una receta </p>
-                </li>
-                <li>
-                    <p> Otra receta </p>
+                <ul class="community-events-list">
+                    <li th:each="recipe : ${community.recipes}"  class="event-item">
+                        <a th:href="@{/recipeInfo/{id}(id=${recipe.id})}" 
+                            th:text="${recipe.title}" class="event-link dark">
+                                Nombre de la receta
+                        </a>
+                    </li>
+
+                <li th:if="${#lists.isEmpty(community.recipes)}">
+                    <p>No hay recetas añadidas a esta comunidad.</p>
                 </li>
             </ul>
         </div>
@@ -95,10 +103,19 @@
                 </a>
             </div>
             
+           
             <h4 class="events-subtitle upcoming">Próximos</h4>
             <ul class="community-events-list">
                 <li th:each="ev: ${upcomingEvents}" class="event-item">
-                    <a th:href="@{/reservation/{id}(id=${ev.id})}" th:text="${ev.title}" class="event-link dark"></a>
+                    <a th:if="${!ev.isPrivate() or isMember or isOwner or isAdmin}"
+                        th:href="@{/reservation/{id}(id=${ev.id})}" 
+                        th:text="${ev.title}" 
+                        class="event-link dark">
+                    </a>
+                    <span th:if="${ev.isPrivate() and !isMember and !isOwner and !isAdmin}"
+                        th:text="${ev.title}"
+                        class="event-link dark">
+                    </span>
                     <span th:text="${#temporals.format(ev.date, ' (dd/MM/yy)')}" class="event-date"></span>
                     <span th:if="${ev.isPrivate()}" class="badge-private">Privado</span>
                 </li>
@@ -107,8 +124,9 @@
 
             <h4 class="events-subtitle past">Pasados</h4>
             <ul class="community-events-list">
+                
                 <li th:each="ev: ${pastEvents}" class="event-item">
-                    <a th:href="@{/reservation/{id}(id=${ev.id})}" th:text="${ev.title}" class="event-link light"></a>
+                    <span th:text="${ev.title}" class="event-link light"></span>
                 </li>
                 <li th:if="${#lists.isEmpty(pastEvents)}" class="event-empty">No hay eventos pasados.</li>
             </ul>
@@ -130,8 +148,6 @@
 
         <div class="chat-body" id="chat-messages">
 
-            <!-- Mensajes antiguos cargados desde base de datos.
-            Se añade data-message-id para que JavaScript sepa que mensaje denunciar. -->
             <div class="chat-message reportable-message"
                 th:each="m : ${lastMessages}"
                 th:data-message-id="${m.id}"
@@ -141,6 +157,7 @@
                     <span th:text="${m.text}">Mensaje</span>
                 </p>
             </div>
+
         </div>
 
         <div class="chat-footer">

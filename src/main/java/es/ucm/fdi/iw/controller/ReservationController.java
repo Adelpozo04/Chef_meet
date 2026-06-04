@@ -49,6 +49,12 @@ public class ReservationController {
             return "redirect:/event";
         }
 
+        User sessionUser = (User) session.getAttribute("u");
+
+        if (!canAccessEvent(event, sessionUser)) {
+            return "redirect:/event";
+        }
+
         // Calcular plazas libres
         int reservedSpots = event.getAttendees() != null ? event.getAttendees().size() : 0;
         int availableSpots = event.getCapacity() - reservedSpots;
@@ -97,6 +103,14 @@ public class ReservationController {
         User u = entityManager.find(User.class, userId);
         // Buscar el evento que queremos reservar
         Event event = entityManager.find(Event.class, eventId);
+
+        if (event == null || u == null) {
+            return "redirect:/event";
+        }
+    
+        if (!canAccessEvent(event, u)) {
+            return "redirect:/event";
+        }
 
         // Si existen ambos, se crea la reserva en la base de datos
         if(event != null && u != null) {
@@ -165,6 +179,60 @@ public class ReservationController {
 
         // Redirigir al perfil del usuario a la pestaña de mis eventos
         return "redirect:/account?tab=events";
+    }
+
+    // Comprueba si un usuario puede acceder a un evento
+    // Los eventos publicos son accesibles para cualquier usuario
+    // Los eventos privados solo son accesibles si el usuario es admin,
+    // organizador, asistente, miembro de la comunidad o creador de la comunidad.
+    private boolean canAccessEvent(Event event, User user) {
+
+        // Si el evento no existe, no se puede acceder
+        if (event == null) {
+            return false;
+        }
+
+        // Los eventos públicos se pueden ver siempre
+        if (!event.isPrivate()) {
+            return true;
+        }
+
+        // Si es privado y no hay usuario logueado, no se puede acceder
+        if (user == null) {
+            return false;
+        }
+
+        // Recargar usuario desde base de datos
+        User currentUser = entityManager.find(User.class, user.getId());
+
+        // Si el usuario no existe, no puede acceder
+        if (currentUser == null) {
+            return false;
+        }
+
+        // El admin puede acceder
+        boolean isAdmin = currentUser.hasRole(User.Role.ADMIN);
+
+        // El organizador del evento puede acceder
+        boolean isOrganizer = event.getOrganizer() != null
+                && event.getOrganizer().getId() == currentUser.getId();
+
+        // Si ya tiene reserva, puede acceder
+        boolean isAttendee = event.getAttendees() != null
+                && event.getAttendees().stream()
+                    .anyMatch(r -> r.getAttendee().getId() == currentUser.getId());
+
+        // Si el evento pertenece a una comunidad, comprobar permisos sobre esa comunidad
+        boolean isCommunityMember = event.getCommunity() != null
+                && event.getCommunity().getMembers().stream()
+                    .anyMatch(member -> member.getId() == currentUser.getId());
+
+        // También permitimos al creador de la comunidad
+        boolean isCommunityOwner = event.getCommunity() != null
+                && event.getCommunity().getOwner() != null
+                && event.getCommunity().getOwner().getId() == currentUser.getId();
+
+        return isAdmin || isOrganizer || isAttendee || isCommunityMember || isCommunityOwner;
     }
 }
 

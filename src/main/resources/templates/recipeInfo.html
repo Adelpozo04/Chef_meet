@@ -12,129 +12,90 @@
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
+    
+    <main class="flex-shrink-0 recipe_wrapper">
 
-        <!-- Botón de volver atrás -->
-        <a href="javascript:history.back()" class="btn-volver"> 
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
-            </svg>
-        </a>
+        <div class="recipe-detail-container">
 
-        <!--Apartado principal principal de la receta-->
-        <div class="d-flex flex-column align-items-center">
+            <a href="javascript:history.back()" class="btn-volver"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                </svg>
+            </a>
 
-            <!-- Titulo -->
             <h1 th:text="${recipe.title}" class="title_xxl border-0 text-center"></h1>
 
-            <!-- Seccion central de la receta-->
-            <div class="d-flex flex-row align-items-center gap-5">
+            <p class="recipe-author"
+            th:text="${recipe.author != null ? 'Receta de ' + recipe.author.username : 'Autor desconocido'}">
+                Receta de usuario
+            </p>
 
-                <!-- Imagen de vista previa -->
-                <div>
-                    <img class="main_image" th:src="@{/recipe/{id}/pic/cover(id=${recipe.id})}" alt="Imagen de la receta">
-                </div> 
-
-                <!-- Seccion descriptiva de la receta-->
-                <div class="d-flex flex-column align-items-start justify-content-center gap-2 ml-5">
-
-                    <!--Datos generales-->
-                    <div>
-                        <h3>Datos Generales</h3>
-                        <div for="time">
-                            <p th:text="'Tiempo de preparación: ' + ${recipe.time}"></p>
-                        </div>
-
-                        <div for="difficulty">
-                            <p th:text="'Nivel de dificultad: ' + ${recipe.difficulty}"></p>
-                        </div>
-                    </div>
-
-                    <!--Datos de alergenos, estos se han rellenado segun la informacion que tienen los ingredientes que contiene la receta-->
-                    <div>
-                        <h3>Alergias</h3>
-
-                        <p th:each="allergen : ${recipe.allergens}"
-                            th:text="${allergen}">
-                        </p>
-
-                    </div>
-                       
-                    <!--Datos caloricos-->
-                    <div>
-                        <h3>Calorias</h3>
-
-                        <div for="calories" class="d-flex flex-row ml-3">
-                            <p th:text="${recipe.calories}"></p>
-                        </div>
-
-                    </div>
-
-                    <!--Datos de valoración-->
-                    <div>
-                        <h3>Valoración</h3>
-
-                        <div for="averageRating" class="d-flex flex-row gap-3">
-                            <p id="ratingNumber" th:text="${recipe.averageRating}"></p>
-
-                            <div class="star-rating upElement" id="star-rating">
-
-                                <span class="star" data-value="1">★</span>
-                                <span class="star" data-value="2">★</span>
-                                <span class="star" data-value="3">★</span>
-                                <span class="star" data-value="4">★</span>
-                                <span class="star" data-value="5">★</span>
-
-                            </div>
-                        </div>
-
-                    </div>
-                    
+            <div class="recipe-hero">
+                <div class="text-center">
+                    <img class="main_image" 
+                        th:src="@{/recipe/{id}/pic/cover(id=${recipe.id})}"  
+                        alt="Imagen de la receta">
                 </div>
 
+                <div class="recipe-info-card">
+                    <h3>Datos generales</h3>
+
+                    <p th:text="'Tiempo de preparación: ' + ${recipe.time}"></p>
+                    <p th:text="'Nivel de dificultad: ' + ${recipe.difficulty}"></p>
+
+                    <h3>Alergias</h3>
+                    <p th:if="${#sets.isEmpty(recipe.allergens)}">Sin alérgenos indicados.</p>
+                    <p th:each="allergen : ${recipe.allergens}" th:text="${allergen}"></p>
+
+                    <h3>Calorías</h3>
+                    <p th:text="${recipe.calories}"></p>
+
+                    <h3>Valoración</h3>
+                    <div class="d-flex flex-row gap-3">
+                        <p id="ratingNumber" th:text="${recipe.averageRating}"></p>
+
+                        <div class="star-rating upElement" id="star-rating">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-                   
-            
-        </div>
+            <div class="recipe-content-grid">
+                <div class="recipe-panel">
+                    <h3>Ingredientes</h3>
 
-        <!--Ingredientes de la receta-->
-        <div>
+                    <ul>
+                        <li th:each="ingredient : ${recipe.recipeIngredients}">
+                            <span th:text="${ingredient.ingredientUsed.name}"></span>
+                            <span th:text="${ingredient.quantity}"></span>
+                        </li>
+                    </ul>
+                </div>
 
-            <!-- Se toman los ingredientes de la receta y se itera en la informacion de cada uno de ellos para mostrarla. Cabe destacar que no son de clase Ingrediente sino IngredienteInRecipe ya que contienen informacion adicional sobre la cantidad utilizada -->
-            <h3>Ingredientes</h3>
-            <ul th:each="ingredient, iterStat : ${recipe.recipeIngredients}" id="ingredientsList">
+                <div class="recipe-panel">
+                    <h3>Elaboración</h3>
 
-                <li class="mb-3">                    
-                    <p th:text="${ingredient.ingredientUsed.name} + ' ' + ${ingredient.quantity}"></p> 
-                </li>
+                    <div class="recipe-steps-list">
+                        <div th:each="step, iterStat : ${recipe.steps}" class="recipe-step-item">
+                            <img class="recipe-step-image" 
+                                th:src="@{/recipe/{id}/pic/step{index}(id=${recipe.id}, index=${iterStat.index})}"
+                                alt="Imagen del paso">
 
-            </ul>
-
-                
-        </div>
-
-        <!--Pasos para elaborar la receta-->
-            <div>
-                <h3>Elaboración</h3>
-                <ol th:each="step, iterStat : ${recipe.steps}" id="stepsList">
-
-                    <li class="mb-3">
-                        <!-- Imagen del paso concreto-->
-                        <img class="main_image" 
-                        th:src="@{/recipe/{id}/pic/step{index}(id=${recipe.id}, index=${iterStat.index})}"  
-                        alt="Imagen del paso">
-                        
-                        <!-- Texto descriptivo del paso-->
-                        <p th:text="${step}"></p> 
-                    </li>
-
-                </ol>
-
+                            <div class="recipe-step-text">
+                                <h4 th:text="'Paso ' + ${iterStat.count}"></h4>
+                                <p th:text="${step}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-        
-
+        </div>
     </main>
     
     <script th:src="@{/js/recipeInfo.js}"></script>

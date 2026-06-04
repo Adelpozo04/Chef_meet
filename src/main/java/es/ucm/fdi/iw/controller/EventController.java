@@ -96,7 +96,7 @@ public class EventController {
                 // Comprobar si el usuario es admin
                 boolean isAdmin = u.hasRole(User.Role.ADMIN);
                 // Es miembro de la comunidad asociada al evento?
-                boolean isMember = e.getCommunity() != null && e.getCommunity().getMembers().contains(u);
+                boolean isMember = e.getCommunity() != null && e.getCommunity().getMembers().stream().anyMatch(member -> member.getId() == u.getId());
                 // Organizador del evento?
                 boolean isOrganizer = e.getOrganizer() != null && e.getOrganizer().getId() == u.getId();
                 // Tiene una reserva para el evento?

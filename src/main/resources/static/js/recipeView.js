@@ -16,8 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
         //Se mira receta a receta si tienen el titulo, sino lo tienen se oculta la receta.
         recipes.forEach(recipe => {
 
+            
             //Se toma el titulo de cada receta en minuscula para compararlo con el texto de busqueda
-            const title = recipe.querySelector(".card_footer")
+            const title = recipe.querySelector(".card_footer_middle")
                                 .textContent
                                 .toLowerCase();
 
@@ -34,21 +35,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-//Funcion para mostar estrellas segun valoracion
+
+// Funcion para mostrar las estrellas de cada receta segun su valoracion
 document.addEventListener("DOMContentLoaded", function () {
 
-    const stars = document.querySelectorAll(".star");
-    const averageRating = parseFloat(document.getElementById("ratingNumber").textContent); 
+    // Recorremos cada tarjeta de receta por separado
+    const recipeCards = document.querySelectorAll(".card_wrapper");
 
-    stars.forEach(star => {
+    recipeCards.forEach(card => {
 
-        const starValue = parseInt(star.dataset.value);
+        // Valor numerico de la receta actual
+        const ratingElement = card.querySelector(".rating-number");
 
-        star.classList.remove("filled");
+        // Estrellas solo de esta tarjeta
+        const stars = card.querySelectorAll(".star");
 
-        if(averageRating >= starValue){
-            star.classList.add("filled");
+        if (!ratingElement) {
+            return;
         }
 
+        const averageRating = parseFloat(ratingElement.textContent);
+
+        stars.forEach(star => {
+
+            const starValue = parseInt(star.dataset.value);
+
+            star.classList.remove("filled");
+
+            if (averageRating >= starValue) {
+                star.classList.add("filled");
+            }
+        });
     });
 });

@@ -12,8 +12,10 @@
 <body class="d-flex flex-column h-100">
     <header th:replace="~{fragments/nav.html :: nav}"></header>
 
-    <main class="flex-shrink-0 column-gap-3 row-gap-5 recipe_wrapper">
+    
+    <main class="flex-shrink-0 recipe_wrapper">
         
+
         <!-- Base para la generacion de imagenes en los steps-->
         <template id="imageUploadTemplate">
  
@@ -39,111 +41,115 @@
 
         </template>
 
-        <form th:action="@{/recipe/create}" th:object="${recipe}" enctype="multipart/form-data" method="post" class="mt-4">
+        <div class="recipe-create-container">
 
-            <!--Apartado principal principal de la receta-->
-            <div class="d-flex flex-column align-items-center">
+            <a href="javascript:history.back()" class="btn-volver"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                </svg>
+            </a>
 
-                <!-- Titulo -->
-                <input th:field="*{title}" id="recipe-title" class="title_xxl border-0 text-center">
-        
-                <!-- Marco visual Bootstrap -->
-                <label class="d-flex flex-column align-items-center justify-content-center empty_image" 
-                style="cursor:pointer;">
+            <h2 class="recipe-form-title">Crear nueva receta</h2>
 
-                    <!-- Input oculto, es el que recoge el JS para la subida de imagenes -->
-                    <input type="file" id="recipe-cover" name="cover" accept="image/*" class="empty_image_input">
-
-                    <!-- Texto visible en el cuadro gris de subida de imagenes-->
-                    <span>Pulsa para subir imagen</span>
-
-                </label>
-
-                <!-- Imagen de vista previa, en este caso es un cuadro gris marcado por el CSS -->
-                <div>
-                    <img class="main_image d-none" name="imageRecipePreview" >
-                </div>        
-                
+            <!-- Error general de campos obligatorios -->
+            <div th:if="${createError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Faltan campos obligatorios.</strong> Debes rellenar título, tiempo, dificultad y calorías.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-            <!--Datos generales de la receta, son inputs de texto simples-->
-            <div>
-                <h3>Datos Generales</h3>
-
-                <div for="time" class="d-flex flex-row ml-3">
-                    <p>Tiempo de preparación:  </p>
-
-                    <!-- Tiempo de preparacion -->
-                    <input th:field="*{time}" id="recipe-time" class="title_m border-0 text-left">
-                </div>
-
-                <div for="difficulty" class="d-flex flex-row">
-                    <p>Nivel de dificultad:  </p>
-
-                    <!-- Nivel de dificultad -->
-                    <input th:field="*{difficulty}" id="recipe-difficulty" class="title_m border-0 text-left">
-                </div>
-
+            <!-- Error de ingredientes -->
+            <div th:if="${ingredientError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Faltan ingredientes.</strong> Debes añadir al menos un ingrediente y escribir su cantidad.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-            <!--Ingredientes de la receta-->
-            <div>
-                <h3>Ingredientes</h3>
+            <!-- Error de pasos -->
+            <div th:if="${stepError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Faltan pasos.</strong> Debes añadir al menos un paso de elaboración y rellenarlo.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
 
-                <!-- La lista es rellenada creando elementos dinamicamente, esto en el JS de recipe.js-->
-                <ul class="list_disc" id="ingredientsList">
+            <form th:action="@{/recipe/create}" 
+                th:object="${recipe}" 
+                enctype="multipart/form-data" 
+                method="post" 
+                class="recipe-create-form">
 
-                </ul>
+                <div class="form-group">
+                    <label for="recipe-title" class="form-label">Título de la receta(*)</label>
+                    <input th:field="*{title}" id="recipe-title" class="form-control" type="text" required>
+                </div>
 
-                <!-- Boton para añadir ingrediente, este activa la funcionalidad en el JS que registra el click-->
-                <button class="category_item" type="button" id="addIngredient">
-                    Añadir Ingrediente
+                <div class="form-group-large">
+                    <label class="form-label">Foto principal</label>
+
+                    <div class="recipe-cover-upload">
+                        <label class="d-flex flex-column align-items-center justify-content-center empty_image" style="cursor:pointer;">
+                            <input type="file" id="recipe-cover" name="cover" accept="image/*" class="empty_image_input">
+                            <span>Pulsa para subir imagen</span>
+                        </label>
+
+                        <div>
+                            <img class="main_image d-none" name="imageRecipePreview">
+                        </div>
+                    </div>
+
+                    <div class="photo-help-text">
+                        Recomendado: <strong>1000 x 800 píxeles</strong>. Tamaño máximo: 5MB.
+                    </div>
+                </div>
+
+                <div class="form-row-2col">
+                    <div>
+                        <label for="recipe-time" class="form-label">Tiempo de preparación(*)</label>
+                        <input th:field="*{time}" id="recipe-time" class="form-control" type="text" required>
+                    </div>
+
+                    <div>
+                        <label for="recipe-difficulty" class="form-label">Nivel de dificultad(*)</label>
+                        <input th:field="*{difficulty}" id="recipe-difficulty" class="form-control" type="text" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="recipe-calories" class="form-label">Calorías(*)</label>
+                    <input th:field="*{calories}" id="recipe-calories" class="form-control" type="text" required>
+                </div>
+
+                <div class="form-group">
+                    <h3>Ingredientes</h3>
+
+                    <ul class="list_disc" id="ingredientsList"></ul>
+
+                    <button class="category_item" type="button" id="addIngredient">
+                        Añadir ingrediente
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <h3>Elaboración</h3>
+
+                    <ol id="stepsList"></ol>
+
+                    <button class="category_item" type="button" id="addStep">
+                        Añadir paso
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <h3>Visibilidad</h3>
+
+                    <label>
+                        <input type="checkbox" th:field="*{publicRecipe}" id="recipe-public">
+                        Receta pública
+                    </label>
+                </div>
+
+                <button type="submit" class="category_item" id="create-button">
+                    Crear receta
                 </button>
-
-                
-            </div>
-
-            <!--Pasos para elaborar la receta-->
-            <div>
-                <h3>Elaboración</h3>
-
-                <!-- La lista es rellenada creando elementos dinamicamente, esto en el JS de recipe.js-->
-                <ol id="stepsList">
-
-
-                </ol>
-
-                <!-- Boton para añadir paso, este activa la funcionalidad en el JS que registra el click-->
-                <button class="category_item" type="button"id="addStep">
-                    Añadir Paso
-                </button>
-
-            </div>
-
-            <!--Especificación de las calorias, un input de texto normal-->
-            <div>
-                <h3>Calorías</h3>
-
-                <div for="calories" class="d-flex flex-row ml-3">
-                    <!-- Calorías -->
-                    <input th:field="*{calories}" id="recipe-calories" class="title_m border-0 text-left">
-                </div>
-
-            </div>
-
-            <!--Checkbox que marca si la receta es publica o no. Esto marca la visibilidad en la pestaña de recetas-->
-            <div>
-                <h3>Receta Pública</h3>
-                <label>
-                    <input type="checkbox" th:field="*{publicRecipe}" id="recipe-public">
-                    Pública
-                </label>
-            </div>
-
-            <!-- Boton para enviar el formulario y crear la receta, este envia toda la informacion al backend para su procesamiento-->
-            <button type="submit" class="category_item" id="create-button">Crear Receta</button>
-        </form>
-
+            </form>
+        </div>
         
 
     </main>

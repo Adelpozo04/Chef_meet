@@ -104,6 +104,11 @@ document.addEventListener("DOMContentLoaded", function (){
         const textAmount = document.createElement("p");
         textAmount.style.backgroundColor = "white";
         textAmount.style.display = "inline-block";
+        textAmount.style.padding = "6px 10px";
+        
+        textAmount.style.border = "1px solid #dee2de";
+        textAmount.style.borderRadius = "6px";
+        textAmount.style.marginLeft = "10px";
 
         //Hacemos que dicho elemento pueda ser editable
         textAmount.contentEditable = true;
@@ -197,10 +202,9 @@ document.addEventListener("DOMContentLoaded", function (){
         stepDescription.name = "steps";
         stepDescription.type = "text";
 
+        
         //Configuramos como se ve el texto descriptivo del paso
-        stepDescription.classList.add("title_m");
-        stepDescription.classList.add("border-0");
-        stepDescription.classList.add("text-left");
+        stepDescription.classList.add("form-control");
 
         //Creamos el boton para añadir una imagen
         const buttonImage = document.createElement("button");

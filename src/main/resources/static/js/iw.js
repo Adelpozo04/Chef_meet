@@ -24,7 +24,6 @@ const ws = {
         // Comprobar si el mensaje es la notificacion de evento
         if(data.type === 'EVENT_JOIN') {
             // Mostrar notificacion por pantalla
-            //alert("¡Nueva Notificación!\n" + msg.text);
             showNotification(data.text);
         }
         else if(data.type === 'EVENT_EDIT') {
@@ -33,18 +32,16 @@ const ws = {
         else if(data.type === 'NEW_COMPLAINT') {
             showNotification(data.text);
         }
-        else if(data.type == 'NEW_CHAT_MESSAGE') {
+        else if(data.type === 'NEW_CHAT_MESSAGE') {
+            showNotification(data.text);
+        }
+        else if(data.type === 'COMPLAINT_RESOLVED') {
             showNotification(data.text);
         }
         else if(document.getElementById('chat-messages')) {
 
             const chatLog = document.getElementById('chat-messages');
             const div = document.createElement("div");
-            /*div.className = "chat-message";
-
-            div.innerHTML = `
-                <p> <strong>[${data.from}]:</strong> ${data.text}</p>
-            `;*/
 
             // Crear visualmente el mensaje recibido por WebSocket.
             // Se añade el id del mensaje para poder denunciarlo después.

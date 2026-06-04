@@ -26,9 +26,13 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
+
+
+import es.ucm.fdi.iw.model.Event;
 
 //Controlador de las recetas, maneja la creación, eliminación, carga y valoración de estas, así como su adición a comunidades y la subida de fotos para las recetas
 @Controller
@@ -51,24 +55,52 @@ public class RecipeController {
         return "recipe/create";
     }
 
-    //Una vez que se cree la receta se maneja su creación en la base de datos con este metodo, se le asigna un autor, se crean los IngredientInRecipe necesarios para la receta y se suben las fotos que se hayan incluido
+    
+    //Una vez que se cree la receta se maneja su creacion en la base de datos con este metodo, se le asigna un autor, se crean los IngredientInRecipe necesarios para la receta y se suben las fotos que se hayan incluido
     @Transactional
     @PostMapping("/create")
     public String createRecipe(
             @ModelAttribute Recipe recipe,
             @ModelAttribute User edited,
             @RequestParam Map<String, MultipartFile> allParams, //Esto debe llamarse si o si allParams para que tome todos los parametros independientemente del nombre de estos y poder hacer bien la criba de steps y las imagenes
-            @RequestParam List<Long> ingredientIds,
-            @RequestParam List<String> quantities,
+            @RequestParam(value = "ingredientIds", required = false) List<Long> ingredientIds,
+            @RequestParam(value = "quantities", required = false) List<String> quantities,
             Model model,
             HttpSession session) {
 
+                
         //Se revisa que esta tenga los campos necesarios rellenados, si no es asi se muestra un mensaje de error y se vuelve a la pagina de crear receta
         if (recipe.getTitle().isBlank() || recipe.getDifficulty().isBlank() || 
             recipe.getTime().isBlank() || recipe.getCalories().isBlank()){
             model.addAttribute("createError", true);
             log.info("ERROR AL INTENTAR CREAR RECETA");
             return "recipe/create";
+        }
+
+        
+        // Comprobar que se ha añadido al menos un ingrediente
+        if (ingredientIds == null || ingredientIds.isEmpty() || quantities == null || quantities.isEmpty()) {
+
+            model.addAttribute("ingredientError", true);
+            log.info("ERROR AL INTENTAR CREAR RECETA: no se han añadido ingredientes");
+            return "recipe/create";
+        }
+
+        // Comprobar que se ha añadido al menos un paso
+        if (recipe.getSteps() == null || recipe.getSteps().length == 0) {
+
+            model.addAttribute("stepError", true);
+            log.info("ERROR AL INTENTAR CREAR RECETA: no se han añadido pasos");
+            return "recipe/create";
+        }
+
+        // Comprobar que los pasos no esten vacios
+        for (String step : recipe.getSteps()) {
+            if (step == null || step.isBlank()) {
+                model.addAttribute("stepError", true);
+                log.info("ERROR AL INTENTAR CREAR RECETA: hay pasos vacíos");
+                return "recipe/create";
+            }
         }
 
         model.addAttribute("createError", false);
@@ -125,13 +157,13 @@ public class RecipeController {
         
     }
 
-    //Metodo para añadir una receta a la comunidad
+    //Metodo para añadir una receta a una comunidad o a un evento
     @GetMapping("/addToCommunity/{id}")
-    public String showAddToCommunityPage(@PathVariable long id, Model model, HttpSession session) {
+    public String showAddToCommunityPage(@PathVariable long id, @RequestParam(required = false) String error, Model model, HttpSession session) {
         // Buscar la info de la receta en la base de datos usando el id que viene en la url
         Recipe recipe = entityManager.find(Recipe.class, id);
 
-        // Si el id no existe, se redirige a eventos
+        // Si el id no existe, se redirige a recetas
         if (recipe == null) {
             return "redirect:/recipe";
         }
@@ -146,25 +178,80 @@ public class RecipeController {
         communities.addAll(user.getJoinedCommunities());
         communities.addAll(user.getOwnedCommunities());
 
+        List<Event> events = entityManager.createQuery("SELECT e FROM Event e WHERE e.organizer.id = :uid", Event.class).
+                                setParameter("uid", user.getId())
+                            .getResultList();
         model.addAttribute("recipe", recipe);
         model.addAttribute("communities", communities);
+        model.addAttribute("events", events);
+
+        
+        if ("private".equals(error)) {
+            model.addAttribute("errorPrivate", true);
+        }
+        if ("maxRecipes".equals(error)) {
+            model.addAttribute("errorMaxRecipes", true);
+        }
 
         return "recipe/addToCommunity";
     }
 
+    
     //Una vez que se ha elegido la comunidad y se ha pulsado que se quiere añadir receta
     @PostMapping("/addToCommunity")
     @Transactional
     public String addRecipe(@RequestParam Long communityId,
-                            @RequestParam Long recipeId){
+                            @RequestParam Long recipeId,
+                            HttpSession session){
 
         //Tomamos tanto la comunidad como la receta que se quieren relacionar
         Community community = entityManager.find(Community.class, communityId);
         Recipe recipe = entityManager.find(Recipe.class, recipeId);
 
-        //Se añade mutuamente
-        community.getRecipes().add(recipe);
-        recipe.getCommunities().add(community);
+        if (community == null || recipe == null) {
+            return "redirect:/recipe";
+        }
+
+        User sessionUser = (User) session.getAttribute("u");
+
+        if (sessionUser == null) {
+            return "redirect:/login";
+        }
+
+        User user = entityManager.find(User.class, sessionUser.getId());
+        
+        // Solo se puede añadir una receta a una comunidad si la receta es publica.
+        if (!recipe.isPublicRecipe()) {
+            log.warn("El usuario {} ha intentado añadir una receta privada ({}) a la comunidad {}",
+                    user.getUsername(), recipe.getTitle(), community.getTitle());
+
+            return "redirect:/recipe/addToCommunity/" + recipeId + "?error=private";
+        }
+
+        // Comprobar que el usuario pertenece a la comunidad o es su creador/admin.
+        boolean isMember = community.getMembers().stream()
+                .anyMatch(member -> member.getId() == user.getId());
+
+        boolean isOwner = community.getOwner() != null
+                && community.getOwner().getId() == user.getId();
+
+        boolean isAdmin = user.hasRole(User.Role.ADMIN);
+
+        if (!isMember && !isOwner && !isAdmin) {
+            log.warn("El usuario {} ha intentado añadir una receta a una comunidad a la que no pertenece",
+                    user.getUsername());
+
+            return "redirect:/recipe";
+        }
+
+        // Evitar duplicados
+        boolean alreadyAdded = community.getRecipes().stream()
+                .anyMatch(r -> r.getId() == recipe.getId());
+
+        if (!alreadyAdded) {
+            community.getRecipes().add(recipe);
+            recipe.getCommunities().add(community);
+        }
 
         entityManager.persist(community);
         entityManager.persist(recipe);
@@ -173,6 +260,73 @@ public class RecipeController {
         return "redirect:/recipe";
     }
 
+    // Añade una receta publica a un evento creado por el usuario
+    // Solo se permite si la receta es publica y el usuario es el organizador del evento
+    @PostMapping("/addToEvent")
+    @Transactional
+    public String addRecipeToEvent(@RequestParam Long eventId,
+                                @RequestParam Long recipeId,
+                                HttpSession session) {
+
+        Event event = entityManager.find(Event.class, eventId);
+        Recipe recipe = entityManager.find(Recipe.class, recipeId);
+
+        if (event == null || recipe == null) {
+            return "redirect:/recipe";
+        }
+
+        User sessionUser = (User) session.getAttribute("u");
+
+        if (sessionUser == null) {
+            return "redirect:/login";
+        }
+
+        User user = entityManager.find(User.class, sessionUser.getId());
+
+        // La receta debe ser publica para poder vincularse a un evento
+        if (!recipe.isPublicRecipe()) {
+            log.warn("El usuario {} ha intentado añadir una receta privada ({}) al evento {}",
+                    user.getUsername(), recipe.getTitle(), event.getTitle());
+
+            return "redirect:/recipe/addToCommunity/" + recipeId + "?error=private";
+        }
+
+        // Solo el creador del evento o un admin puede añadir recetas al evento
+        boolean isOrganizer = event.getOrganizer() != null
+                && event.getOrganizer().getId() == user.getId();
+
+        boolean isAdmin = user.hasRole(User.Role.ADMIN);
+
+        if (!isOrganizer && !isAdmin) {
+            log.warn("El usuario {} ha intentado añadir una receta al evento {} sin ser organizador",
+                    user.getUsername(), event.getTitle());
+
+            return "redirect:/recipe";
+        }
+
+        // Limite maximo de recetas asociadas a un evento
+        int maxRecipesPerEvent = 10;
+
+        // Evitar duplicados
+        boolean alreadyAdded = event.getRecipes().stream()
+                .anyMatch(r -> r.getId() == recipe.getId());
+
+        if (!alreadyAdded && event.getRecipes().size() >= maxRecipesPerEvent) {
+            log.warn("El usuario {} ha intentado añadir una receta al evento {}, pero ya tiene el máximo de {} recetas.",
+                    user.getUsername(), event.getTitle(), maxRecipesPerEvent);
+
+            return "redirect:/recipe/addToCommunity/" + recipeId + "?error=maxRecipes";
+        }
+
+        if (!alreadyAdded) {
+            event.getRecipes().add(recipe);
+        }
+
+        entityManager.merge(event);
+        entityManager.flush();
+
+        return "redirect:/reservation/" + event.getId();
+    }
     //Metodo para cargar las cosas en la pestaña de valoracion
     @GetMapping("/addRating/{id}")
     public String showAddRatingPage(@PathVariable long id, Model model){
@@ -234,15 +388,16 @@ public class RecipeController {
             log.info("failed to upload photo: emtpy file?");
 
         } else {
-            // Recorremos todos los archivos recibidos:
+
             for (Map.Entry<String, MultipartFile> entry : allParams.entrySet()){
-                // Solo se guardan imagenes de portada o de pasos
+
                 if(entry.getKey().equals("cover") || entry.getKey().startsWith("step")){
                     //Nos creamos la ruta en la que se va a guardar la fotografia
                     //File f = localData.getFile("../src/main/resources/static/img/recipes", "" + id + "_" + entry.getKey() + ".jpg");
 
-                    
                     File f = localData.getFile("recipes", id + "_" + entry.getKey() + ".jpg");
+
+
                     if (allParams.get(entry.getKey()).isEmpty()) {
                         log.info("failed to upload photo: emtpy file?");
                     } 
@@ -292,27 +447,23 @@ public class RecipeController {
         return "redirect:/recipe";
     } 
 
-    // Devuelve una imagen de receta guardada en iwdata.
-    // Se usa tanto para la imagen principal como para imágenes de pasos.
+
+    // Endpoint para proporcionar la imagen del evento desde la carpeta externa iwdata
     @GetMapping("/{id}/pic/{imageName}")
     @ResponseBody
-    public void getRecipePhoto(
-            @PathVariable long id,
-            @PathVariable String imageName,
-            HttpServletResponse response) throws IOException {
+    public void getRecipePhoto(@PathVariable long id, @PathVariable String imageName, HttpServletResponse response) throws IOException {
 
-        // Buscar la imagen dentro de iwdata/recipes
         File f = localData.getFile("recipes", id + "_" + imageName + ".jpg");
 
         if (f.exists() && f.canRead()) {
-            // Si existe, se devuelve al navegador
+            // Si hay foto subida por el usuario, se proporciona al navegador
             response.setContentType("image/jpeg");
-            java.nio.file.Files.copy(f.toPath(), response.getOutputStream());
-        }
-        else {
-            // Si no existe, se muestra una imagen generica desde static
+            Files.copy(f.toPath(), response.getOutputStream());
+        } else {
+            // Si no existe, se envia la imagen de por defecto
             response.sendRedirect("/img/recipes/default.jpg");
         }
+
     }
     
 }
