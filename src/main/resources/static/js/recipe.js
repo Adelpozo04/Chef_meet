@@ -146,14 +146,27 @@ document.addEventListener("DOMContentLoaded", function (){
             const text = document.createElement("p");
             text.textContent = selectedOption.text;
 
+            //Creamos el boton para borrar el ingrediente
+            const buttonDelete = document.createElement("button");
+            //Estilo de los botones
+            buttonDelete.classList.add("category_item");
+            //Texto del boton
+            buttonDelete.textContent = "Borrar Ingrediente";
+            buttonDelete.type = "button";
+
             //Añadimos todos los elementos tanto de información para el controlador como de vista para el usuario dentro del elemento que nos hemos creado en la lista
             newIndex.appendChild(text);
             newIndex.appendChild(hiddenInput);
             newIndex.appendChild(hiddenQuantity);
             newIndex.appendChild(textAmount);
+            newIndex.appendChild(buttonDelete);
             
             //Eliminamos el dropdown
             dropdown.remove();
+
+            buttonDelete.addEventListener("click", function() {
+                newIndex.remove();
+            })
 
         });
 
@@ -214,10 +227,19 @@ document.addEventListener("DOMContentLoaded", function (){
         buttonImage.textContent = "Añadir imagen";
         buttonImage.type = "button";
 
+        //Creamos el boton para borrar un paso
+        const buttonDelete = document.createElement("button");
+        //Estilo de los botones
+        buttonDelete.classList.add("category_item");
+        //Texto del boton
+        buttonDelete.textContent = "Borrar Paso";
+        buttonDelete.type = "button";
+
         //Añadimos los elementos al contenedor de paso
         container.appendChild(wrapper);
         container.appendChild(newElement);
         container.appendChild(buttonImage);
+        container.appendChild(buttonDelete);
 
         //Añadimos el texto descriptivo del paso al elemento de la lista
         newElement.appendChild(stepDescription);
@@ -233,8 +255,11 @@ document.addEventListener("DOMContentLoaded", function (){
 
         //Permitimos al usuario la opcion de subir una imagen al quitar la clase que esconde el input de subir imagem
         buttonImage.addEventListener("click", function() {
-
             wrapper.querySelector(".empty_image").classList.remove("d-none");
+        })
+
+        buttonDelete.addEventListener("click", function() {
+            container.remove();
         })
 
     })
