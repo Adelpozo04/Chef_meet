@@ -189,6 +189,8 @@ public class ComplaintController {
 
         
 
+        complaint.setDate(getFechaYHora());
+
         // Usuario logueado que ejecuta esta query -> creador de la queja
         User owner = (User) session.getAttribute("u");
         owner = entityManager.find(User.class, owner.getId());
@@ -491,5 +493,10 @@ public class ComplaintController {
         catch (Exception e) {
             log.error("Error al enviar notificación de queja resuelta al usuario", e);
         }
+    }
+    
+
+    private LocalDateTime getFechaYHora() {
+        return LocalDateTime.now();
     }
 }

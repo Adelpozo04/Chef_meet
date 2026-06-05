@@ -187,48 +187,6 @@
             </table>
         </div>
 
-        <div class="container" id="container-complaints">
-
-            <!-- Usuarios muestra id, user, nombre y apellidos, rol-->
-            <h2 class="mt-5 text-center fw-bold">Quejas</h2>
-            <table id="tabla-quejas-dt" class="table table-striped table-hover text-center align-middle">
-                <thead>
-                    <tr>
-                        <th class="text-center">Título</th>
-                        <th class="text-center">Reportado por</th>
-                        <th class="text-center">Fecha</th>
-                        <th class="text-center">Descripción</th>
-                        <th class="text-center">Estado</th>
-                        <th class="text-center">Acciones</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr th:each="complaint : ${complaints}">
-
-                        <td th:text="${complaint.title}"></td>
-                        <td th:text="${complaint.owner.username}"></td>
-                        <td th:text="${#temporals.format(complaint.date, 'dd/MM/yyyy HH:mm')}"></td>
-                        <td th:text="${complaint.description}"></td>
-                        <td>
-                                <span th:if="${complaint.resolved}" class="badge bg-success">Resuelta</span>
-                                <span th:unless="${complaint.resolved}" class="badge bg-warning text-dark">Pendiente</span>
-                        </td>
-                        
-                        
-                        <td>
-                            <a th:href="@{/complaint/{id}(id=${complaint.id})}" class="btn btn-danger btn-sm">
-
-                                <span>Ver</span>
-                                
-                            </a>
-                        </td>
-
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
 
         <!--
         <div class="container">
@@ -240,7 +198,64 @@
         </div>
         !-->
 
-        
+        <div class="container" id="container-complaints">
+            <h2 class="mt-5 text-center fw-bold">Quejas</h2>
+            <table id="tabla-quejas" class="table table-striped table-hover text-center align-middle">
+                <thead>
+                    <tr>
+                        <th class="text-center">Id</th>
+                        <th class="text-center">Queja</th>
+                        <th class="text-center">Autor</th>
+                        <th class="text-center">Resuelta</th>
+                        <th class="text-center">Fecha</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="compl: ${complaints}">
+
+                        <td th:text="${compl.id}"></td>
+                        <td>
+
+                            <div class="card_wrapper">
+
+                            <!--Enlace a la informacion de la receta-->
+                            <a th:href="@{/complaint/{id}(id=${compl.id})}" class="card_link">
+
+                                <span class="card_footer" th:text="${compl.title}">Título</span>
+                                
+                            </a>
+
+                        </div>  
+                        </td>
+                        <td th:text="${compl.owner.username}"></td>
+                        <td th:text="${compl.resolved}"></td>
+                        <td th:text="${compl.date}"></td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                <form th:if="${!compl.resolved}"
+                                    th:action="@{/complaint/{id}/resolve(id=${compl.id})}"
+                                    method="post"
+                                    class="m-0">
+                                    <button type="submit" class="btn btn-success">Marcar como resuelta</button>
+                                </form>
+                                <form th:action="@{/complaint/{id}/delete(id=${compl.id})}" method="post" class="m-0">
+                                    <button type="submit" onclick="return confirm('¿Seguro que quieres borrar esta queja?')"
+                                        class="btn btn-danger complaint-delete-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                            
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
     </main>
 

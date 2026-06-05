@@ -59,13 +59,13 @@ public class Complaint implements Transferable<Complaint.Transfer> {
     @Column(name = "resolved")
     private boolean resolved;
 
-    //Id del elemento al que se refiere la queja
-    @Column(name = "reference_id")
-    private Long referenceId;   // ID del objeto al que se refiere -> Si type="USER" y ID=5 : la queja se refiere al usuario con ID 5
-
     @Column(name = "date")
     private LocalDateTime date;
 
+    //Id del elemento al que se refiere la queja
+    @Column(name = "reference_id")
+    private Long referenceId;   // ID del objeto al que se refiere -> Si type="USER" y ID=5 : la queja se refiere al usuario con ID 5
+    
     @Getter
     @AllArgsConstructor
     public static class Transfer {
@@ -75,15 +75,13 @@ public class Complaint implements Transferable<Complaint.Transfer> {
         private Integer type;
         private boolean resolved;
         private Long referenceId;
-        private String date;
+        private LocalDateTime date;
     }
     
     @Override
     public Transfer toTransfer() {
 
-        return new Transfer(id, title, description, type, resolved, referenceId,
-            date == null ? null : DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(date)
-        );
+        return new Transfer(id, title, description, type, resolved, referenceId, date);
     }
 
     @Override
