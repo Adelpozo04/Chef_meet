@@ -21,12 +21,16 @@ Su acceso es solo de lectura. Pueden navegar por la plataforma y visualizar rece
 ## Vista de recetas
 ![Receta](/imgReadMe/receta.png)
 
-La vista de receta se puede usar tanto para crear una receta como para verla o editarla.
+La vista de receta se puede usar principalmente tanto para crear una receta como para verla. Además de eso este espacio esta dividido entre las recetas creadas por el usuario logueado y recetas subidas por otros usuarios. Dentro de estas recetas se puede hacer uso del buscador para buscar una en concreto. Esta division entre recetas tambien trae con sigo distintas funcionalidades las cuales son:
+
+- Borrar receta: solo sera posible borrar una receta si es el autor de esta o el Admin de la pagina web. Esta acción borra el elemento de la base de datos
+- Enviar a comunidad: si eres el autor de una receta puedes enviarla a una comunidad a la que pertenezcas para que desde ella sea visible.
+- Valorar receta: si no eres el autor de una receta puedes valorarla usando un sistema de estrellas que te permiten ponerle una puntuación en concreto.
 
 ### Edición de receta
 
 - <strong>Introducción:</strong>
-El usuario propietario puede crear o editar la receta, para ello debe introducir un título arriba de esta. Tras esto, tiene un espacio para subir una imagen que se usará como representación de la receta en el formato tarjeta.
+El usuario propietario puede crear una receta, para ello debe introducir un título arriba de esta. Tras esto, tiene un espacio para subir una imagen que se usará como representación de la receta en el formato tarjeta.
 
 - <strong>Descripción:</strong>
 Aqui se deben indicar puntos importantes de cada receta, siendo estos el tiempo de elaboración y la dificultad de la receta. Estos datos son obligatorios y aparecen en la descripción de las recetas.
@@ -34,45 +38,25 @@ Aqui se deben indicar puntos importantes de cada receta, siendo estos el tiempo 
 - <strong>Ingredientes:</strong>
     - Para añadir los ingrendientes, el usuario debe pulsar un botón de _add_ cada vez que quiera introducir uno nuevo.
 
-    - El ingrediente debe ser escrito y acompañado en otro espacio distinto de una cantidad a añadir. En caso de no escribir nada, dicho espacio de ingrediente será eliminado automaticamente.
+    - Esto le dará una lista de ingredientes almacenanos en la base de datos. sobre estos debera escoger el que quiera incorporar.
 
-    - En un futuro y como un _nice to have_, se integrará una base de datos con ingredientes comunes. Esos podrán seleccionarse mediante un _dropdown_ con barra de búsqueda.
-
-> [!NOTE]
-> El botón de añadir debe salir desde el último ingrediente añadido, para que el usuario no deba subir arriba del todo para añadir otro*
+    - Una vez elegio el ingrediente aparecerá un espacio en blanco que le permite añadir la cantidad que desea establecer en formato de texto.
 
 - <strong>Elaboración:</strong>
-De forma similar que en el apartado anterior: el usuario puede añadir distintos pasos donde describa mediante un texto la elaboración de la receta.
-
-> [!NOTE]
-> De forma similar, en cada uno de los pasos aparece un botón debajo indicando la posibilidad de subir una imagen o vídeo como acompañamiento a la descripción.
+De forma similar que en el apartado anterior: el usuario puede añadir distintos pasos donde describa mediante un texto la elaboración de la receta. Acompañado a estos pasos puede establecer una foto que represente dicho paso. Paras ello antes debera pulsar un boton de añadir imagen debajo del paso en concreto que desea acompañar.
 
 - <strong>Calorías:</strong>
-Esta característica es un _nice to have_, será una pequeña opción en la cual el usuario podrá indicar las calorías que tiene su receta en total.
+Opcion en formato de texto que permite al usuario indicar el numero de calorias que tiene una receta en concreto
+
+- <strong>Visibilidad:</strong>
+Hay un boton el cual permite establecer si una receta puede ser vista por otras personas o no. Si es publica cualquiera podra verlo y si es privada solo el autor sera capaz de ver la receta junto con el Admin.
 
 - <strong>Subida de receta:</strong>
 Para subir la receta es necesario pulsar un botón al final de esta. Dicho botón guarda automáticamente la receta en tu perfil.
 
-> [Cosas funcionales]
-> Actualmente las siguientes caracteristicas ya están implementadas y funcionales:
-> - Vista de receta pudiendo observar las creadas por el usuario o usuarios externos
-> - Posibilidad de crear una receta mediante la introduccion de TITULO, IMAGEN COVER, DESCRIPCION, INGREDIENTES, PASOS E IMAGENES DE LOS PASOS.
-> - Creacion de una base de datos con distintos ingredientes los cuales marcan tambien las alergias que estos introducen.
-> - Creacion de un paso intermedio entre ingredientes y receta que establezca las medidas de cada ingrediente para esa receta en especifico.
-> - Cambiar botón de añadir peso para que sea más visible
-> - Añadir opción para introducir calorias de la receta
-> - Borrar receta
-> - Barra de búsqueda de tus recetas
-> - Tags de recetas para la exploracion
-> - Poner las alergias al ver las recetas 
-> - Establecer recetas publicas o privadas
-> - Creacion de clase de valoracion
-> - Nuevo layout de las ventanas de recetas
-
 
 ### Ver receta
 El _layout_ es igual tan solo quitando todos los botones y opciones de personalización. Tambien en la parte de arriba aparecera una media de la valoracion que le han dado los usuarios a la receta.
-
 
 ## Vista de comunidades
 En esta vista se diferencia entre la vista donde se pueden explorar todas las comunidades y la vista dentro de una comunidad concreta.
@@ -82,57 +66,39 @@ En esta vista se diferencia entre la vista donde se pueden explorar todas las co
 
 Esta vista cuenta con una barra de búsqueda para buscar por el nombre una comunidad. Se puede filtrar para que se muestren todas las comunidades o sólo aquellas a las que pertenece el usuario.
 
-Las comunidades están representadas con tarjetas (diseño aún por definir) que incluyen información cómo el nombre, tipo de cocina y una imagen.
+Las comunidades están representadas con tarjetas que incluyen información cómo el nombre, pais de procedencia (marca el tipo de cocina mas bien) y una imagen.
 También está el botón para crear una comunidad, donde aparecerá una pestaña con los datos a rellenar, que es la misma que aparece en las tarjetas.
 
 ### Vista de una comunidad
 Cuando el usuario pulsa la tarjeta de una comunidad entra en esta vista.
-Contiene un título con un fondo de una imagen personalizada como fondo. Dicho texto se esconde cada vez que el usuario haga scroll hacia abajo y aparece cuando hace scroll hacia arriba.
 
 Dentro de esta vista existen cuatro funcionalidades distintas: recetas, miembros, eventos y el chat de la comunidad.
 
-En el apartado de miembros se pueden ver todos los miembros y el creador de la comunidad
-En el apartado de recetas se pueden ver las recetas asociadas a una comunidad.
-En el apartado de eventos se pueden ver todos los eventos pasados y futuros de una comunidad. Ademas de acceder a su información.
+- En el apartado de miembros se pueden ver todos los miembros y el creador de la comunidad
+- En el apartado de recetas se pueden ver las recetas asociadas a una comunidad.
+- En el apartado de eventos se pueden ver todos los eventos pasados y futuros de una comunidad. Ademas de acceder a su información.
+
 Con el boton inferior derecho el usuario puede desplegar el chat de la comunidad y ver en tiempo real los ultimos 50 mensajes enviados y qué usuario lo envió. De esta forma todos los usuarios conectados pueden interactuar entre ellos. 
- 
-> [!NOTE]\
-> Implementado:
-> - Creación de comunidades en base a un país, titulo y descripción de comunidad
-> - Filtrar entre comunidades creadas por el usuario y creadas por otros usuarios
-> - Acceder a la vista de una comunidad concreta
-> - Ver los usuarios que formand parte de una comunidad
-> - Unirse y salirse de una comunidad
-> - Eliminar comunidades como administrador
-> - Crear/Consultar/Eliminar/Modificar eventos asociados a una comunidad como creador de estas 
-> - Crear/Consultar/Eliminar/Modificar eventos asociados a una comunidad como administrador
-> - Ver e interactuar con el chat de comunidad
 
-> [!NOTE]\
-> Por implementar:
-> - Eliminar comunidades como creador de estas. Además de todos los usuarios, recetas, eventos y mensajes asociados a esta
-> - Crear/Consultar/Eliminar/Modificar recetas asociadas a una comunidad como miembro 
-> - Crear/Consultar/Eliminar/Modificar recetas asociadas a una comunidad como administrador
-> - Filtrar por comunidades en base al titulo, tipo de gastronomia, pais u otros parámetros
-
-
-#### Pestaña recetas
+#### Apartado recetas
 ![Receta](/imgReadMe/comunidad.png)
 
-Es la pestaña por defecto que se muestra al entrar a una comunidad.
-Las recetas están divididas en carpetas organizadas por los miembros de la comunidad. Las recetas están representadas con tarjetas con las que se puede interactuar para verlas al detalle y valorarlas.
-Se pueden ordenar por orden alfabético, y potencialmente por valoración.
+Parte central de la comunidad, en ella hay enlaces a las distintas recetas que los miembros han subido en formato de tarjetas.
 
-Cuando un usuario se une a una comunidad, elige que recetas de su perfil compartir con esa comunidad. Al salirse, estas dejan de estar asociadas a la comunidad.
-#### Pestaña miembros
+Un usuario de una comunidad puede subir cualquiera de las recetas que desee a esta desde su vista de recetas.
+
+#### Apartado miembros
 ![Miembros](/imgReadMe/miembros.png)
-La pestaña de miembros cuenta con un _chat_ grupal en tiempo real donde los miembros de la comunidad comparten mensajes. Además, a la izquierda se muestran todos los miembros indicando aquellos que están _online_.
+Pestaña la cual muestra los distintos miembros que se han unido a la comunidad asi como el creador de esta
 
-#### Pestaña eventos
+#### Apartado eventos
 ![Eventos](/imgReadMe/eventos.png)
-Por último en la pestaña de eventos, se muestran las tarjetas (diseño aún por definir) de los próximos eventos y los eventos ya pasados organizados por la comunidad. Hay un botón cuya funcionalidad es crear un nuevo evento, que llevará a la ventana de eventos.
+Por último en el apartado de eventos, se muestran los nombres de los próximos eventos y los eventos ya pasados organizados por la comunidad. Hay un botón cuya funcionalidad es crear un nuevo evento, que llevará a la ventana de eventos.
 
 Cuando se hace un evento asociado a una comunidad este se puede crear de forma pública para gente que pertenezca o no a esta, o privados únicamente para los participantes de esa comunidad.
+
+#### Pop-up Chat
+Es un menu emergente el cual muestra un chat entre usuarios, dejando al usuario actual escribir lo que quiera y mostrando los mensajes pasados tanto suyos como los miembros de su comunidad
 
 ## Vista de eventos
 ![Eventos](/imgReadMe/eventos_mapa.png)
@@ -143,21 +109,11 @@ Se ha agregado un mapa interactivo de España que se puede ampliar y  muestra la
 
 Los eventos están representados con tarjetas que incluyen información cómo el nombre, temática, fecha y una imagen. También está el botón para crear un evento, donde aparecerá una pestaña con la información a rellenar (título, imagen, fecha, hora, precio, ubicación, aforo, temática y descripción).
 
-> [Cosas funcionales]
-> - Vista de eventos pudiendo filtrar todos o los que ya está apuntado el usuario.
-> - Posibilidad de crear una evento mediante la introduccion de TITULO, IMAGEN COVER, FECHA, HORA, PRECIO, UBICACION, AFORO, TEMATICA y DESCRIPCION.
-> - Barra de búsqueda funcional.
-> - El mapa interactivo con la ubicación de los eventos.
-> - La conexión de eventos asociados a comunidades.
-
 ### Vista de reserva y pago de evento
 ![Eventos](/imgReadMe/reserva.png)
 Cuando el usuario interactúa con una de estas tarjetas, se le lleva a otra ventana donde aparece la información del evento más detallada y donde el usuario puede reservar una plaza y, si se debe, realizar el pago para asistir.
 
 Tras pulsar el botón de reservar, se abre una simulación de una pasarela de pago cifrada. Una vez validado el pago, se muestra un mensaje de éxito, el evento se incluye a "Mis eventos" y se redirige al usuario a la pestaña de mis eventos dentro del perfil.
-
-> [Cosas funcionales]
-> - Vista completa mostrando toda la información del evento y con un botón con la capacidad de reservar una plaza y simular la pasarela de pago.
 
 ## Vista de perfil
 ![Perfil](/imgReadMe/miperfil.png)
@@ -167,21 +123,19 @@ La vista de perfil está estructurada mediante un selector lateral. Dependiendo 
 
 - <strong>Mis recetas:</strong> Contiene todas las recetas que el usuario haya compartido en la plataforma, con posibilidad de organizarlas como considere.
 
-
-
 - <strong>Mis comunidades:</strong> Contiene las comunidades a las que pertenece el usuario para poder acceder a ellas más rápidamente.
 
 - <strong>Mis eventos:</strong> Contiene las entradas de los eventos a los que se ha apuntado el usuario.
 
+- <strong>Mis quejas:</strong> Contiene las quejas que el usuario a enviado al admin, además de un botón para escribir nuevas. Si una queja a sido resuelta por el admin aparecera un tick verde junto a ella
+
 - <strong>Log out:</strong> Para cerrar sesión.
 
-> Pendiente de implementar.
-- <strong>Reportar:</strong> Permite enviar quejas y reportes directamente al administrador.
 
 ## Vista de administrador
 ![Vista administrador](/imgReadMe/administrador.png)
 La vista de adminstrador solo deberá proporcionar a los usuarios <strong>administradores</strong> una vista sencilla y rápida para gestionar a todos los usuarios, recetas, comunidades y eventos de la aplicación.
-Es decir, el administrador debe poder deshabilitar a cualquier usuario, eliminar recetas o comunidades y cancelar eventos.
+Es decir, el administrador debe poder deshabilitar a cualquier usuario, eliminar recetas o comunidades y cancelar eventos. También es capaz de revisar las distintas quejas que le han enviado, diferenciando entre las resuletas y las pendientes. Desde ahi podra meterse para revisar la queja y o bien borrarla o biemn marcarla como resuelta.
 
 Para gestionar todos estos tipo de datos el administrador podrá desplegar un _dropdown_  para filtrar qué tipo de datos desea buscar. Cada selección de este _dropdown_ modificará todas las entradas de las tablas de búsqueda para filtrar los datos.
 En base a los filtros seleccionados, deberán poder verse todos los datos que satisfagan esos filtros y que ofrezcan controladores para manipular estos datos.
@@ -190,8 +144,7 @@ En base a los filtros seleccionados, deberán poder verse todos los datos que sa
 - <strong>Recetas:</strong> Permitirá al administrador buscar recetas mediante su identificador único, título de la receta o nombre del creador.
 - <strong>Comunidades:</strong> Permitirá al administrador buscar comunidades según su identificador único, nombre de la comunidad, temática, nombre del creador o número de miembros.
 - <strong>Eventos:</strong> Permitirá al administrador buscar eventos por su identificador único, nombre del evento, localización o fecha.
-
-> Implementado.
+- <strong>Quejas:</strong> Permitirá al administrador buscar quejas por su identificador, titulo o fecha.
 
 ## Estructura base de datos
 ![Base de datos](/bd.jpg)
